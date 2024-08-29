@@ -12,9 +12,9 @@ const HeroSection = () => {
       className="relative w-full h-[85vh] bg-center bg-cover flex items-center text-white"
       style={{ backgroundImage: `url(${heroBackground})` }}
     >
-      <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
-        <div className="text-left md:w-1/2 mt-40 md:mt-0"> {/* Added margin top here */}
-          <h1 className="text-3xl md:text-7xl font-extrabold text-white mt-2 leading-tight">
+      <div className="container mx-auto px-8 md:px-12 lg:px-16 flex flex-col md:flex-row justify-between items-center">
+        <div className="text-left md:w-1/2 mt-40 md:mt-0"> {/* Adjusted margin top here */}
+          <h1 className="text-2xl md:text-5xl font-extrabold text-white mt-2 leading-tight"> {/* Scaled down text size */}
             <span className="text-white">A</span><span className="text-yellow-500">ppetite Meets</span><br />
             <span className="text-white">B</span><span className="text-yellow-500">rilliance and</span><br />
             <span className="text-white">C</span><span className="text-yellow-500">reativity</span>
@@ -25,22 +25,22 @@ const HeroSection = () => {
               min="1"
               max="20"
               placeholder="2 people"
-              className="w-full md:w-auto p-3 pl-4 pr-10 rounded-lg text-gray-800 shadow-lg focus:ring-2 focus:ring-yellow-500"
+              className="w-full md:w-auto p-2 md:p-3 pl-4 pr-10 rounded-lg text-gray-800 shadow-lg focus:ring-2 focus:ring-yellow-500"
             />
             <DatePicker
               selected={selectedDate}
               onChange={(date) => setSelectedDate(date)}
-              className="w-full md:w-auto p-3 pl-4 pr-10 rounded-lg text-gray-800 shadow-lg focus:ring-2 focus:ring-yellow-500"
+              className="w-full md:w-auto p-2 md:p-3 pl-4 pr-10 rounded-lg text-gray-800 shadow-lg focus:ring-2 focus:ring-yellow-500"
               dateFormat="MM/dd/yyyy"
               placeholderText="Select a date"
             />
             <input
               type="time"
-              className="w-full md:w-auto p-3 pl-4 pr-10 rounded-lg text-gray-800 shadow-lg focus:ring-2 focus:ring-yellow-500"
+              className="w-full md:w-auto p-2 md:p-3 pl-4 pr-10 rounded-lg text-gray-800 shadow-lg focus:ring-2 focus:ring-yellow-500"
             />
             <div className="relative w-full md:w-auto">
               <select
-                className="w-full md:w-auto p-3 pl-4 pr-10 rounded-lg text-gray-800 shadow-lg focus:ring-2 focus:ring-yellow-500 appearance-none"
+                className="w-full md:w-auto p-2 md:p-3 pl-4 pr-10 rounded-lg text-gray-800 shadow-lg focus:ring-2 focus:ring-yellow-500 appearance-none"
               >
                 <option>Colombo ABC Restaurant</option>
                 <option>Kandy ABC Restaurant</option>
@@ -51,7 +51,7 @@ const HeroSection = () => {
             </div>
           </div>
           <div className="mt-6 w-full">
-            <button className="w-full md:w-auto bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-700 shadow-lg text-lg">
+            <button className="w-full md:w-auto bg-red-500 text-white px-4 md:px-6 py-2 md:py-3 rounded-lg hover:bg-red-700 shadow-lg text-base md:text-lg">
               Reserve Now
             </button>
           </div>
@@ -61,7 +61,7 @@ const HeroSection = () => {
           <img
             src={dishrotate}
             alt="Rotating Dish"
-            className="w-[16rem] h-[16rem] md:w-[30rem] md:h-[30rem] rounded-full animate-spin-slow"
+            className="w-[10rem] h-[10rem] md:w-[20rem] md:h-[20rem] lg:w-[26rem] lg:h-[26rem] rounded-full animate-spin-slow" /* Scaled down plate size */
           />
         </div>
       </div>
