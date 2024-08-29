@@ -5,6 +5,7 @@ import { FaBars, FaTimes } from 'react-icons/fa';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -15,7 +16,7 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
         {/* Logo on the left */}
         <div className="flex-1 flex justify-start">
-          <img src={logo} alt="ABC Restaurant Logo" className="h-10" />  {/* Adjusted size */}
+          <img src={logo} alt="ABC Restaurant Logo" className="h-10" />
         </div>
 
         {/* Mobile Menu Button on the right */}
@@ -35,10 +36,19 @@ const Navbar = () => {
           <a href="#reservation" className="hover:text-yellow-400">Reservation</a>
         </div>
 
-        {/* User Profile for desktop */}
+        {/* User Profile or Login/Signup for desktop */}
         <div className="hidden md:flex items-center space-x-2">
-          <img src={profileIcon} alt="Profile Icon" className="h-8 w-8 rounded-full" />  {/* Adjusted size */}
-          <span className="text-sm">Dilan Akash</span>  {/* Adjusted text size */}
+          {isLoggedIn ? (
+            <>
+              <img src={profileIcon} alt="Profile Icon" className="h-8 w-8 rounded-full" />
+              <span className="text-sm">Dilan Akash</span>
+            </>
+          ) : (
+            <div className="space-x-4">
+              <button className="bg-yellow-500 text-black px-3 py-1 rounded">Login</button>
+              <button className="bg-yellow-500 text-black px-3 py-1 rounded">Signup</button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -53,10 +63,17 @@ const Navbar = () => {
             <a href="#offers" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">Offers</a>
             <a href="#reservation" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">Reservation</a>
             <div className="border-t border-gray-700 mt-2 pt-2">
-              <a href="#account" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">
-                <img src={profileIcon} alt="Profile Icon" className="h-8 w-8 rounded-full inline-block mr-2" />
-                Dilan Akash
-              </a>
+              {isLoggedIn ? (
+                <a href="#account" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">
+                  <img src={profileIcon} alt="Profile Icon" className="h-8 w-8 rounded-full inline-block mr-2" />
+                  Dilan Akash
+                </a>
+              ) : (
+                <div className="space-y-2">
+                  <button className="w-full bg-yellow-500 text-black px-3 py-2 rounded">Login</button>
+                  <button className="w-full bg-yellow-500 text-black px-3 py-2 rounded">Signup</button>
+                </div>
+              )}
             </div>
           </div>
         </div>
