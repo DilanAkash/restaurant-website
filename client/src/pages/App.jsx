@@ -4,6 +4,7 @@ import HeroSection from '../components/HeroSection';
 import WelcomeSection from '../components/WelcomeSection';
 import ValuesSection from '../components/ValuesSection';
 import Footer from '../components/Footer';
+import Menu from '../pages/Menu';
 import '../index.css';
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
       <Navbar />
       <HeroSection />
       <WelcomeSection />
+      <Menu />
       <ValuesSection />
       <Footer />
     </div>

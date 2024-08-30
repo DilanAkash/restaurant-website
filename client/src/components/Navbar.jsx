@@ -56,7 +56,7 @@ const Navbar = () => {
       {isOpen && (
         <div className="md:hidden bg-black bg-opacity-90 text-white z-50">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {['Home', 'Menu', 'Services', 'Gallery', 'Contact Us', 'Offers', 'Reservation'].map((item) => (
+            {['Home', 'Menu', 'Services', 'Gallery', 'Contact', 'Offers', 'Reservation'].map((item) => (
               <a href={`#${item.toLowerCase().replace(" ", "")}`} key={item} className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">
                 {item}
               </a>
