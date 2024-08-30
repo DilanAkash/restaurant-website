@@ -9,11 +9,11 @@ const HeroSection = () => {
 
   return (
     <section
-      className="relative w-full h-[85vh] bg-center bg-cover flex items-center text-white"
+      className="relative w-full h-[100vh] bg-center bg-cover flex items-center justify-center text-white"
       style={{ backgroundImage: `url(${heroBackground})` }}
     >
       <div className="container mx-auto px-8 md:px-12 lg:px-16 flex flex-col md:flex-row justify-between items-center">
-        <div className="text-left md:w-1/2 mt-40 md:mt-0">
+        <div className="text-left md:w-1/2">
           <h1 className="text-2xl md:text-5xl font-extrabold text-white mt-2 leading-tight">
             <span className="text-white">A</span><span className="text-yellow-500">ppetite Meets</span><br />
             <span className="text-white">B</span><span className="text-yellow-500">rilliance and</span><br />
