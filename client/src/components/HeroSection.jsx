@@ -13,8 +13,8 @@ const HeroSection = () => {
       style={{ backgroundImage: `url(${heroBackground})` }}
     >
       <div className="container mx-auto px-8 md:px-12 lg:px-16 flex flex-col md:flex-row justify-between items-center">
-        <div className="text-left md:w-1/2 mt-40 md:mt-0"> {/* Adjusted margin top here */}
-          <h1 className="text-2xl md:text-5xl font-extrabold text-white mt-2 leading-tight"> {/* Scaled down text size */}
+        <div className="text-left md:w-1/2 mt-40 md:mt-0">
+          <h1 className="text-2xl md:text-5xl font-extrabold text-white mt-2 leading-tight">
             <span className="text-white">A</span><span className="text-yellow-500">ppetite Meets</span><br />
             <span className="text-white">B</span><span className="text-yellow-500">rilliance and</span><br />
             <span className="text-white">C</span><span className="text-yellow-500">reativity</span>
@@ -61,7 +61,7 @@ const HeroSection = () => {
           <img
             src={dishrotate}
             alt="Rotating Dish"
-            className="w-[10rem] h-[10rem] md:w-[20rem] md:h-[20rem] lg:w-[26rem] lg:h-[26rem] rounded-full animate-spin-slow" /* Scaled down plate size */
+            className="w-[10rem] h-[10rem] md:w-[20rem] md:h-[20rem] lg:w-[26rem] lg:h-[26rem] rounded-full animate-spin-slow"
           />
         </div>
       </div>

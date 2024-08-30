@@ -12,7 +12,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 w-full bg-gray-900 bg-opacity-80 text-white shadow-lg z-10 backdrop-blur-lg">
+    <nav className="fixed top-0 w-full bg-black bg-opacity-80 text-white shadow-lg z-10 backdrop-blur-lg">
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
         {/* Logo on the left */}
         <div className="flex-1 flex justify-start">
@@ -27,7 +27,7 @@ const Navbar = () => {
         </div>
 
         {/* Navigation Links for desktop */}
-        <div className="hidden md:flex space-x-8 text-lg flex-1 justify-center">
+        <div className="hidden md:flex space-x-8 text-lg flex-1 justify-center md:pr-8">
           <a href="#home" className="hover:text-yellow-400">Home</a>
           <a href="#services" className="hover:text-yellow-400">Services</a>
           <a href="#gallery" className="hover:text-yellow-400">Gallery</a>
@@ -37,7 +37,7 @@ const Navbar = () => {
         </div>
 
         {/* User Profile or Login/Signup for desktop */}
-        <div className="hidden md:flex items-center space-x-2">
+        <div className="hidden md:flex items-center space-x-2 md:pl-8">
           {isLoggedIn ? (
             <>
               <img src={profileIcon} alt="Profile Icon" className="h-8 w-8 rounded-full" />
@@ -54,7 +54,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-gray-900 bg-opacity-90 text-white">
+        <div className="md:hidden bg-black bg-opacity-90 text-white">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <a href="#home" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">Home</a>
             <a href="#services" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">Services</a>

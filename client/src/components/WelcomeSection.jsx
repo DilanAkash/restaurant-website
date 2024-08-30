@@ -1,27 +1,25 @@
 import React from 'react';
 import menuImage from '../assets/menu-image.jpg';
 import offersImage from '../assets/offer-image.jpg';
-import videoFile from '../assets/abc-restaurant-video.mp4'; // Update with your actual video file path
+import videoFile from '../assets/abc-restaurant-video.mp4';
 
 const WelcomeSection = () => {
   return (
     <section className="p-8 bg-gray-900">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Left Section with Video */}
+        
         <div
           className="relative bg-cover bg-center rounded-lg overflow-hidden"
-          style={{ minHeight: '300px', backgroundAttachment: 'fixed' }} // Parallax effect
-        >
-          {/* Video covering the entire frame */}
+          style={{ minHeight: '300px', backgroundAttachment: 'fixed' }}>
+
           <video
             src={videoFile}
             autoPlay
             loop
             muted
             playsInline
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          {/* Dark backdrop for text visibility */}
+            className="absolute inset-0 w-full h-full object-cover"/>
+
           <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
             <div className="relative p-8 w-full">
               <h2 className="text-5xl font-extrabold text-white mb-4 text-center">
@@ -34,9 +32,7 @@ const WelcomeSection = () => {
           </div>
         </div>
 
-        {/* Right Section with Images and Buttons */}
         <div className="grid grid-rows-2 gap-4">
-          {/* First Image with Button in Bottom-Right Corner */}
           <div className="relative overflow-hidden rounded-lg shadow-lg group">
             <img
               src={offersImage}
@@ -53,7 +49,6 @@ const WelcomeSection = () => {
             </div>
           </div>
 
-          {/* Second Image with Button in Bottom-Right Corner */}
           <div className="relative overflow-hidden rounded-lg shadow-lg group">
             <img
               src={menuImage}
