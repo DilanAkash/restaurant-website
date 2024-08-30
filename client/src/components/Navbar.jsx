@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import profileIcon from '../assets/profile.png';
 import { FaBars, FaTimes } from 'react-icons/fa';
@@ -16,9 +17,9 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
         <div className="flex-1 flex items-center">
           {/* Make the logo clickable and redirect to the home screen */}
-          <a href="#home">
+          <Link to="/">
             <img src={logo} alt="ABC Restaurant Logo" className="h-10 cursor-pointer" />
-          </a>
+          </Link>
         </div>
 
         <div className="md:hidden">
@@ -30,9 +31,9 @@ const Navbar = () => {
         {/* Desktop Navigation */}
         <div className="hidden md:flex space-x-8 text-lg flex-1 justify-center md:pr-8">
           {['Home', 'Menu', 'Services', 'Gallery', 'Contact', 'Offers', 'Reservation'].map((item) => (
-            <a href={`#${item.toLowerCase().replace(" ", "")}`} key={item} className="hover:text-yellow-400">
+            <Link to={`/${item.toLowerCase()}`} key={item} className="hover:text-yellow-400">
               {item}
-            </a>
+            </Link>
           ))}
         </div>
 
@@ -57,16 +58,16 @@ const Navbar = () => {
         <div className="md:hidden bg-black bg-opacity-90 text-white z-50">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {['Home', 'Menu', 'Services', 'Gallery', 'Contact', 'Offers', 'Reservation'].map((item) => (
-              <a href={`#${item.toLowerCase().replace(" ", "")}`} key={item} className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">
+              <Link to={`/${item.toLowerCase()}`} key={item} className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">
                 {item}
-              </a>
+              </Link>
             ))}
             <div className="border-t border-gray-700 mt-2 pt-2">
               {isLoggedIn ? (
-                <a href="#account" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 items-center">
+                <Link to="/account" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 items-center">
                   <img src={profileIcon} alt="Profile Icon" className="h-8 w-8 rounded-full inline-block mr-2" />
                   Dilan Akash
-                </a>
+                </Link>
               ) : (
                 <div className="space-y-2">
                   <button className="w-full bg-yellow-500 text-black px-3 py-2 rounded hover:bg-yellow-600 transition-colors">Login</button>
