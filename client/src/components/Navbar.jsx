@@ -37,7 +37,10 @@ const Navbar = ({ cartItems, removeFromCart }) => {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex space-x-8 text-lg flex-1 justify-center md:pr-8">
-          {['Home', 'Menu', 'Services', 'Gallery', 'Contact', 'Offers', 'Reservation'].map((item) => (
+          <Link to="/" className="hover:text-yellow-400">
+            Home
+          </Link>
+          {['Menu', 'Services', 'Gallery', 'Contact', 'Offers', 'Reservation'].map((item) => (
             <Link to={`/${item.toLowerCase()}`} key={item} className="hover:text-yellow-400">
               {item}
             </Link>
@@ -89,7 +92,10 @@ const Navbar = ({ cartItems, removeFromCart }) => {
       {isOpen && (
         <div className="md:hidden bg-black bg-opacity-90 text-white z-50">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {['Home', 'Menu', 'Services', 'Gallery', 'Contact', 'Offers', 'Reservation'].map((item) => (
+            <Link to="/" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">
+              Home
+            </Link>
+            {['Menu', 'Services', 'Gallery', 'Contact', 'Offers', 'Reservation'].map((item) => (
               <Link to={`/${item.toLowerCase()}`} key={item} className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">
                 {item}
               </Link>
