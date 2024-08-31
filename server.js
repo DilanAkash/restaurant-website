@@ -1,5 +1,6 @@
-const express = require('express');
-const mongoose = require('mongoose');
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors'; // Import cors
 
 // Create an instance of Express
 const app = express();
@@ -7,22 +8,24 @@ const app = express();
 // Set the port number
 const PORT = process.env.PORT || 5000;
 
+// Use cors middleware
+app.use(cors());
+
 // Middleware to parse JSON bodies
 app.use(express.json());
 
 // Connect to MongoDB using Mongoose
-mongoose.connect('mongodb://localhost:27017/restaurantDB', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('MongoDB connected'))
-.catch((err) => console.log(err));
+mongoose.connect('mongodb://localhost:27017/restaurantDB')
+  .then(() => console.log('MongoDB connected'))
+  .catch((err) => console.log(err));
 
-// Import user routes
-const userRoutes = require('./routes/userRoutes');
+// Import routes
+import userRoutes from './routes/userRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 
-// Use user routes with the /api prefix
+// Use routes with the /api prefix
 app.use('/api', userRoutes);
+app.use('/api/auth', authRoutes);
 
 // Basic route for the root URL
 app.get('/', (req, res) => {
