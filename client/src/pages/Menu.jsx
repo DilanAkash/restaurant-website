@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-
-// Sample imports for images
 import pittuImage from '../assets/pittu.jpeg';
 import friedRiceImage from '../assets/fried_rice.jpeg';
 import parallaxImage from '../assets/menubg.jpeg';
@@ -10,6 +8,9 @@ const Menu = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [sortOption, setSortOption] = useState('');
+  const [cartItems, setCartItems] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 9;
 
   // Full menu data with images, prices, and other details
   const menuItems = [
@@ -193,6 +194,11 @@ const Menu = () => {
     'Prawns', 'Vegetables', 'Desserts', 'Crab', 'Mutton', 'Chicken'
   ];
 
+  // Function to add item to cart
+  const addToCart = (item) => {
+    setCartItems([...cartItems, item]);
+  };
+
   // Filter and sort menu items based on the selected category, search term, and sort option
   const filteredItems = menuItems
     .filter(item => {
@@ -208,76 +214,107 @@ const Menu = () => {
       return 0;
     });
 
-    return (
-      <div className="container mx-auto">
-  {/* Parallax Section */}
-  <div
-  className="relative bg-cover bg-center bg-fixed"
-  style={{ backgroundImage: `url(${parallaxImage})`, height: '550px' }}
->
+    // Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
 
-    <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <h1 className="text-5xl font-bold text-white">Our Menu</h1>
-    </div>
-  </div>
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  {/* Content Section */}
-  <div className="py-16 px-6">
-    {/* Search Bar */}
-    <div className="mb-8">
-      <input
-        type="text"
-        placeholder="Search for a dish..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="w-full p-3 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-      />
-    </div>
-
-    {/* Category Filter */}
-    <div className="flex flex-wrap justify-center mb-8">
-      {categories.map((category) => (
-        <button
-          key={category}
-          onClick={() => setSelectedCategory(category)}
-          className={`m-2 px-4 py-2 rounded-lg font-semibold ${
-            selectedCategory === category ? 'bg-yellow-500 text-black' : 'bg-gray-800 text-white'
-          }`}
-        >
-          {category}
-        </button>
-      ))}
-    </div>
-
-    {/* Sort Options */}
-    <div className="flex justify-end mb-8">
-      <select
-        value={sortOption}
-        onChange={(e) => setSortOption(e.target.value)}
-        className="p-3 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+  return (
+    <div className="container mx-auto">
+      {/* Parallax Section */}
+      <div
+        className="relative bg-cover bg-center bg-fixed"
+        style={{ backgroundImage: `url(${parallaxImage})`, height: '550px' }}
       >
-        <option value="">Sort by</option>
-        <option value="price-low-high">Price: Low to High</option>
-        <option value="price-high-low">Price: High to Low</option>
-        <option value="new">New</option>
-        <option value="popular">Popular</option>
-      </select>
-    </div>
-
-    {/* Menu Items */}
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {filteredItems.map((item) => (
-        <div key={item.id} className="bg-gray-800 p-6 rounded-lg">
-          <img src={item.image} alt={item.name} className="w-full h-40 object-cover rounded-lg mb-4" />
-          <h2 className="text-2xl font-bold text-yellow-500 mb-4">{item.name}</h2>
-          <p className="text-white">{item.description}</p>
-          <p className="text-white font-semibold mt-2">Rs. {item.price}</p>
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <h1 className="text-5xl font-bold text-white">Our Menu</h1>
         </div>
-      ))}
+      </div>
+
+      {/* Content Section */}
+      <div className="py-16 px-6">
+        {/* Search Bar */}
+        <div className="mb-8">
+          <input
+            type="text"
+            placeholder="Search for a dish..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full p-3 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+          />
+        </div>
+
+        {/* Category Filter */}
+        <div className="flex flex-wrap justify-center mb-8">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => {
+                setSelectedCategory(category);
+                setCurrentPage(1); // Reset to first page on category change
+              }}
+              className={`m-2 px-4 py-2 rounded-lg font-semibold ${
+                selectedCategory === category ? 'bg-yellow-500 text-black' : 'bg-gray-800 text-white'
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
+        {/* Sort Options */}
+        <div className="flex justify-end mb-8">
+          <select
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+            className="p-3 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+          >
+            <option value="">Sort by</option>
+            <option value="price-low-high">Price: Low to High</option>
+            <option value="price-high-low">Price: High to Low</option>
+            <option value="new">New</option>
+            <option value="popular">Popular</option>
+          </select>
+        </div>
+
+        {/* Menu Items */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {currentItems.map((item) => (
+            <div key={item.id} className="bg-gray-800 p-6 rounded-lg">
+              <img src={item.image} alt={item.name} className="w-full h-40 object-cover rounded-lg mb-4" />
+              <h2 className="text-2xl font-bold text-yellow-500 mb-4">{item.name}</h2>
+              <p className="text-white">{item.description}</p>
+              <p className="text-white font-semibold mt-2">Rs. {item.price}</p>
+              <button
+                onClick={() => addToCart(item)}
+                className="mt-4 bg-yellow-500 text-black px-4 py-2 rounded-lg"
+              >
+                Add to Cart
+              </button>
+            </div>
+          ))}
+        </div>
+
+        {/* Pagination Controls */}
+        <div className="flex justify-center mt-8">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              onClick={() => paginate(index + 1)}
+              className={`mx-1 px-3 py-2 rounded-lg font-semibold ${
+                currentPage === index + 1 ? 'bg-yellow-500 text-black' : 'bg-gray-800 text-white'
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-    );
-  };
-  
-  export default Menu;
+  );
+};
+
+export default Menu;

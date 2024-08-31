@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types'; // Import PropTypes for validation
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import profileIcon from '../assets/profile.png';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { FaBars, FaTimes, FaShoppingCart } from 'react-icons/fa'; // Add cart icon
 
-const Navbar = () => {
+const Navbar = ({ cartItems, removeFromCart }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // to track the login status
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // To track the login status
+  const [cartOpen, setCartOpen] = useState(false); // Track cart dropdown
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const toggleCart = () => {
+    setCartOpen(!cartOpen);
   };
 
   return (
@@ -37,12 +43,47 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* User Profile or Login/Signup */}
+        {/* User Profile or Login/Signup and Cart */}
         <div className="hidden md:flex items-center space-x-2 md:pl-8">
           {isLoggedIn ? (
-            <div className="flex items-center space-x-2">
-              <img src={profileIcon} alt="Profile Icon" className="h-8 w-8 rounded-full" />
-              <span className="text-sm">Dilan Akash</span>
+            <div className="flex items-center space-x-4">
+              <div className="relative">
+                <FaShoppingCart size={24} className="cursor-pointer" onClick={toggleCart} />
+                {cartItems.length > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+                    {cartItems.length}
+                  </span>
+                )}
+                {cartOpen && (
+                  <div className="absolute right-0 mt-2 w-64 bg-white text-black shadow-lg rounded-lg">
+                    <ul className="divide-y divide-gray-300">
+                      {cartItems.length === 0 ? (
+                        <li className="p-4 text-center text-gray-500">Your cart is empty.</li>
+                      ) : (
+                        cartItems.map((item, index) => (
+                          <li key={index} className="p-4 flex justify-between items-center">
+                            <span>{item.name}</span>
+                            <button
+                              onClick={() => removeFromCart(index)}
+                              className="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600"
+                            >
+                              Remove
+                            </button>
+                          </li>
+                        ))
+                      )}
+                      {cartItems.length > 0 && (
+                        <li className="p-4 text-right">
+                          <span className="font-semibold">Total: Rs. {cartItems.reduce((total, item) => total + item.price, 0)}</span>
+                        </li>
+                      )}
+                    </ul>
+                  </div>
+                )}
+              </div>
+              <Link to="/profile">
+                <img src={profileIcon} alt="Profile Icon" className="h-8 w-8 rounded-full" />
+              </Link>
             </div>
           ) : (
             <div className="space-x-4">
@@ -80,6 +121,12 @@ const Navbar = () => {
       )}
     </nav>
   );
+};
+
+// Validate PropTypes
+Navbar.propTypes = {
+  cartItems: PropTypes.array.isRequired,
+  removeFromCart: PropTypes.func.isRequired,
 };
 
 export default Navbar;
