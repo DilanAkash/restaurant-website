@@ -5,19 +5,18 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import the eye icons
 const Signup = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState(''); // New phone number state
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState(''); // Confirm password state
-  const [showPassword, setShowPassword] = useState(false); // For toggling password visibility
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // For toggling confirm password visibility
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState(''); // For success message
+  const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    // Check if passwords match
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
@@ -47,16 +46,14 @@ const Signup = () => {
     }
   };
 
-  // Handle auto-capitalization of the Name field
   const handleNameChange = (e) => {
     const value = e.target.value.replace(/\b\w/g, (char) => char.toUpperCase());
     setName(value);
   };
 
-  // Handle phone number formatting and validation
   const handlePhoneChange = (e) => {
-    let value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
-    if (value.length > 10) value = value.slice(0, 10); // Limit to 10 digits
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length > 10) value = value.slice(0, 10);
     if (value.length > 3 && value.length <= 6) {
       value = `${value.slice(0, 3)} ${value.slice(3)}`;
     } else if (value.length > 6) {
@@ -68,10 +65,10 @@ const Signup = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">
       <form
-        className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md"
+        className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md mt-10"
         onSubmit={handleSignup}
       >
-        <h2 className="text-2xl font-bold mb-6 text-center">Signup</h2>
+        <h2 className="text-3xl font-extrabold mb-8 text-center">Create Your Account</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {successMessage && <p className="text-green-500 mb-4">{successMessage}</p>}
         <input
@@ -79,7 +76,7 @@ const Signup = () => {
           placeholder="Name"
           value={name}
           onChange={handleNameChange}
-          className="w-full p-3 mb-4 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+          className="w-full p-4 mb-4 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-yellow-500 transition-transform transform hover:scale-105"
           required
         />
         <input
@@ -87,7 +84,7 @@ const Signup = () => {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-3 mb-4 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+          className="w-full p-4 mb-4 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-yellow-500 transition-transform transform hover:scale-105"
           required
         />
         <input
@@ -95,7 +92,7 @@ const Signup = () => {
           placeholder="Phone Number"
           value={phone}
           onChange={handlePhoneChange}
-          className="w-full p-3 mb-4 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+          className="w-full p-4 mb-4 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-yellow-500 transition-transform transform hover:scale-105"
           required
         />
         <div className="relative mb-4">
@@ -104,7 +101,7 @@ const Signup = () => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 mb-4 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 pr-10"
+            className="w-full p-4 mb-4 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-yellow-500 pr-10 transition-transform transform hover:scale-105"
             required
           />
           <FaEye
@@ -122,7 +119,7 @@ const Signup = () => {
             placeholder="Confirm Password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full p-3 mb-4 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 pr-10"
+            className="w-full p-4 mb-4 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-yellow-500 pr-10 transition-transform transform hover:scale-105"
             required
           />
           <FaEye
@@ -136,7 +133,7 @@ const Signup = () => {
         </div>
         <button
           type="submit"
-          className="w-full bg-yellow-500 text-black px-3 py-3 rounded hover:bg-yellow-600 transition-colors"
+          className="w-full bg-yellow-500 text-black px-4 py-4 rounded-lg hover:bg-yellow-600 transition-all duration-300 transform hover:scale-105"
         >
           Signup
         </button>

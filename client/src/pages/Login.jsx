@@ -66,10 +66,10 @@ const Login = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">
       <form
-        className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md"
+        className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md mt-10"
         onSubmit={handleLogin}
       >
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        <h2 className="text-3xl font-extrabold mb-8 text-center">Welcome Back!</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {successMessage && <p className="text-green-500 mb-4">{successMessage}</p>}
         <input
@@ -77,27 +77,28 @@ const Login = () => {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-3 mb-4 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+          className="w-full p-4 mb-4 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-yellow-500 transition-transform transform hover:scale-105"
           required
         />
-        <div className="relative">
+        <div className="relative mb-4">
           <input
             type={showPassword ? 'text' : 'password'}
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            className="w-full p-4 mb-4 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-yellow-500 pr-10 transition-transform transform hover:scale-105"
             required
           />
-          <button
-            type="button"
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+          <FaEye
+            className={`absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer ${showPassword ? '' : 'hidden'}`}
             onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? <FaEyeSlash /> : <FaEye />}
-          </button>
+          />
+          <FaEyeSlash
+            className={`absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer ${showPassword ? 'hidden' : ''}`}
+            onClick={() => setShowPassword(!showPassword)}
+          />
         </div>
-        <div className="flex items-center mb-4 mt-4">
+        <div className="flex items-center mb-6 mt-4">
           <input
             type="checkbox"
             id="keepLoggedIn"
@@ -105,15 +106,17 @@ const Login = () => {
             onChange={(e) => setKeepLoggedIn(e.target.checked)}
             className="mr-2"
           />
-          <label htmlFor="keepLoggedIn">Keep me logged in</label>
+          <label htmlFor="keepLoggedIn" className="text-sm">
+            Keep me logged in
+          </label>
         </div>
         <button
           type="submit"
-          className="w-full bg-yellow-500 text-black px-3 py-3 rounded hover:bg-yellow-600 transition-colors"
+          className="w-full bg-yellow-500 text-black px-4 py-4 rounded-lg hover:bg-yellow-600 transition-all duration-300 transform hover:scale-105"
         >
           Login
         </button>
-        <div className="mt-4 text-center">
+        <div className="mt-6 text-center">
           <a href="/forgot-password" className="text-yellow-500 hover:underline">
             Forgot Password?
           </a>
