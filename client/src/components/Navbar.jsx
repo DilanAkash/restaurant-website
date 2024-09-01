@@ -87,12 +87,12 @@ const Navbar = ({ cartItems, removeFromCart }) => {
           ) : (
             <div className="space-x-4">
               <Link to="/login">
-                <button className="bg-yellow-500 text-black px-3 py-1 rounded hover:bg-yellow-600 transition-colors">
+                <button className="bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors">
                   Login
                 </button>
               </Link>
               <Link to="/signup">
-                <button className="bg-yellow-500 text-black px-3 py-1 rounded hover:bg-yellow-600 transition-colors">
+                <button className="bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors">
                   Signup
                 </button>
               </Link>
@@ -122,32 +122,32 @@ const Navbar = ({ cartItems, removeFromCart }) => {
                 {item}
               </Link>
             ))}
-            <div className="border-t border-gray-700 mt-2 pt-2">
+            <div className="border-t border-gray-700 mt-2 pt-4 flex flex-col items-center">
               {user ? (
                 <>
-                  <Link to="/profile" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 items-center" onClick={toggleMenu}>
-                    <img src={profileIcon} alt="Profile Icon" className="h-8 w-8 rounded-full inline-block mr-2" />
-                    {user.name}
+                  <Link to="/profile" className="flex items-center space-x-2 mb-4" onClick={toggleMenu}>
+                    <img src={profileIcon} alt="Profile Icon" className="h-8 w-8 rounded-full inline-block" />
+                    <span>{user.name}</span>
                   </Link>
                   <button
                     onClick={() => {
                       handleLogout();
                       toggleMenu();
                     }}
-                    className="w-full bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition-colors"
+                    className="w-10/12 bg-red-500 text-white px-5 py-3 text-lg rounded-lg hover:bg-red-600 transition-colors text-center"
                   >
                     Logout
                   </button>
                 </>
               ) : (
-                <div className="space-y-2">
+                <div className="w-full flex flex-col items-center space-y-4">
                   <Link to="/login" onClick={toggleMenu}>
-                    <button className="w-full bg-yellow-500 text-black px-3 py-2 rounded hover:bg-yellow-600 transition-colors">
+                    <button className="w-full bg-yellow-500 text-black px-5 py-3 text-lg rounded-lg hover:bg-yellow-600 transition-colors text-center">
                       Login
                     </button>
                   </Link>
                   <Link to="/signup" onClick={toggleMenu}>
-                    <button className="w-full bg-yellow-500 text-black px-3 py-2 rounded hover:bg-yellow-600 transition-colors">
+                    <button className="w-full bg-yellow-500 text-black px-5 py-3 text-lg rounded-lg hover:bg-yellow-600 transition-colors text-center">
                       Signup
                     </button>
                   </Link>
