@@ -4,12 +4,21 @@ import { useNavigate } from 'react-router-dom';
 const Signup = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState(''); // Add phone state
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // To redirect after successful signup
+  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
+  const navigate = useNavigate();
+
+  // Handle name input and capitalize each word's first letter
+  const handleNameChange = (e) => {
+    const inputValue = e.target.value;
+    const capitalizedValue = inputValue.replace(/\b\w/g, (char) => char.toUpperCase());
+    setName(capitalizedValue);
+  };
 
   const handleSignup = async (e) => {
-    e.preventDefault(); // Prevent the default form submission
+    e.preventDefault();
 
     try {
       const response = await fetch('http://localhost:5000/api/auth/signup', {
@@ -17,14 +26,12 @@ const Signup = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, email, phone, password }), // Include phone in the request body
       });
 
       if (response.ok) {
-        // If signup is successful, redirect to the login page
-        navigate('/login');
+        navigate('/login'); // Redirect to login page
       } else {
-        // If signup fails, show an error message
         const data = await response.json();
         setError(data.message || 'Signup failed. Please try again.');
       }
@@ -46,7 +53,7 @@ const Signup = () => {
           type="text"
           placeholder="Name"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={handleNameChange}
           className="w-full p-3 mb-4 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
           required
         />
@@ -59,13 +66,30 @@ const Signup = () => {
           required
         />
         <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-3 mb-6 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+          type="tel"
+          placeholder="Phone Number"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          className="w-full p-3 mb-4 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
           required
         />
+        <div className="relative">
+          <input
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full p-3 mb-6 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            required
+          />
+          <button
+            type="button"
+            className="absolute right-3 top-3"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? 'Hide' : 'Show'}
+          </button>
+        </div>
         <button
           type="submit"
           className="w-full bg-yellow-500 text-black px-3 py-3 rounded hover:bg-yellow-600 transition-colors"

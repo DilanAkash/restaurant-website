@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types'; // Import PropTypes for validation
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import profileIcon from '../assets/profile.png';
 import { FaBars, FaTimes, FaShoppingCart } from 'react-icons/fa';
@@ -10,6 +10,7 @@ const Navbar = ({ cartItems, removeFromCart }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, logout } = useContext(AuthContext); // Access user and logout from context
   const navigate = useNavigate(); // To handle redirection
+  const location = useLocation(); // To determine the current route
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -21,7 +22,7 @@ const Navbar = ({ cartItems, removeFromCart }) => {
   };
 
   return (
-    <nav className="fixed top-0 w-full bg-black bg-opacity-80 text-white shadow-lg z-50 backdrop-blur-lg">
+    <nav className="fixed top-0 w-full bg-black bg-opacity-80 text-white shadow-lg z-50 backdrop-blur-lg sticky">
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
         <div className="flex-1 flex items-center">
           <Link to="/">
@@ -30,18 +31,29 @@ const Navbar = ({ cartItems, removeFromCart }) => {
         </div>
 
         <div className="md:hidden">
-          <button onClick={toggleMenu} className="text-white focus:outline-none">
+          <button 
+            onClick={toggleMenu} 
+            className="text-white focus:outline-none"
+            aria-label={isOpen ? "Close Menu" : "Open Menu"}
+          >
             {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
           </button>
         </div>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex space-x-8 text-lg flex-1 justify-center md:pr-8">
-          <Link to="/" className="hover:text-yellow-400">
+          <Link 
+            to="/" 
+            className={`hover:text-yellow-400 ${location.pathname === '/' ? 'text-yellow-400' : ''}`}
+          >
             Home
           </Link>
           {['Menu', 'Services', 'Gallery', 'Contact', 'Offers', 'Reservation'].map((item) => (
-            <Link to={`/${item.toLowerCase()}`} key={item} className="hover:text-yellow-400">
+            <Link 
+              to={`/${item.toLowerCase()}`} 
+              key={item} 
+              className={`hover:text-yellow-400 ${location.pathname === `/${item.toLowerCase()}` ? 'text-yellow-400' : ''}`}
+            >
               {item}
             </Link>
           ))}
@@ -61,8 +73,9 @@ const Navbar = ({ cartItems, removeFromCart }) => {
                   </span>
                 )}
               </div>
-              <Link to="/profile">
+              <Link to="/profile" className="flex items-center space-x-2">
                 <img src={profileIcon} alt="Profile Icon" className="h-8 w-8 rounded-full" />
+                <span>{user.name}</span>
               </Link>
               <button
                 onClick={handleLogout}
@@ -90,25 +103,37 @@ const Navbar = ({ cartItems, removeFromCart }) => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-black bg-opacity-90 text-white z-50">
+        <div className="md:hidden bg-black bg-opacity-90 text-white z-50 transition-all duration-300 ease-in-out">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <Link to="/" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">
+            <Link 
+              to="/" 
+              className={`block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 ${location.pathname === '/' ? 'bg-gray-700' : ''}`}
+              onClick={toggleMenu}
+            >
               Home
             </Link>
             {['Menu', 'Services', 'Gallery', 'Contact', 'Offers', 'Reservation'].map((item) => (
-              <Link to={`/${item.toLowerCase()}`} key={item} className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">
+              <Link 
+                to={`/${item.toLowerCase()}`} 
+                key={item} 
+                className={`block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 ${location.pathname === `/${item.toLowerCase()}` ? 'bg-gray-700' : ''}`}
+                onClick={toggleMenu}
+              >
                 {item}
               </Link>
             ))}
             <div className="border-t border-gray-700 mt-2 pt-2">
               {user ? (
                 <>
-                  <Link to="/profile" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 items-center">
+                  <Link to="/profile" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 items-center" onClick={toggleMenu}>
                     <img src={profileIcon} alt="Profile Icon" className="h-8 w-8 rounded-full inline-block mr-2" />
                     {user.name}
                   </Link>
                   <button
-                    onClick={handleLogout}
+                    onClick={() => {
+                      handleLogout();
+                      toggleMenu();
+                    }}
                     className="w-full bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition-colors"
                   >
                     Logout
@@ -116,12 +141,12 @@ const Navbar = ({ cartItems, removeFromCart }) => {
                 </>
               ) : (
                 <div className="space-y-2">
-                  <Link to="/login">
+                  <Link to="/login" onClick={toggleMenu}>
                     <button className="w-full bg-yellow-500 text-black px-3 py-2 rounded hover:bg-yellow-600 transition-colors">
                       Login
                     </button>
                   </Link>
-                  <Link to="/signup">
+                  <Link to="/signup" onClick={toggleMenu}>
                     <button className="w-full bg-yellow-500 text-black px-3 py-2 rounded hover:bg-yellow-600 transition-colors">
                       Signup
                     </button>

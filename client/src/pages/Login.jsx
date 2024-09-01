@@ -1,13 +1,17 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import the eye icons
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
+  const [keepLoggedIn, setKeepLoggedIn] = useState(false); // State for "Keep me logged in"
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState(''); // State for the success message
   const navigate = useNavigate();
-  const { setUser } = useContext(AuthContext);
+  const { setUser, user } = useContext(AuthContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -23,8 +27,17 @@ const Login = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setUser(data.userId); // Store the user ID in the context
-        navigate('/'); // Redirect to the homepage or a protected route
+        setUser(data.userId);
+        setSuccessMessage('Login successful! Redirecting...');
+
+        // Save the user ID to localStorage if "Keep me logged in" is checked
+        if (keepLoggedIn) {
+          localStorage.setItem('userId', data.userId);
+        }
+
+        setTimeout(() => {
+          navigate('/'); // Redirect after a short delay
+        }, 1500);
       } else {
         const data = await response.json();
         setError(data.message || 'Login failed. Please try again.');
@@ -35,6 +48,21 @@ const Login = () => {
     }
   };
 
+  // Retrieve user from localStorage on component mount
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userId');
+    if (storedUserId) {
+      setUser(storedUserId);
+    }
+  }, [setUser]);
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">
       <form
@@ -43,6 +71,7 @@ const Login = () => {
       >
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
+        {successMessage && <p className="text-green-500 mb-4">{successMessage}</p>}
         <input
           type="email"
           placeholder="Email"
@@ -51,20 +80,44 @@ const Login = () => {
           className="w-full p-3 mb-4 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
           required
         />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-3 mb-6 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-          required
-        />
+        <div className="relative">
+          <input
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            required
+          />
+          <button
+            type="button"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
+        </div>
+        <div className="flex items-center mb-4 mt-4">
+          <input
+            type="checkbox"
+            id="keepLoggedIn"
+            checked={keepLoggedIn}
+            onChange={(e) => setKeepLoggedIn(e.target.checked)}
+            className="mr-2"
+          />
+          <label htmlFor="keepLoggedIn">Keep me logged in</label>
+        </div>
         <button
           type="submit"
           className="w-full bg-yellow-500 text-black px-3 py-3 rounded hover:bg-yellow-600 transition-colors"
         >
           Login
         </button>
+        <div className="mt-4 text-center">
+          <a href="/forgot-password" className="text-yellow-500 hover:underline">
+            Forgot Password?
+          </a>
+        </div>
       </form>
     </div>
   );
