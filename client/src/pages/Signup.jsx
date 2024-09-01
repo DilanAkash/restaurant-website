@@ -1,24 +1,27 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import the eye icons
 
 const Signup = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState(''); // Add phone state
+  const [phone, setPhone] = useState(''); // New phone number state
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState(''); // Confirm password state
+  const [showPassword, setShowPassword] = useState(false); // For toggling password visibility
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // For toggling confirm password visibility
   const [error, setError] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
+  const [successMessage, setSuccessMessage] = useState(''); // For success message
   const navigate = useNavigate();
-
-  // Handle name input and capitalize each word's first letter
-  const handleNameChange = (e) => {
-    const inputValue = e.target.value;
-    const capitalizedValue = inputValue.replace(/\b\w/g, (char) => char.toUpperCase());
-    setName(capitalizedValue);
-  };
 
   const handleSignup = async (e) => {
     e.preventDefault();
+
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
 
     try {
       const response = await fetch('http://localhost:5000/api/auth/signup', {
@@ -26,11 +29,14 @@ const Signup = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, phone, password }), // Include phone in the request body
+        body: JSON.stringify({ name, email, phone, password }),
       });
 
       if (response.ok) {
-        navigate('/login'); // Redirect to login page
+        setSuccessMessage('Signup successful! Redirecting...');
+        setTimeout(() => {
+          navigate('/login');
+        }, 1500);
       } else {
         const data = await response.json();
         setError(data.message || 'Signup failed. Please try again.');
@@ -41,6 +47,24 @@ const Signup = () => {
     }
   };
 
+  // Handle auto-capitalization of the Name field
+  const handleNameChange = (e) => {
+    const value = e.target.value.replace(/\b\w/g, (char) => char.toUpperCase());
+    setName(value);
+  };
+
+  // Handle phone number formatting and validation
+  const handlePhoneChange = (e) => {
+    let value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+    if (value.length > 10) value = value.slice(0, 10); // Limit to 10 digits
+    if (value.length > 3 && value.length <= 6) {
+      value = `${value.slice(0, 3)} ${value.slice(3)}`;
+    } else if (value.length > 6) {
+      value = `${value.slice(0, 3)} ${value.slice(3, 6)} ${value.slice(6)}`;
+    }
+    setPhone(value);
+  };
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">
       <form
@@ -49,6 +73,7 @@ const Signup = () => {
       >
         <h2 className="text-2xl font-bold mb-6 text-center">Signup</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
+        {successMessage && <p className="text-green-500 mb-4">{successMessage}</p>}
         <input
           type="text"
           placeholder="Name"
@@ -69,26 +94,45 @@ const Signup = () => {
           type="tel"
           placeholder="Phone Number"
           value={phone}
-          onChange={(e) => setPhone(e.target.value)}
+          onChange={handlePhoneChange}
           className="w-full p-3 mb-4 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
           required
         />
-        <div className="relative">
+        <div className="relative mb-4">
           <input
             type={showPassword ? 'text' : 'password'}
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 mb-6 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            className="w-full p-3 mb-4 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 pr-10"
             required
           />
-          <button
-            type="button"
-            className="absolute right-3 top-3"
+          <FaEye
+            className={`absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer ${showPassword ? '' : 'hidden'}`}
             onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? 'Hide' : 'Show'}
-          </button>
+          />
+          <FaEyeSlash
+            className={`absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer ${showPassword ? 'hidden' : ''}`}
+            onClick={() => setShowPassword(!showPassword)}
+          />
+        </div>
+        <div className="relative mb-4">
+          <input
+            type={showConfirmPassword ? 'text' : 'password'}
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="w-full p-3 mb-4 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 pr-10"
+            required
+          />
+          <FaEye
+            className={`absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer ${showConfirmPassword ? '' : 'hidden'}`}
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          />
+          <FaEyeSlash
+            className={`absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer ${showConfirmPassword ? 'hidden' : ''}`}
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          />
         </div>
         <button
           type="submit"

@@ -22,7 +22,7 @@ const Navbar = ({ cartItems, removeFromCart }) => {
   };
 
   return (
-    <nav className="fixed top-0 w-full bg-black bg-opacity-80 text-white shadow-lg z-50 backdrop-blur-lg sticky">
+    <nav className="fixed top-0 w-full bg-black bg-opacity-80 text-white shadow-lg z-50 backdrop-blur-lg">
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
         <div className="flex-1 flex items-center">
           <Link to="/">
