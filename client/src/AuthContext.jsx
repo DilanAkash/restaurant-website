@@ -7,16 +7,29 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Retrieve user from localStorage when the component mounts
     const storedUserId = localStorage.getItem('userId');
     if (storedUserId) {
-      setUser(storedUserId);
+      fetchUserData(storedUserId);
     }
   }, []);
 
+  const fetchUserData = async (userId) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/auth/user/${userId}`);
+      if (response.ok) {
+        const userData = await response.json();
+        setUser(userData);  // Set the full user data
+      } else {
+        console.error('Failed to fetch user data');
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('userId'); // Clear user ID from localStorage
+    localStorage.removeItem('userId');
   };
 
   return (
@@ -26,7 +39,6 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-// Prop type validation for children
 AuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
