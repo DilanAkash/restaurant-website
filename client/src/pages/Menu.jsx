@@ -1,42 +1,71 @@
 import React, { useState, useEffect } from 'react';
-import parallaxImage from '../assets/menubg.jpeg';
+import PropTypes from 'prop-types'; // Import PropTypes for validation
+import parallaxImage from '../assets/menubg.jpeg'; // Import the background image for the parallax effect
 
-const Menu = () => {
+// The Menu component handles displaying menu items and adding them to the cart
+const Menu = ({ cartItems, setCartItems }) => {
+  // State to handle search input
   const [searchTerm, setSearchTerm] = useState('');
+  
+  // State to handle selected category for filtering
   const [selectedCategory, setSelectedCategory] = useState('All');
+  
+  // State to handle sorting option
   const [sortOption, setSortOption] = useState('');
-  const [menuItems, setMenuItems] = useState([]); // Use state to hold fetched menu items
-  const [cartItems, setCartItems] = useState([]);
+  
+  // State to hold the fetched menu items
+  const [menuItems, setMenuItems] = useState([]);
+  
+  // State to handle pagination, start with the first page
   const [currentPage, setCurrentPage] = useState(1);
+  
+  // Define how many items to display per page
   const itemsPerPage = 9;
 
-  // Fetch menu items from the backend API
+  // useEffect hook to fetch menu items when the component mounts
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
         const response = await fetch('http://localhost:5000/api/menu/all'); // Replace with your actual API URL
+        
+        // Check if the response is okay
         if (!response.ok) {
-          throw new Error('Failed to fetch menu items');
+          throw new Error('Failed to fetch menu items'); // Throw an error if the request fails
         }
+        
+        // Parse the response data into JSON
         const data = await response.json();
+        
+        // Set the menuItems state with the fetched data
         setMenuItems(data);
       } catch (error) {
-        console.error('Error fetching menu items:', error);
+        console.error('Error fetching menu items:', error); // Log any errors that occur during fetching
       }
     };
 
-    fetchMenuItems();
-  }, []);
+    fetchMenuItems(); // Invoke the function to fetch menu items
+  }, []); // Empty dependency array means this effect runs once when the component mounts
 
-  // Categories to filter by
+  // Categories for filtering menu items
   const categories = [
     'All', 'Dinner', 'Rice', 'Fish', 'Drinks', 'Kottu', 'Soup', 
     'Prawns', 'Vegetables', 'Desserts', 'Crab', 'Mutton', 'Chicken'
   ];
 
-  // Function to add item to cart
+  // Function to add an item to the cart
   const addToCart = (item) => {
-    setCartItems([...cartItems, item]);
+    // Check if the item already exists in the cart
+    const itemExists = cartItems.find(cartItem => cartItem._id === item._id);
+    
+    // If it exists, increase the quantity
+    if (itemExists) {
+      setCartItems(cartItems.map(cartItem => 
+        cartItem._id === item._id ? { ...itemExists, quantity: itemExists.quantity + 1 } : cartItem
+      ));
+    } else {
+      // If it doesn't exist, add the item to the cart with a quantity of 1
+      setCartItems([...cartItems, { ...item, quantity: 1 }]);
+    }
   };
 
   // Filter and sort menu items based on the selected category, search term, and sort option
@@ -54,17 +83,18 @@ const Menu = () => {
       return 0;
     });
 
-  // Pagination logic
+  // Pagination logic to display the correct items for the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
 
+  // Function to handle page changes
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="container mx-auto">
-      {/* Parallax Section */}
+      {/* Parallax Section for the menu header */}
       <div
         className="relative bg-cover bg-center bg-fixed"
         style={{ backgroundImage: `url(${parallaxImage})`, height: '550px' }}
@@ -74,7 +104,7 @@ const Menu = () => {
         </div>
       </div>
 
-      {/* Content Section */}
+      {/* Content Section where menu items and filters are displayed */}
       <div className="py-16 px-6">
         {/* Search Bar */}
         <div className="mb-8">
@@ -94,7 +124,7 @@ const Menu = () => {
               key={category}
               onClick={() => {
                 setSelectedCategory(category);
-                setCurrentPage(1); // Reset to first page on category change
+                setCurrentPage(1); // Reset to the first page when the category changes
               }}
               className={`m-2 px-4 py-2 rounded-lg font-semibold ${
                 selectedCategory === category ? 'bg-yellow-500 text-black' : 'bg-gray-800 text-white'
@@ -120,7 +150,7 @@ const Menu = () => {
           </select>
         </div>
 
-        {/* Menu Items */}
+        {/* Menu Items Display */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {currentItems.map((item) => (
             <div key={item._id} className="bg-gray-800 p-6 rounded-lg">
@@ -155,6 +185,12 @@ const Menu = () => {
       </div>
     </div>
   );
+};
+
+// Add PropTypes validation for the cartItems and setCartItems props
+Menu.propTypes = {
+  cartItems: PropTypes.array.isRequired,
+  setCartItems: PropTypes.func.isRequired,
 };
 
 export default Menu;

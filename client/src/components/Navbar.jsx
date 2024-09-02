@@ -8,12 +8,17 @@ import { AuthContext } from '../AuthContext'; // Import AuthContext
 
 const Navbar = ({ cartItems, removeFromCart }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false); // State to handle cart popup visibility
   const { user, logout } = useContext(AuthContext); // Access user and logout from context
   const navigate = useNavigate(); // To handle redirection
   const location = useLocation(); // To determine the current route
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const toggleCart = () => {
+    setIsCartOpen(!isCartOpen);
   };
 
   const handleLogout = () => {
@@ -62,11 +67,9 @@ const Navbar = ({ cartItems, removeFromCart }) => {
         {/* User Profile or Login/Signup and Cart */}
         <div className="hidden md:flex items-center space-x-2 md:pl-8">
           {user ? (
-            <div className="flex items-center space-x-4">
+            <div className="relative flex items-center space-x-4">
               <div className="relative">
-                <Link to="/cart">
-                  <FaShoppingCart size={24} className="cursor-pointer" />
-                </Link>
+                <FaShoppingCart size={24} className="cursor-pointer" onClick={toggleCart} />
                 {cartItems.length > 0 && (
                   <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
                     {cartItems.length}
@@ -83,6 +86,37 @@ const Navbar = ({ cartItems, removeFromCart }) => {
               >
                 Logout
               </button>
+
+              {/* Cart Popup */}
+              {isCartOpen && (
+                <div className="absolute right-0 mt-2 w-64 bg-gray-800 rounded-lg shadow-lg z-50">
+                  <div className="p-4 text-white">
+                    <h3 className="text-lg font-bold mb-4">Cart</h3>
+                    {cartItems.length === 0 ? (
+                      <p>Your cart is empty.</p>
+                    ) : (
+                      cartItems.map((item, index) => (
+                        <div key={index} className="flex items-center justify-between mb-2">
+                          <span>{item.name}</span>
+                          <button
+                            onClick={() => removeFromCart(index)}
+                            className="text-red-500 hover:text-red-700 transition-colors"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                  <div className="p-4 bg-gray-900 text-right">
+                    <Link to="/cart">
+                      <button onClick={toggleCart} className="bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors">
+                        Go to Cart
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <div className="space-x-4">

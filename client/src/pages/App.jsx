@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types'; // Import PropTypes for validation
 import Navbar from '../components/Navbar';
@@ -25,7 +25,16 @@ import AuthProvider, { AuthContext } from '../AuthContext'; // Correct import
 import '../index.css';
 
 function App() {
-  const [cartItems, setCartItems] = useState([]);
+  // Load cart items from localStorage, or set to an empty array if none are found
+  const [cartItems, setCartItems] = useState(() => {
+    const savedCartItems = localStorage.getItem('cartItems');
+    return savedCartItems ? JSON.parse(savedCartItems) : [];
+  });
+
+  // Use useEffect to update localStorage whenever cartItems changes
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const addToCart = (item) => {
     setCartItems([...cartItems, item]);
@@ -35,6 +44,14 @@ function App() {
     const newCartItems = [...cartItems];
     newCartItems.splice(index, 1);
     setCartItems(newCartItems);
+  };
+
+  const updateCartItemQuantity = (id, delta) => {
+    setCartItems(prevItems =>
+      prevItems.map(item =>
+        item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item
+      )
+    );
   };
 
   return (
@@ -53,7 +70,7 @@ function App() {
                 </>
               }
             />
-            <Route path="/menu" element={<Menu addToCart={addToCart} />} />
+            <Route path="/menu" element={<Menu cartItems={cartItems} setCartItems={setCartItems} />} />
             <Route path="/services" element={<Services />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />
@@ -75,7 +92,12 @@ function App() {
               path="/cart"
               element={
                 <RequireAuth>
-                  <Cart cartItems={cartItems} removeFromCart={removeFromCart} />
+                  <Cart 
+                    cartItems={cartItems} 
+                    removeFromCart={removeFromCart} 
+                    updateCartItemQuantity={updateCartItemQuantity} 
+                    setCartItems={setCartItems}
+                  />
                 </RequireAuth>
               }
             />
