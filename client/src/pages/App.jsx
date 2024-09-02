@@ -36,9 +36,6 @@ function App() {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const addToCart = (item) => {
-    setCartItems([...cartItems, item]);
-  };
 
   const removeFromCart = (index) => {
     const newCartItems = [...cartItems];

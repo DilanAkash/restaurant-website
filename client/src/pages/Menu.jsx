@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types'; // Import PropTypes for validation
 import parallaxImage from '../assets/menubg.jpeg'; // Import the background image for the parallax effect
+import CartNotification from '../components/CartNotification'; // Import the CartNotification component
 
 // The Menu component handles displaying menu items and adding them to the cart
 const Menu = ({ cartItems, setCartItems }) => {
@@ -21,6 +22,10 @@ const Menu = ({ cartItems, setCartItems }) => {
   
   // Define how many items to display per page
   const itemsPerPage = 9;
+  
+  // State for handling notification
+  const [notificationItem, setNotificationItem] = useState(null);
+  const [isNotificationVisible, setNotificationVisible] = useState(false);
 
   // useEffect hook to fetch menu items when the component mounts
   useEffect(() => {
@@ -66,6 +71,10 @@ const Menu = ({ cartItems, setCartItems }) => {
       // If it doesn't exist, add the item to the cart with a quantity of 1
       setCartItems([...cartItems, { ...item, quantity: 1 }]);
     }
+
+    // Trigger the notification
+    setNotificationItem(item);
+    setNotificationVisible(true);
   };
 
   // Filter and sort menu items based on the selected category, search term, and sort option
@@ -183,6 +192,15 @@ const Menu = ({ cartItems, setCartItems }) => {
           ))}
         </div>
       </div>
+
+      {/* Cart Notification Popup */}
+      {notificationItem && (
+        <CartNotification 
+          item={notificationItem} 
+          visible={isNotificationVisible} 
+          onClose={() => setNotificationVisible(false)} 
+        />
+      )}
     </div>
   );
 };
