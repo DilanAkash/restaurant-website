@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { AuthContext } from '../AuthContext'; // Import the AuthContext for user authentication
 
-const Cart = ({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity, placeOrder }) => {
+const Cart = ({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity }) => {
   const { user } = useContext(AuthContext); // Get the current user from the AuthContext
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [totalPrice, setTotalPrice] = useState(0);
@@ -166,7 +166,6 @@ Cart.propTypes = {
   setCartItems: PropTypes.func.isRequired,
   removeFromCart: PropTypes.func.isRequired,
   updateCartItemQuantity: PropTypes.func.isRequired,
-  placeOrder: PropTypes.func.isRequired,
 };
 
 export default Cart;

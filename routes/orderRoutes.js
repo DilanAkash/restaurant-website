@@ -1,6 +1,5 @@
 import express from 'express';
 import Order from '../models/Order.js';
-import User from '../models/User.js';  // Import the User model to link orders with users
 
 const router = express.Router();
 
