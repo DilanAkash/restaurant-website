@@ -36,21 +36,19 @@ const EditProfile = () => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-
+  
     try {
-      // Assuming the backend API is set up to handle this route
-      const response = await fetch('http://localhost:5000/api/users/update', {
+      const response = await fetch('http://localhost:5000/api/auth/update', { // Updated path
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, userId: user._id }), // Include userId in the body
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
-        // Update the user context with the new data
         setUser({ ...user, ...formData });
         setSuccess('Profile updated successfully');
       } else {
@@ -61,6 +59,7 @@ const EditProfile = () => {
       setError('Failed to update profile');
     }
   };
+  
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray-900 text-white">

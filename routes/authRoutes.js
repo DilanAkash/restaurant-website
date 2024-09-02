@@ -1,14 +1,14 @@
 import express from 'express';
-import User from '../models/User.js';  // Remember, Dilan, this gave you trouble
+import User from '../models/User.js';  // Import the User model
 
 const router = express.Router();
 
-// The User signup route
+// User signup route
 router.post('/signup', async (req, res) => {
   try {
     const { name, email, phone, password } = req.body;
 
-    // To check if the user already exists
+    // Check if the user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists' });
@@ -58,5 +58,37 @@ router.get('/user/:id', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+// Update user profile
+router.post('/update', async (req, res) => {
+  try {
+    const { userId, name, email, phone, password } = req.body;
+
+    // Create an update object that only includes the fields that were provided
+    const updateFields = {};
+    if (name) updateFields.name = name;
+    if (email) updateFields.email = email;
+    if (phone) updateFields.phone = phone;
+    if (password) updateFields.password = password;
+
+    // Find the user by ID and update their information
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: updateFields },  // Use $set to update only the provided fields
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'Profile updated successfully', user: updatedUser });
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    res.status(500).json({ message: 'Failed to update profile', error });
+  }
+});
+
+
 
 export default router;
