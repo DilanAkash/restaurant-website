@@ -16,6 +16,11 @@ import Login from './Login';
 import Signup from './Signup';
 import Profile from './Profile'; // Make sure this component exists
 import Cart from './Cart'; // Make sure this component exists
+import MyOrders from './MyOrders';
+import MyReservations from './MyReservations';
+import MessageCenter from './MessageCenter';
+import Payments from './Payments';
+import EditProfile from './EditProfile';
 import AuthProvider, { AuthContext } from '../AuthContext'; // Correct import
 import '../index.css';
 
@@ -54,25 +59,67 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/offers" element={<Offers />} />
             <Route path="/reservation" element={<Reservation />} />
-            <Route path="/login" element={<Login />} /> 
-            <Route path="/signup" element={<Signup />} /> 
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
 
             {/* Protected Routes */}
-            <Route 
-              path="/profile" 
+            <Route
+              path="/profile"
               element={
                 <RequireAuth>
                   <Profile />
                 </RequireAuth>
-              } 
+              }
             />
-            <Route 
-              path="/cart" 
+            <Route
+              path="/cart"
               element={
                 <RequireAuth>
                   <Cart cartItems={cartItems} removeFromCart={removeFromCart} />
                 </RequireAuth>
-              } 
+              }
+            />
+
+            {/* New Routes for Profile Sections */}
+            <Route
+              path="/orders"
+              element={
+                <RequireAuth>
+                  <MyOrders />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/reservations"
+              element={
+                <RequireAuth>
+                  <MyReservations />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/messages"
+              element={
+                <RequireAuth>
+                  <MessageCenter />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/payments"
+              element={
+                <RequireAuth>
+                  <Payments />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/edit-profile"
+              element={
+                <RequireAuth>
+                  <EditProfile />
+                </RequireAuth>
+              }
             />
           </Routes>
           <Footer />
