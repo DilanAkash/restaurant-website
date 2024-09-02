@@ -39,6 +39,15 @@ const Cart = ({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity 
     updateCartItemQuantity(id, delta);
   };
 
+  // Handle item removal
+  const handleRemoveItem = (id) => {
+    removeFromCart(id);
+    // Update the local storage after removing the item
+    const updatedCartItems = cartItems.filter(item => item.id !== id);
+    setCartItems(updatedCartItems);
+    localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+  };
+
   // Handle payment method change
   const handlePaymentMethodChange = (e) => {
     setPaymentMethod(e.target.value);
@@ -66,7 +75,7 @@ const Cart = ({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity 
                   <button onClick={() => handleQuantityChange(item.id, 1)} className="px-2 bg-gray-600 text-white rounded-r-lg">+</button>
                 </div>
                 <p className="text-white">Total: Rs. {item.price * item.quantity}</p>
-                <button onClick={() => removeFromCart(item.id)} className="ml-4 bg-red-500 text-white px-4 py-2 rounded-lg">Remove</button>
+                <button onClick={() => handleRemoveItem(item.id)} className="ml-4 bg-red-500 text-white px-4 py-2 rounded-lg">Remove</button>
               </div>
             ))}
             <div className="mt-8">
@@ -90,7 +99,7 @@ const Cart = ({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity 
 // Adding PropTypes validation
 Cart.propTypes = {
   cartItems: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     name: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     quantity: PropTypes.number.isRequired,
