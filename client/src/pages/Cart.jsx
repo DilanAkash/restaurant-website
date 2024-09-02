@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
+import { AuthContext } from '../AuthContext'; // Import the AuthContext for user authentication
 
 const Cart = ({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity, placeOrder }) => {
-  const [paymentMethod, setPaymentMethod] = useState('card'); // Default payment method is 'card'
+  const { user } = useContext(AuthContext); // Get the current user from the AuthContext
+  const [paymentMethod, setPaymentMethod] = useState('card');
   const [totalPrice, setTotalPrice] = useState(0);
 
   // Scroll to top when the component is mounted
@@ -27,7 +29,7 @@ const Cart = ({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity,
   useEffect(() => {
     const calculateTotal = () => {
       let total = cartItems.reduce((acc, item) => acc + item.quantity * item.price, 0);
-      
+
       // Add Rs.650 fee if payment method is 'cash'
       if (paymentMethod === 'cash') {
         total += 650;
@@ -58,20 +60,47 @@ const Cart = ({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity,
   };
 
   // Handle order placement
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
+    if (!user) {
+      alert('Please log in to place an order.');
+      return;
+    }
+
     const orderDetails = {
+      userId: user._id, // Get the actual user ID from the AuthContext
       items: cartItems,
       total: totalPrice,
       paymentMethod: paymentMethod,
       date: new Date().toISOString(),
     };
-    placeOrder(orderDetails);
+
+    try {
+      const response = await fetch('http://localhost:5000/api/orders/place-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderDetails),
+      });
+
+      if (response.ok) {
+        alert('Order placed successfully!');
+        setCartItems([]);
+        localStorage.removeItem('cartItems');
+      } else {
+        const errorData = await response.json();
+        alert(`Failed to place the order: ${errorData.message}`);
+      }
+    } catch (error) {
+      console.error('Error placing order:', error);
+      alert('An error occurred. Please try again.');
+    }
   };
 
   return (
-    <div className="container mx-auto py-16 px-4 mt-20"> {/* Increased margin-top for more space */}
+    <div className="container mx-auto py-16 px-4 mt-20">
       <h1 className="text-3xl font-bold mb-8 text-center">Shopping Cart</h1>
-      
+
       <div className="bg-gray-800 p-4 md:p-6 rounded-lg shadow-lg">
         {cartItems.length === 0 ? (
           <p className="text-white text-center text-2xl">Your cart is empty.</p>

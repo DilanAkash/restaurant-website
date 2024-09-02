@@ -23,11 +23,13 @@ mongoose.connect('mongodb://localhost:27017/restaurantDB')
 import userRoutes from './routes/userRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import menuRoutes from './routes/menuRoutes.js'; // Import menu routes
+import orderRoutes from './routes/orderRoutes.js'; // Import the order routes
 
 // Use routes with the /api prefix
 app.use('/api', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/menu', menuRoutes); // Ensure this comes after `app` is initialized
+app.use('/api/orders', orderRoutes); // Add the order routes
 
 // Basic route for the root URL
 app.get('/', (req, res) => {
