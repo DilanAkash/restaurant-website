@@ -15,7 +15,7 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     try {
       const response = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
@@ -24,20 +24,32 @@ const Login = () => {
         },
         body: JSON.stringify({ email, password }),
       });
-
+  
       if (response.ok) {
         const data = await response.json();
         setUser(data.userId);
         setSuccessMessage('Login successful! Redirecting...');
-
+  
         // Save the user ID to localStorage if "Keep me logged in" is checked
         if (keepLoggedIn) {
           localStorage.setItem('userId', data.userId);
         }
-
+  
+        // First page refresh
         setTimeout(() => {
-          navigate('/'); // Redirect after a short delay
-        }, 1500);
+          window.location.reload();
+        }, 500); // Short delay for the first refresh
+  
+        // Second page refresh
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000); // Short delay for the second refresh
+  
+        // Redirect to home page after the refreshes
+        setTimeout(() => {
+          navigate('/');
+        }, 1500); // Short delay before final redirect
+  
       } else {
         const data = await response.json();
         setError(data.message || 'Login failed. Please try again.');
@@ -47,6 +59,8 @@ const Login = () => {
       setError('Something went wrong. Please try again.');
     }
   };
+  
+  
 
   // Retrieve user from localStorage on component mount
   useEffect(() => {
