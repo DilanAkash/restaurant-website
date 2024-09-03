@@ -4,7 +4,7 @@ import { AuthContext } from '../AuthContext'; // Import the AuthContext for user
 
 const Cart = ({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity }) => {
   const { user } = useContext(AuthContext); // Get the current user from the AuthContext
-  const [paymentMethod, setPaymentMethod] = useState('card');
+  const [paymentMethod, setPaymentMethod] = useState('Card Payment');
   const [totalPrice, setTotalPrice] = useState(0);
 
   // Scroll to top when the component is mounted
@@ -31,7 +31,7 @@ const Cart = ({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity 
       let total = cartItems.reduce((acc, item) => acc + item.quantity * item.price, 0);
 
       // Add Rs.650 fee if payment method is 'cash'
-      if (paymentMethod === 'cash') {
+      if (paymentMethod === 'Cash On Delivery') {
         total += 650;
       }
 
@@ -130,13 +130,13 @@ const Cart = ({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity 
               <div className="mb-4 md:mb-0 w-full md:w-auto text-center md:text-left">
                 <label className="text-white font-semibold">Payment Method: </label>
                 <select value={paymentMethod} onChange={handlePaymentMethodChange} className="ml-0 md:ml-4 p-2 bg-gray-600 text-white rounded-lg">
-                  <option value="card">Card Payment</option>
-                  <option value="cash">Cash on Delivery</option>
+                  <option value="Card Payment">Card Payment</option>
+                  <option value="Cash On Delivery">Cash on Delivery</option>
                 </select>
               </div>
               <div className="text-center md:text-right">
                 <h2 className="text-2xl font-bold text-yellow-500">Total Price: Rs. {totalPrice}</h2>
-                {paymentMethod === 'cash' && <p className="text-red-500">*Rs. 650 added for Cash on Delivery</p>}
+                {paymentMethod === 'Cash On Delivery' && <p className="text-red-500">*Rs. 650 added for Cash on Delivery</p>}
               </div>
             </div>
             <div className="mt-8 flex justify-center md:justify-end">

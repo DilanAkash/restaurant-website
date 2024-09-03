@@ -51,4 +51,38 @@ router.delete('/cancel-order/:id', async (req, res) => {
   }
 });
 
+// Route to get all orders (for staff/admin)
+router.get('/all-orders', async (req, res) => {
+  try {
+    const orders = await Order.find().populate('user', 'name email'); // Populate to get user details
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error('Error fetching all orders:', error);
+    res.status(500).json({ message: 'Failed to fetch orders', error });
+  }
+});
+
+// Route to update an order status (for staff/admin)
+router.put('/update-status/:orderId', async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { status },
+      { new: true } // Return the updated order after the modification
+    );
+
+    if (!updatedOrder) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    res.status(200).json({ message: 'Order status updated', order: updatedOrder });
+  } catch (error) {
+    console.error('Error updating order status:', error);
+    res.status(500).json({ message: 'Failed to update order status', error });
+  }
+});
+
 export default router;

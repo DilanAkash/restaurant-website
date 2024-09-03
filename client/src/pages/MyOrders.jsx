@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../AuthContext';
-import { FaRegTimesCircle, FaMoneyBillWave, FaCalendarAlt, FaReceipt, FaShoppingBag } from 'react-icons/fa'; // Import icons
+import { FaRegTimesCircle, FaMoneyBillWave, FaCreditCard, FaCalendarAlt, FaReceipt, FaShoppingBag, FaClock, FaCheckCircle } from 'react-icons/fa'; // Import icons
 
 const MyOrders = () => {
   const { user } = useContext(AuthContext);
@@ -67,7 +67,11 @@ const MyOrders = () => {
               Order ID: <span className="text-yellow-500 ml-2">{order._id}</span>
             </h2>
             <p className="text-lg mb-2 flex items-center">
-              <FaMoneyBillWave className="mr-2 text-green-500" />
+              {order.paymentMethod === 'Card Payment' ? (
+                <FaCreditCard className="mr-2 text-blue-500" />
+              ) : (
+                <FaMoneyBillWave className="mr-2 text-green-500" />
+              )}
               Total: <span className="font-bold text-yellow-500 ml-2">Rs. {order.total}</span>
             </p>
             <p className="text-lg mb-2 flex items-center">
@@ -77,6 +81,14 @@ const MyOrders = () => {
             <p className="text-lg mb-4 flex items-center">
               <FaCalendarAlt className="mr-2 text-orange-500" />
               Date: <span className="text-yellow-500 ml-2">{new Date(order.date).toLocaleString()}</span>
+            </p>
+            <p className="text-lg mb-4 flex items-center">
+              {order.status === 'Completed' ? (
+                <FaCheckCircle className="mr-2 text-green-500" />
+              ) : (
+                <FaClock className="mr-2 text-red-500" />
+              )}
+              Status: <span className="text-yellow-500 ml-2">{order.status}</span>
             </p>
             <div className="bg-gray-900 p-4 rounded-lg">
               <h3 className="text-lg font-semibold mb-2">Items:</h3>
