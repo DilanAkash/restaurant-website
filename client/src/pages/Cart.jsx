@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { AuthContext } from '../AuthContext';
 
-const Cart = ({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity }) => {
+const Cart = ({ cartItems, setCartItems, updateCartItemQuantity }) => {
   const { user } = useContext(AuthContext);
   const [paymentMethod, setPaymentMethod] = useState('Card Payment');
   const [totalPrice, setTotalPrice] = useState(0);
@@ -43,7 +43,6 @@ const Cart = ({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity 
     const updatedCartItems = cartItems.filter(item => item.id !== id);
     setCartItems(updatedCartItems);
     localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
-    removeFromCart(id);
   };
 
   const handlePaymentMethodChange = (e) => {
@@ -160,7 +159,6 @@ Cart.propTypes = {
     image: PropTypes.string.isRequired,
   })).isRequired,
   setCartItems: PropTypes.func.isRequired,
-  removeFromCart: PropTypes.func.isRequired,
   updateCartItemQuantity: PropTypes.func.isRequired,
 };
 

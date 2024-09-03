@@ -48,17 +48,17 @@ router.get('/user/:userId', async (req, res) => {
 router.delete('/cancel-order/:id', async (req, res) => {
   try {
     const orderId = req.params.id;
-    const order = await Order.findById(orderId);
 
-    if (!order) {
+    const deletedOrder = await Order.findByIdAndDelete(orderId);
+
+    if (!deletedOrder) {
       return res.status(404).json({ message: 'Order not found' });
     }
 
-    await order.remove();
     res.status(200).json({ message: 'Order cancelled successfully' });
   } catch (error) {
     console.error('Error cancelling order:', error);
-    res.status(500).json({ message: 'Failed to cancel order', error: error.message });
+    res.status(500).json({ message: 'Failed to cancel order', error });
   }
 });
 

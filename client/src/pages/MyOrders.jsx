@@ -8,7 +8,7 @@ import {
   FaReceipt,
   FaShoppingBag,
   FaClock,
-  FaCheckCircle
+  FaCheckCircle,
 } from 'react-icons/fa';
 
 const MyOrders = () => {
@@ -39,7 +39,7 @@ const MyOrders = () => {
   }, [user]);
 
   const handleCancelOrder = async (orderId) => {
-    const confirmCancel = window.confirm("Are you sure you want to cancel this order?");
+    const confirmCancel = window.confirm('Are you sure you want to cancel this order?');
     if (!confirmCancel) return;
 
     try {
@@ -49,7 +49,7 @@ const MyOrders = () => {
 
       if (response.ok) {
         alert('Order cancelled successfully!');
-        setOrders(orders.filter(order => order._id !== orderId));
+        setOrders((prevOrders) => prevOrders.filter((order) => order._id !== orderId));
       } else {
         alert('Failed to cancel the order. Please try again.');
       }
@@ -71,7 +71,7 @@ const MyOrders = () => {
       ) : orders.length === 0 ? (
         <p className="text-center text-2xl text-gray-400">You have no orders.</p>
       ) : (
-        orders.map(order => (
+        orders.map((order) => (
           <div
             key={order._id}
             className="bg-gray-800 text-white p-6 rounded-lg shadow-md mb-6 hover:shadow-lg transition-shadow duration-300 ease-in-out"
@@ -94,7 +94,7 @@ const MyOrders = () => {
             </p>
             <p className="text-lg mb-4 flex items-center">
               <FaCalendarAlt className="mr-2 text-orange-500" />
-              Date: <span className="text-yellow-500 ml-2">{new Date(order.date).toLocaleString()}</span>
+              Date: <span className="text-yellow-500 ml-2">{new Date(order.orderDate).toLocaleString()}</span>
             </p>
             <p className="text-lg mb-4 flex items-center">
               {order.status === 'Completed' ? (

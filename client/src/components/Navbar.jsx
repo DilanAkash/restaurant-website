@@ -173,6 +173,45 @@ const Navbar = ({ cartItems, removeFromCart }) => {
                   >
                     Logout
                   </button>
+                  {/* Cart in Mobile Menu */}
+                  <div className="relative mt-4">
+                    <FaShoppingCart size={24} className="cursor-pointer" onClick={toggleCart} aria-label="Cart" />
+                    {cartItems.length > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+                        {cartItems.length}
+                      </span>
+                    )}
+                  </div>
+                  {isCartOpen && (
+                    <div className="absolute left-0 mt-2 w-full bg-gray-800 rounded-lg shadow-lg z-50">
+                      <div className="p-4 text-white">
+                        <h3 className="text-lg font-bold mb-4">Cart</h3>
+                        {cartItems.length === 0 ? (
+                          <p>Your cart is empty.</p>
+                        ) : (
+                          cartItems.map((item, index) => (
+                            <div key={index} className="flex items-center justify-between mb-2">
+                              <span>{item.name}</span>
+                              <button
+                                onClick={() => removeFromCart(index)}
+                                className="text-red-500 hover:text-red-700 transition-colors"
+                                aria-label={`Remove ${item.name} from cart`}
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                      <div className="p-4 bg-gray-900 text-right">
+                        <Link to="/cart">
+                          <button onClick={toggleCart} className="bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors">
+                            Go to Cart
+                          </button>
+                        </Link>
+                      </div>
+                    </div>
+                  )}
                 </>
               ) : (
                 <div className="w-full flex flex-col items-center space-y-4">
