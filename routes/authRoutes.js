@@ -1,7 +1,11 @@
 import express from 'express';
 import User from '../models/User.js';  // Import the User model
+import jwt from 'jsonwebtoken';  // Import jsonwebtoken
 
 const router = express.Router();
+
+// Secret key for JWT (keep this safe and ideally in environment variables)
+const JWT_SECRET = 'your_secret_key'; // Replace with your actual secret key
 
 // User signup route
 router.post('/signup', async (req, res) => {
@@ -38,7 +42,10 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    res.status(200).json({ message: 'Login successful', userId: user._id });
+    // Generate JWT token
+    const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1h' });
+
+    res.status(200).json({ message: 'Login successful', token });
   } catch (error) {
     console.error(error);  // Log the error to troubleshoot
     res.status(500).json({ message: 'Server error', error });
@@ -88,7 +95,5 @@ router.post('/update', async (req, res) => {
     res.status(500).json({ message: 'Failed to update profile', error });
   }
 });
-
-
 
 export default router;

@@ -71,7 +71,7 @@ router.put('/update-status/:orderId', async (req, res) => {
     const updatedOrder = await Order.findByIdAndUpdate(
       orderId,
       { status },
-      { new: true } // Return the updated order after the modification
+      { new: true }
     );
 
     if (!updatedOrder) {

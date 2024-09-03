@@ -21,6 +21,7 @@ import MyReservations from './MyReservations';
 import MessageCenter from './MessageCenter';
 import Payments from './Payments';
 import EditProfile from './EditProfile';
+import StaffOrders from './StaffOrders'; // Import the StaffOrders component
 import AuthProvider, { AuthContext } from '../AuthContext'; // Correct import
 import '../index.css';
 
@@ -134,6 +135,16 @@ function App() {
               element={
                 <RequireAuth>
                   <EditProfile />
+                </RequireAuth>
+              }
+            />
+
+            {/* New Route for Staff Orders */}
+            <Route
+              path="/staff-orders"
+              element={
+                <RequireAuth>
+                  <StaffOrders />
                 </RequireAuth>
               }
             />
