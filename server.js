@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors'; // Import CORS
+import Order from './models/Order.js'; // Correct the path if necessary
 
 // Create an instance of Express
 const app = express();

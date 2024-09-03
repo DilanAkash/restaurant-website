@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types'; // Import PropTypes for validation
 import Navbar from '../components/Navbar';
@@ -14,8 +14,8 @@ import Offers from './Offers';
 import Reservation from './Reservation';
 import Login from './Login';
 import Signup from './Signup';
-import Profile from './Profile'; // Make sure this component exists
-import Cart from './Cart'; // Make sure this component exists
+import Profile from './Profile';
+import Cart from './Cart';
 import MyOrders from './MyOrders';
 import MyReservations from './MyReservations';
 import MessageCenter from './MessageCenter';
@@ -25,17 +25,14 @@ import AuthProvider, { AuthContext } from '../AuthContext'; // Correct import
 import '../index.css';
 
 function App() {
-  // Load cart items from localStorage, or set to an empty array if none are found
   const [cartItems, setCartItems] = useState(() => {
     const savedCartItems = localStorage.getItem('cartItems');
     return savedCartItems ? JSON.parse(savedCartItems) : [];
   });
 
-  // Use useEffect to update localStorage whenever cartItems changes
   useEffect(() => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   }, [cartItems]);
-
 
   const removeFromCart = (index) => {
     const newCartItems = [...cartItems];
