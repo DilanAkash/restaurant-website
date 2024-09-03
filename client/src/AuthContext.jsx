@@ -5,11 +5,15 @@ export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
 
   useEffect(() => {
     const storedUserId = localStorage.getItem('userId');
     if (storedUserId) {
       fetchUserData(storedUserId);
+    } else {
+      setLoading(false); // No user ID found, stop loading
     }
   }, []);
 
@@ -21,9 +25,13 @@ const AuthProvider = ({ children }) => {
         setUser(userData);  // Set the full user data
       } else {
         console.error('Failed to fetch user data');
+        setError('Failed to fetch user data');
       }
     } catch (error) {
       console.error('Error fetching user data:', error);
+      setError('An error occurred while fetching user data');
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -33,7 +41,7 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, logout }}>
+    <AuthContext.Provider value={{ user, setUser, logout, loading, error }}>
       {children}
     </AuthContext.Provider>
   );

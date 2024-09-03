@@ -9,8 +9,22 @@ const orderSchema = new mongoose.Schema({
   items: [
     {
       name: { type: String, required: true },
-      price: { type: Number, required: true },
-      quantity: { type: Number, required: true },
+      price: { 
+        type: Number, 
+        required: true,
+        validate: {
+          validator: (value) => value > 0,
+          message: 'Price must be a positive number',
+        },
+      },
+      quantity: { 
+        type: Number, 
+        required: true,
+        validate: {
+          validator: (value) => value > 0,
+          message: 'Quantity must be a positive number',
+        },
+      },
       image: { type: String, required: true },
     },
   ],
@@ -28,6 +42,12 @@ const orderSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+}, { timestamps: true }); // Adding timestamps
+
+// Pre-save middleware to automatically calculate the total
+orderSchema.pre('save', function (next) {
+  this.total = this.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  next();
 });
 
 const Order = mongoose.model('Order', orderSchema);

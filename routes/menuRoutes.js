@@ -6,20 +6,21 @@ const router = express.Router();
 // Route to add a menu item
 router.post('/add', async (req, res) => {
   try {
-    // Validate request body
     const { name, category, description, price, image, isNewItem, isPopular } = req.body;
-    if (!name || !category || !description || !price || !image) {
-      return res.status(400).json({ message: 'All fields are required' });
+
+    // Validate required fields
+    if (!name || !category || !price) {
+      return res.status(400).json({ message: 'Name, category, and price are required' });
     }
 
     // Create a new menu item using the updated schema
     const newItem = new MenuItem({
       name,
       category,
-      description,
+      description,  // Optional, if your schema allows it to be empty
       price,
-      image,
-      isNew: isNewItem, // Ensure this matches your schema (update your schema if necessary)
+      image,  // Optional, if your schema allows it to be empty
+      isNewItem, // Adjusted to match the schema field name if necessary
       isPopular,
     });
 

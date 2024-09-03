@@ -8,12 +8,12 @@ const WelcomeSection = () => {
     <section className="p-8 bg-gray-900">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
         
-        {/* Video Bg left */}
+        {/* Video Background Left Section */}
         <div
           className="relative bg-cover bg-center rounded-lg overflow-hidden"
-          style={{ minHeight: '300px', backgroundAttachment: 'fixed' }}>
-
-          {/* video con blok */}
+          style={{ minHeight: '300px', backgroundAttachment: 'fixed' }}
+          aria-label="Welcome video showcasing ABC Restaurant's ambiance"
+        >
           <video
             src={videoFile}
             autoPlay
@@ -22,8 +22,6 @@ const WelcomeSection = () => {
             playsInline
             className="absolute inset-0 w-full h-full object-cover"
           />
-
-          {/* txt ontop drk */}
           <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
             <div className="relative p-8 w-full">
               <h2 className="text-5xl font-extrabold text-white mb-4 text-center">
@@ -36,9 +34,9 @@ const WelcomeSection = () => {
           </div>
         </div>
 
-        {/* Rigt Sec */}
+        {/* Right Section */}
         <div className="grid grid-rows-2 gap-4">
-          {/* Offfers */}
+          {/* Offers Section */}
           <div className="relative overflow-hidden rounded-lg shadow-lg group">
             <img
               src={offersImage}
@@ -49,13 +47,14 @@ const WelcomeSection = () => {
             <div className="absolute bottom-4 right-4">
               <button
                 className="bg-blue-600 text-white font-bold px-6 py-3 rounded-lg shadow-lg hover:bg-blue-800 hover:scale-105 hover:shadow-xl transition-all duration-300"
+                aria-label="View current offers at ABC Restaurant"
               >
                 View Offers
               </button>
             </div>
           </div>
 
-          {/* Menu */}
+          {/* Menu Section */}
           <div className="relative overflow-hidden rounded-lg shadow-lg group">
             <img
               src={menuImage}
@@ -66,6 +65,7 @@ const WelcomeSection = () => {
             <div className="absolute bottom-4 right-4">
               <button
                 className="bg-green-600 text-white font-bold px-6 py-3 rounded-lg shadow-lg hover:bg-green-800 hover:scale-105 hover:shadow-xl transition-all duration-300"
+                aria-label="View ABC Restaurant's menu"
               >
                 View Menu
               </button>

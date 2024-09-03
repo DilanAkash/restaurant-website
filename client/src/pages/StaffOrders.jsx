@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { AuthContext } from '../AuthContext'; // Assuming you have a context for auth
 import { FaCheckCircle, FaTimesCircle, FaSpinner } from 'react-icons/fa';
+import { Navigate } from 'react-router-dom';
 
 const StaffOrders = () => {
+  const { user } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
@@ -46,6 +49,11 @@ const StaffOrders = () => {
       alert('An error occurred. Please try again.');
     }
   };
+
+  // Check if user is a staff member
+  if (user?.role !== 'staff') {
+    return <Navigate to="/" />;
+  }
 
   return (
     <div className="container mx-auto py-16 px-4 mt-10">

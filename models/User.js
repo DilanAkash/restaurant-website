@@ -11,9 +11,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
     lowercase: true,
+    match: [/\S+@\S+\.\S+/, 'Please use a valid email address'], // Email validation
   },
   phone: {
-    type: String, 
+    type: String,
     required: true,
   },
   password: {
@@ -25,7 +26,7 @@ const userSchema = new mongoose.Schema({
     enum: ['user', 'staff', 'admin'],
     default: 'user',
   },
-});
+}, { timestamps: true }); // Adding timestamps
 
 const User = mongoose.model('User', userSchema);
 

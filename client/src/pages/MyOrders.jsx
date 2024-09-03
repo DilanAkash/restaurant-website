@@ -1,10 +1,20 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../AuthContext';
-import { FaRegTimesCircle, FaMoneyBillWave, FaCreditCard, FaCalendarAlt, FaReceipt, FaShoppingBag, FaClock, FaCheckCircle } from 'react-icons/fa'; // Import icons
+import {
+  FaRegTimesCircle,
+  FaMoneyBillWave,
+  FaCreditCard,
+  FaCalendarAlt,
+  FaReceipt,
+  FaShoppingBag,
+  FaClock,
+  FaCheckCircle
+} from 'react-icons/fa';
 
 const MyOrders = () => {
   const { user } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Loading state
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -19,6 +29,8 @@ const MyOrders = () => {
           }
         } catch (error) {
           console.error('Error fetching orders:', error);
+        } finally {
+          setIsLoading(false); // Stop loading
         }
       }
     };
@@ -54,7 +66,9 @@ const MyOrders = () => {
   return (
     <div className="container mx-auto py-16 px-4 mt-10">
       <h1 className="text-4xl font-bold text-center mb-8">My Orders</h1>
-      {orders.length === 0 ? (
+      {isLoading ? (
+        <p className="text-center text-2xl text-gray-400">Loading your orders...</p>
+      ) : orders.length === 0 ? (
         <p className="text-center text-2xl text-gray-400">You have no orders.</p>
       ) : (
         orders.map(order => (
@@ -63,7 +77,7 @@ const MyOrders = () => {
             className="bg-gray-800 text-white p-6 rounded-lg shadow-md mb-6 hover:shadow-lg transition-shadow duration-300 ease-in-out"
           >
             <h2 className="text-xl font-semibold mb-4 flex items-center">
-              <FaReceipt className="mr-2 text-yellow-500" /> 
+              <FaReceipt className="mr-2 text-yellow-500" />
               Order ID: <span className="text-yellow-500 ml-2">{order._id}</span>
             </h2>
             <p className="text-lg mb-2 flex items-center">
@@ -101,6 +115,7 @@ const MyOrders = () => {
             <button
               onClick={() => handleCancelOrder(order._id)}
               className="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors flex items-center"
+              aria-label={`Cancel order ${order._id}`}
             >
               <FaRegTimesCircle className="mr-2" />
               Cancel Order

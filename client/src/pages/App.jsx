@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import PropTypes from 'prop-types'; // Import PropTypes for validation
+import PropTypes from 'prop-types'; 
 import Navbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
 import WelcomeSection from '../components/WelcomeSection';
@@ -21,8 +21,8 @@ import MyReservations from './MyReservations';
 import MessageCenter from './MessageCenter';
 import Payments from './Payments';
 import EditProfile from './EditProfile';
-import StaffOrders from './StaffOrders'; // Import the StaffOrders component
-import AuthProvider, { AuthContext } from '../AuthContext'; // Correct import
+import StaffOrders from './StaffOrders';
+import AuthProvider, { AuthContext } from '../AuthContext';
 import '../index.css';
 
 function App() {

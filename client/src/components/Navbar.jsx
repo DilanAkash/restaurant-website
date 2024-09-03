@@ -1,17 +1,17 @@
 import React, { useState, useContext } from 'react';
-import PropTypes from 'prop-types'; // Import PropTypes for validation
+import PropTypes from 'prop-types'; 
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import profileIcon from '../assets/profile.png';
 import { FaBars, FaTimes, FaShoppingCart } from 'react-icons/fa';
-import { AuthContext } from '../AuthContext'; // Import AuthContext
+import { AuthContext } from '../AuthContext'; 
 
 const Navbar = ({ cartItems, removeFromCart }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false); // State to handle cart popup visibility
-  const { user, logout } = useContext(AuthContext); // Access user and logout from context
-  const navigate = useNavigate(); // To handle redirection
-  const location = useLocation(); // To determine the current route
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate(); 
+  const location = useLocation(); 
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -23,7 +23,7 @@ const Navbar = ({ cartItems, removeFromCart }) => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login'); // Redirect to login page after logout
+    navigate('/login'); 
   };
 
   return (
@@ -69,7 +69,7 @@ const Navbar = ({ cartItems, removeFromCart }) => {
           {user ? (
             <div className="relative flex items-center space-x-4">
               <div className="relative">
-                <FaShoppingCart size={24} className="cursor-pointer" onClick={toggleCart} />
+                <FaShoppingCart size={24} className="cursor-pointer" onClick={toggleCart} aria-label="Cart" />
                 {cartItems.length > 0 && (
                   <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
                     {cartItems.length}
@@ -101,6 +101,7 @@ const Navbar = ({ cartItems, removeFromCart }) => {
                           <button
                             onClick={() => removeFromCart(index)}
                             className="text-red-500 hover:text-red-700 transition-colors"
+                            aria-label={`Remove ${item.name} from cart`}
                           >
                             Remove
                           </button>

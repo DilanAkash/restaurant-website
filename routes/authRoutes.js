@@ -1,11 +1,7 @@
 import express from 'express';
 import User from '../models/User.js';  // Import the User model
-import jwt from 'jsonwebtoken';  // Import jsonwebtoken
 
 const router = express.Router();
-
-// Secret key for JWT (keep this safe and ideally in environment variables)
-const JWT_SECRET = 'your_secret_key'; // Replace with your actual secret key
 
 // User signup route
 router.post('/signup', async (req, res) => {
@@ -22,7 +18,7 @@ router.post('/signup', async (req, res) => {
     const newUser = new User({ name, email, phone, password });
     await newUser.save();
 
-    res.status(201).json({ message: 'User created successfully' });
+    res.status(201).json({ message: 'User created successfully', userId: newUser._id });
   } catch (error) {
     console.error(error);  // Log the error to troubleshoot
     res.status(500).json({ message: 'Server error', error });
@@ -39,13 +35,11 @@ router.post('/login', async (req, res) => {
 
     // Check if user exists and the password matches
     if (!user || user.password !== password) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    // Generate JWT token
-    const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1h' });
-
-    res.status(200).json({ message: 'Login successful', token });
+    // Respond with user details on successful login
+    res.status(200).json({ message: 'Login successful', userId: user._id });
   } catch (error) {
     console.error(error);  // Log the error to troubleshoot
     res.status(500).json({ message: 'Server error', error });
@@ -55,7 +49,14 @@ router.post('/login', async (req, res) => {
 // Fetch user data by ID
 router.get('/user/:id', async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).select('-password'); // Fetch user data except the password
+    const userId = req.params.id;
+
+    // Check if the userId is valid before querying
+    if (!userId) {
+      return res.status(400).json({ message: 'User ID is required' });
+    }
+
+    const user = await User.findById(userId).select('-password'); // Fetch user data except the password
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -70,6 +71,11 @@ router.get('/user/:id', async (req, res) => {
 router.post('/update', async (req, res) => {
   try {
     const { userId, name, email, phone, password } = req.body;
+
+    // Check if the userId is valid before updating
+    if (!userId) {
+      return res.status(400).json({ message: 'User ID is required' });
+    }
 
     // Create an update object that only includes the fields that were provided
     const updateFields = {};

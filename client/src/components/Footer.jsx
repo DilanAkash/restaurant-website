@@ -33,13 +33,25 @@ const Footer = () => {
             <a href="#contact" className="hover:text-yellow-400 transition-colors">Contact</a>
           </div>
           <div className="flex space-x-4">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400 transition-transform transform hover:scale-110">
+            <a href="https://facebook.com" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               className="hover:text-yellow-400 transition-transform transform hover:scale-110"
+               aria-label="Follow us on Facebook">
               <FaFacebookF />
             </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400 transition-transform transform hover:scale-110">
+            <a href="https://instagram.com" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               className="hover:text-yellow-400 transition-transform transform hover:scale-110"
+               aria-label="Follow us on Instagram">
               <FaInstagram />
             </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400 transition-transform transform hover:scale-110">
+            <a href="https://twitter.com" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               className="hover:text-yellow-400 transition-transform transform hover:scale-110"
+               aria-label="Follow us on Twitter">
               <FaTwitter />
             </a>
           </div>

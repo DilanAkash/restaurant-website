@@ -1,18 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { AuthContext } from '../AuthContext'; // Import the AuthContext for user authentication
+import { AuthContext } from '../AuthContext';
 
 const Cart = ({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity }) => {
-  const { user } = useContext(AuthContext); // Get the current user from the AuthContext
+  const { user } = useContext(AuthContext);
   const [paymentMethod, setPaymentMethod] = useState('Card Payment');
   const [totalPrice, setTotalPrice] = useState(0);
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false); // Loading state for order placement
 
-  // Scroll to top when the component is mounted
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Load cart items from localStorage on component mount
   useEffect(() => {
     const storedCartItems = JSON.parse(localStorage.getItem('cartItems'));
     if (storedCartItems) {
@@ -20,54 +19,47 @@ const Cart = ({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity 
     }
   }, [setCartItems]);
 
-  // Save cart items to localStorage whenever cartItems changes
   useEffect(() => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   }, [cartItems]);
 
-  // Calculate total price whenever cartItems or paymentMethod changes
   useEffect(() => {
     const calculateTotal = () => {
       let total = cartItems.reduce((acc, item) => acc + item.quantity * item.price, 0);
-
-      // Add Rs.650 fee if payment method is 'cash'
       if (paymentMethod === 'Cash On Delivery') {
         total += 650;
       }
-
       setTotalPrice(total);
     };
 
     calculateTotal();
   }, [cartItems, paymentMethod]);
 
-  // Handle quantity change for a cart item
   const handleQuantityChange = (id, delta) => {
     updateCartItemQuantity(id, delta);
   };
 
-  // Handle item removal
   const handleRemoveItem = (id) => {
-    removeFromCart(id);
     const updatedCartItems = cartItems.filter(item => item.id !== id);
     setCartItems(updatedCartItems);
     localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+    removeFromCart(id);
   };
 
-  // Handle payment method change
   const handlePaymentMethodChange = (e) => {
     setPaymentMethod(e.target.value);
   };
 
-  // Handle order placement
   const handlePlaceOrder = async () => {
     if (!user) {
       alert('Please log in to place an order.');
       return;
     }
 
+    setIsPlacingOrder(true); // Set loading state
+
     const orderDetails = {
-      userId: user._id, // Get the actual user ID from the AuthContext
+      userId: user._id,
       items: cartItems,
       total: totalPrice,
       paymentMethod: paymentMethod,
@@ -94,6 +86,8 @@ const Cart = ({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity 
     } catch (error) {
       console.error('Error placing order:', error);
       alert('An error occurred. Please try again.');
+    } finally {
+      setIsPlacingOrder(false); // Reset loading state
     }
   };
 
@@ -116,12 +110,12 @@ const Cart = ({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity 
                   <p>Rs. {item.price}</p>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <button onClick={() => handleQuantityChange(item.id, -1)} className="px-2 bg-gray-600 text-white rounded-l-lg">-</button>
+                  <button onClick={() => handleQuantityChange(item.id, -1)} className="px-2 bg-gray-600 text-white rounded-l-lg" aria-label="Decrease quantity">-</button>
                   <span className="px-4">{item.quantity}</span>
-                  <button onClick={() => handleQuantityChange(item.id, 1)} className="px-2 bg-gray-600 text-white rounded-r-lg">+</button>
+                  <button onClick={() => handleQuantityChange(item.id, 1)} className="px-2 bg-gray-600 text-white rounded-r-lg" aria-label="Increase quantity">+</button>
                 </div>
                 <p className="text-white font-semibold text-center md:text-right">Total: Rs. {item.price * item.quantity}</p>
-                <button onClick={() => handleRemoveItem(item.id)} className="mt-2 md:mt-0 ml-0 md:ml-4 bg-red-500 text-white px-4 py-2 rounded-lg">
+                <button onClick={() => handleRemoveItem(item.id)} className="mt-2 md:mt-0 ml-0 md:ml-4 bg-red-500 text-white px-4 py-2 rounded-lg" aria-label={`Remove ${item.name} from cart`}>
                   Remove
                 </button>
               </div>
@@ -129,7 +123,7 @@ const Cart = ({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity 
             <div className="mt-8 flex flex-col md:flex-row justify-between items-center">
               <div className="mb-4 md:mb-0 w-full md:w-auto text-center md:text-left">
                 <label className="text-white font-semibold">Payment Method: </label>
-                <select value={paymentMethod} onChange={handlePaymentMethodChange} className="ml-0 md:ml-4 p-2 bg-gray-600 text-white rounded-lg">
+                <select value={paymentMethod} onChange={handlePaymentMethodChange} className="ml-0 md:ml-4 p-2 bg-gray-600 text-white rounded-lg" aria-label="Select payment method">
                   <option value="Card Payment">Card Payment</option>
                   <option value="Cash On Delivery">Cash on Delivery</option>
                 </select>
@@ -143,8 +137,10 @@ const Cart = ({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity 
               <button
                 onClick={handlePlaceOrder}
                 className="bg-yellow-500 text-black px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors w-full md:w-auto"
+                disabled={isPlacingOrder} // Disable button while placing order
+                aria-label="Place order"
               >
-                Place Order
+                {isPlacingOrder ? 'Placing Order...' : 'Place Order'}
               </button>
             </div>
           </>
