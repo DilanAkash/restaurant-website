@@ -53,11 +53,13 @@ function App() {
     <AuthProvider>
       <Router>
         <div className="w-full min-h-screen bg-gray-900 text-white overflow-x-hidden">
-          <Navbar cartItems={cartItems} removeFromCart={removeFromCart} />
+          <Navbar 
+            cartItems={cartItems} 
+            removeFromCart={removeFromCart}
+            updateCartItemQuantity={updateCartItemQuantity}
+          />
           <Routes>
-            <Route
-              path="/"
-              element={
+            <Route path="/" element={
                 <>
                   <HeroSection />
                   <WelcomeSection />
@@ -75,17 +77,13 @@ function App() {
             <Route path="/signup" element={<Signup />} />
 
             {/* Protected Routes */}
-            <Route
-              path="/profile"
-              element={
+            <Route path="/profile" element={
                 <RequireAuth>
                   <Profile />
                 </RequireAuth>
               }
             />
-            <Route
-              path="/cart"
-              element={
+            <Route path="/cart" element={
                 <RequireAuth>
                   <Cart 
                     cartItems={cartItems} 
@@ -98,56 +96,14 @@ function App() {
             />
 
             {/* New Routes for Profile Sections */}
-            <Route
-              path="/orders"
-              element={
-                <RequireAuth>
-                  <MyOrders />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="/reservations"
-              element={
-                <RequireAuth>
-                  <MyReservations />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="/messages"
-              element={
-                <RequireAuth>
-                  <MessageCenter />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="/payments"
-              element={
-                <RequireAuth>
-                  <Payments />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="/edit-profile"
-              element={
-                <RequireAuth>
-                  <EditProfile />
-                </RequireAuth>
-              }
-            />
+            <Route path="/orders" element={<RequireAuth><MyOrders /></RequireAuth>} />
+            <Route path="/reservations" element={<RequireAuth><MyReservations /></RequireAuth>} />
+            <Route path="/messages" element={<RequireAuth><MessageCenter /></RequireAuth>} />
+            <Route path="/payments" element={<RequireAuth><Payments /></RequireAuth>} />
+            <Route path="/edit-profile" element={<RequireAuth><EditProfile /></RequireAuth>} />
 
             {/* New Route for Staff Orders */}
-            <Route
-              path="/staff-orders"
-              element={
-                <RequireAuth>
-                  <StaffOrders />
-                </RequireAuth>
-              }
-            />
+            <Route path="/staff-orders" element={<RequireAuth><StaffOrders /></RequireAuth>} />
           </Routes>
           <Footer />
         </div>

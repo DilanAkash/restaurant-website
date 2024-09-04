@@ -2,11 +2,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { AuthContext } from '../AuthContext';
 
-const Cart = ({ cartItems, setCartItems, updateCartItemQuantity }) => {
+const Cart = ({ cartItems, setCartItems }) => {  // Removed 'updateCartItemQuantity'
   const { user } = useContext(AuthContext);
   const [paymentMethod, setPaymentMethod] = useState('Card Payment');
   const [totalPrice, setTotalPrice] = useState(0);
-  const [isPlacingOrder, setIsPlacingOrder] = useState(false); // Loading state for order placement
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+  const [cartVisible, setCartVisible] = useState(true);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -36,7 +37,15 @@ const Cart = ({ cartItems, setCartItems, updateCartItemQuantity }) => {
   }, [cartItems, paymentMethod]);
 
   const handleQuantityChange = (id, delta) => {
-    updateCartItemQuantity(id, delta);
+    const newCartItems = cartItems.map(item => {
+      if (item.id === id) {
+        const updatedQuantity = item.quantity + delta;
+        return { ...item, quantity: updatedQuantity >= 0 ? updatedQuantity : 0 };
+      }
+      return item;
+    });
+    setCartItems(newCartItems);
+    localStorage.setItem('cartItems', JSON.stringify(newCartItems));
   };
 
   const handleRemoveItem = (id) => {
@@ -55,7 +64,7 @@ const Cart = ({ cartItems, setCartItems, updateCartItemQuantity }) => {
       return;
     }
 
-    setIsPlacingOrder(true); // Set loading state
+    setIsPlacingOrder(true);
 
     const orderDetails = {
       userId: user._id,
@@ -86,12 +95,21 @@ const Cart = ({ cartItems, setCartItems, updateCartItemQuantity }) => {
       console.error('Error placing order:', error);
       alert('An error occurred. Please try again.');
     } finally {
-      setIsPlacingOrder(false); // Reset loading state
+      setIsPlacingOrder(false);
     }
   };
 
   return (
-    <div className="container mx-auto py-16 px-4 mt-20">
+    <div className={`container mx-auto py-16 px-4 mt-20 ${!cartVisible && 'hidden'}`}>
+      <div className="block md:hidden absolute top-2 right-2">
+        <button
+          onClick={() => setCartVisible(false)}
+          className="bg-red-500 text-white p-2 rounded-full"
+          aria-label="Close cart"
+        >
+          X
+        </button>
+      </div>
       <h1 className="text-3xl font-bold mb-8 text-center">Shopping Cart</h1>
 
       <div className="bg-gray-800 p-4 md:p-6 rounded-lg shadow-lg">
@@ -149,7 +167,7 @@ const Cart = ({ cartItems, setCartItems, updateCartItemQuantity }) => {
   );
 };
 
-// Adding PropTypes validation
+// Updated PropTypes validation
 Cart.propTypes = {
   cartItems: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
@@ -159,7 +177,6 @@ Cart.propTypes = {
     image: PropTypes.string.isRequired,
   })).isRequired,
   setCartItems: PropTypes.func.isRequired,
-  updateCartItemQuantity: PropTypes.func.isRequired,
 };
 
 export default Cart;

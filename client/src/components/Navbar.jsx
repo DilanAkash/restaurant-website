@@ -6,32 +6,32 @@ import profileIcon from '../assets/profile.png';
 import { FaBars, FaTimes, FaShoppingCart, FaChevronRight, FaTrashAlt, FaMinus, FaPlus } from 'react-icons/fa';
 import { AuthContext } from '../AuthContext';
 
-const Navbar = ({ cartItems, removeFromCart, updateCartItemQuantity, isItemAdded }) => {
+const Navbar = ({ cartItems, removeFromCart, updateCartItemQuantity, isItemAdded = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Open cart automatically when an item is added
-  useEffect(() => {
-    if (isItemAdded) {
-      setIsCartOpen(true);  // Automatically open cart if an item is added
-    }
-  }, [isItemAdded]);
+// Open cart automatically when an item is added
+useEffect(() => {
+  if (isItemAdded) {
+    setIsCartOpen(true);  // Automatically open cart if an item is added
+  }
+}, [isItemAdded]);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+const toggleMenu = () => {
+  setIsOpen(!isOpen);
+};
 
-  const toggleCart = () => {
-    setIsCartOpen(!isCartOpen);
-  };
+const toggleCart = () => {
+  setIsCartOpen(!isCartOpen);
+};
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
+const handleLogout = () => {
+  logout();
+  navigate('/login');
+};
 
   return (
     <nav className="fixed top-0 w-full bg-black bg-opacity-80 text-white shadow-lg z-50 backdrop-blur-lg">
@@ -275,8 +275,8 @@ const Navbar = ({ cartItems, removeFromCart, updateCartItemQuantity, isItemAdded
 Navbar.propTypes = {
   cartItems: PropTypes.array.isRequired,
   removeFromCart: PropTypes.func.isRequired,
-  updateCartItemQuantity: PropTypes.func.isRequired,
-  isItemAdded: PropTypes.bool.isRequired, // Added validation for isItemAdded
+  updateCartItemQuantity: PropTypes.func, // Make it optional
+  isItemAdded: PropTypes.bool, // Already optional
 };
 
 export default Navbar;
