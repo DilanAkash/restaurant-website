@@ -3,15 +3,22 @@ import PropTypes from 'prop-types';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import profileIcon from '../assets/profile.png';
-import { FaBars, FaTimes, FaShoppingCart, FaTrashAlt, FaTimesCircle } from 'react-icons/fa';
+import { FaBars, FaTimes, FaShoppingCart, FaChevronRight, FaTrashAlt, FaMinus, FaPlus } from 'react-icons/fa';
 import { AuthContext } from '../AuthContext';
 
-const Navbar = ({ cartItems, removeFromCart, isItemAdded }) => {
+const Navbar = ({ cartItems, removeFromCart, updateCartItemQuantity, isItemAdded }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Open cart automatically when an item is added
+  useEffect(() => {
+    if (isItemAdded) {
+      setIsCartOpen(true);  // Automatically open cart if an item is added
+    }
+  }, [isItemAdded]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -20,13 +27,6 @@ const Navbar = ({ cartItems, removeFromCart, isItemAdded }) => {
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
   };
-
-  // Automatically open the cart when an item is added
-  useEffect(() => {
-    if (isItemAdded) {
-      setIsCartOpen(true);
-    }
-  }, [isItemAdded]);
 
   const handleLogout = () => {
     logout();
@@ -96,30 +96,31 @@ const Navbar = ({ cartItems, removeFromCart, isItemAdded }) => {
 
               {/* Cart Drawer */}
               <div
-                className={`fixed top-0 right-0 h-full w-64 bg-black text-white shadow-lg z-50 transition-transform duration-300 ease-in-out ${
-                  isCartOpen ? 'translate-x-0' : 'translate-x-full'
-                }`}
+                className={`fixed top-16 right-4 h-auto w-56 bg-gray-800 bg-opacity-95 text-white shadow-lg rounded-lg z-50 transform transition-transform duration-300 ${isCartOpen ? 'translate-x-0' : 'translate-x-full'}`}
               >
                 <div className="flex justify-between items-center p-3">
-                  <h3 className="text-sm font-bold text-white">Your Cart</h3>
+                  <h3 className="text-sm font-bold">Your Cart</h3>
                   <button onClick={toggleCart} className="text-white focus:outline-none">
-                    <FaTimesCircle size={16} />
+                    <FaChevronRight size={18} />
                   </button>
                 </div>
-                <div className="px-3 pb-3 bg-black">
+                <div className="px-3 pb-3">
                   {cartItems.length === 0 ? (
-                    <p className="text-white">Your cart is empty.</p>
+                    <p>Your cart is empty.</p>
                   ) : (
                     cartItems.map((item, index) => (
-                      <div
-                        key={item.id}
-                        className="flex items-center justify-between mb-2 text-xs text-white bg-gray-800 p-2 rounded"
-                      >
+                      <div key={index} className="flex items-center justify-between mb-2 text-xs">
                         <span>{item.name}</span>
                         <div className="flex items-center">
-                          <span className="px-1">Qty: {item.quantity}</span>
+                          <button onClick={() => updateCartItemQuantity(item.id, -1)} className="text-white bg-gray-600 p-1 rounded-l-lg hover:bg-gray-700">
+                            <FaMinus />
+                          </button>
+                          <span className="px-1">{item.quantity}</span>
+                          <button onClick={() => updateCartItemQuantity(item.id, 1)} className="text-white bg-gray-600 p-1 rounded-r-lg hover:bg-gray-700">
+                            <FaPlus />
+                          </button>
                           <button
-                            onClick={() => removeFromCart(item.id)}
+                            onClick={() => removeFromCart(index)}
                             className="ml-1 text-red-500 hover:text-red-700 transition-colors"
                             aria-label={`Remove ${item.name} from cart`}
                           >
@@ -130,20 +131,18 @@ const Navbar = ({ cartItems, removeFromCart, isItemAdded }) => {
                     ))
                   )}
                 </div>
-
                 {cartItems.length > 0 && (
-                  <div className="p-3 flex justify-center">
+                  <div className="p-3">
                     <Link to="/cart">
                       <button
                         onClick={toggleCart}
-                        className="bg-yellow-500 text-black px-4 py-2 rounded-lg text-sm hover:bg-yellow-600 transition-colors"
+                        className="w-full bg-yellow-500 text-black px-3 py-1 rounded-lg text-xs hover:bg-yellow-600 transition-colors"
                       >
                         Go to Cart
                       </button>
                     </Link>
                   </div>
                 )}
-
               </div>
             </div>
           ) : (
@@ -211,22 +210,25 @@ const Navbar = ({ cartItems, removeFromCart, isItemAdded }) => {
                     )}
                   </div>
                   {isCartOpen && (
-                    <div className="absolute left-0 mt-2 w-full bg-black rounded-lg shadow-lg z-50">
+                    <div className="absolute left-0 mt-2 w-full bg-gray-800 rounded-lg shadow-lg z-50">
                       <div className="p-4 text-white">
                         <h3 className="text-lg font-bold mb-4">Cart</h3>
-                        <button className="absolute top-2 right-2" onClick={toggleCart}>
-                          <FaTimesCircle size={16} />
-                        </button>
                         {cartItems.length === 0 ? (
                           <p>Your cart is empty.</p>
                         ) : (
                           cartItems.map((item, index) => (
-                            <div key={item.id} className="flex items-center justify-between mb-2">
+                            <div key={index} className="flex items-center justify-between mb-2">
                               <span>{item.name}</span>
                               <div className="flex items-center">
-                                <span className="px-2">Qty: {item.quantity}</span>
+                                <button onClick={() => updateCartItemQuantity(item.id, -1)} className="text-white bg-gray-600 p-1 rounded-l-lg hover:bg-gray-700">
+                                  <FaMinus />
+                                </button>
+                                <span className="px-2">{item.quantity}</span>
+                                <button onClick={() => updateCartItemQuantity(item.id, 1)} className="text-white bg-gray-600 p-1 rounded-r-lg hover:bg-gray-700">
+                                  <FaPlus />
+                                </button>
                                 <button
-                                  onClick={() => removeFromCart(item.id)}
+                                  onClick={() => removeFromCart(index)}
                                   className="ml-2 text-red-500 hover:text-red-700 transition-colors"
                                   aria-label={`Remove ${item.name} from cart`}
                                 >
@@ -237,7 +239,7 @@ const Navbar = ({ cartItems, removeFromCart, isItemAdded }) => {
                           ))
                         )}
                       </div>
-                      <div className="p-4 bg-black text-right">
+                      <div className="p-4 bg-gray-900 text-right">
                         <Link to="/cart">
                           <button onClick={toggleCart} className="bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors">
                             Go to Cart
@@ -273,7 +275,8 @@ const Navbar = ({ cartItems, removeFromCart, isItemAdded }) => {
 Navbar.propTypes = {
   cartItems: PropTypes.array.isRequired,
   removeFromCart: PropTypes.func.isRequired,
-  isItemAdded: PropTypes.bool.isRequired,
+  updateCartItemQuantity: PropTypes.func.isRequired,
+  isItemAdded: PropTypes.bool.isRequired, // Added validation for isItemAdded
 };
 
 export default Navbar;
