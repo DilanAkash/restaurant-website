@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { FaTimes } from 'react-icons/fa';
 
 const CartNotification = ({ item, visible, onClose }) => {
   const [show, setShow] = useState(visible);
+  const [animate, setAnimate] = useState(false); // For handling animations
 
   useEffect(() => {
-    setShow(visible);
     if (visible) {
+      setShow(true);
+      setAnimate(true); // Trigger the entrance animation
+
       const timer = setTimeout(() => {
-        setShow(false);
-        onClose(); // Callback to reset the visible state in parent component
-      }, 3000); // Auto close the notification after 3 seconds
+        setAnimate(false); // Trigger the exit animation
+        setTimeout(() => {
+          setShow(false);
+          onClose(); // Callback to reset the visible state in parent component
+        }, 300); // Wait for the exit animation to complete
+      }, 1000); // Show notification for 4 seconds
 
       return () => clearTimeout(timer); // Cleanup the timer on unmount or if visible changes
     }
@@ -20,20 +27,25 @@ const CartNotification = ({ item, visible, onClose }) => {
 
   return (
     <div
-      className="fixed bottom-4 right-4 bg-yellow-500 text-black px-4 py-2 rounded-lg shadow-lg z-50"
+      className={`fixed bottom-6 right-6 bg-black bg-opacity-70 text-white backdrop-blur-md px-4 py-3 rounded-lg shadow-lg z-50 flex items-center space-x-4 transition-all duration-300 ease-in-out
+        ${animate ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-4'}
+      `}
       aria-live="assertive"
       role="alert"
     >
-      <p>{item.name} added to cart!</p>
+      <p className="font-semibold">{item.name} added to cart!</p>
       <button
-        className="ml-4 text-sm text-white bg-red-500 px-2 py-1 rounded"
+        className="text-white hover:text-gray-300 focus:outline-none"
         onClick={() => {
-          setShow(false);
-          onClose();
+          setAnimate(false); // Trigger the exit animation
+          setTimeout(() => {
+            setShow(false);
+            onClose();
+          }, 300); // Wait for the exit animation to complete
         }}
         aria-label="Close notification"
       >
-        Close
+        <FaTimes size={16} />
       </button>
     </div>
   );
