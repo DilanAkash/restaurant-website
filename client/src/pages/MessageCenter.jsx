@@ -1,41 +1,77 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../AuthContext';
 
 const MessageCenter = () => {
+  const { user } = useContext(AuthContext);
   const [messages, setMessages] = useState([]);
+  const [messageContent, setMessageContent] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Placeholder: Fetch messages from the backend API and update the state
-    // fetch('http://localhost:5000/api/messages', { method: 'GET' })
-    //   .then(response => response.json())
-    //   .then(data => setMessages(data))
-    //   .catch(error => console.error('Error fetching messages:', error));
+    const fetchMessages = async () => {
+      if (user) {
+        try {
+          const response = await fetch(`http://localhost:5000/api/messages/user/${user._id}`);
+          const data = await response.json();
+          if (response.ok) {
+            setMessages(data);
+          } else {
+            throw new Error('Failed to fetch messages');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
 
-    // For now, we'll use mock data
-    setMessages([
-      { id: 1, query: 'What are the opening hours?', response: 'We are open from 9 AM to 9 PM.', status: 'Responded' },
-      { id: 2, query: 'Do you offer vegan options?', response: 'Yes, we have a variety of vegan dishes.', status: 'Responded' },
-    ]);
-  }, []);
+    fetchMessages();
+  }, [user]);
+
+  const handleMessageSubmit = async (e) => {
+    e.preventDefault();
+    if (!messageContent.trim()) return;
+    try {
+      const response = await fetch('http://localhost:5000/api/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: user._id, content: messageContent }),
+      });
+      const newMessage = await response.json();
+      if (response.ok) {
+        setMessages([...messages, newMessage]);
+        setMessageContent('');
+      } else {
+        throw new Error('Failed to send message');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-900 text-white">
-      <div className="w-full max-w-2xl bg-gray-800 p-6 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold mb-4">Message Center</h2>
-        <ul>
-          {messages.map(message => (
-            <li key={message.id} className="mb-4">
-              <div className="mb-2">
-                <strong>Query:</strong> {message.query}
-              </div>
-              <div className="mb-2">
-                <strong>Response:</strong> {message.response}
-              </div>
-              <div className={`text-${message.status === 'Responded' ? 'green' : 'yellow'}-500`}>
-                {message.status}
-              </div>
-            </li>
-          ))}
-        </ul>
+    <div>
+      <h1>Message Center</h1>
+      <form onSubmit={handleMessageSubmit}>
+        <textarea
+          value={messageContent}
+          onChange={(e) => setMessageContent(e.target.value)}
+          placeholder="Type your message here..."
+        />
+        <button type="submit">Send Message</button>
+      </form>
+      <div>
+        {isLoading ? (
+          <p>Loading messages...</p>
+        ) : (
+          messages.map(msg => (
+            <div key={msg._id}>
+              <p>{msg.content}</p>
+              <p>{msg.response}</p>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

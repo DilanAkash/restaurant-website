@@ -75,6 +75,7 @@ function App() {
             <Route path="/reservation" element={<Reservation />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/reservations" element={<MyReservations />} />
 
             {/* Protected Routes */}
             <Route path="/profile" element={
@@ -97,7 +98,6 @@ function App() {
 
             {/* New Routes for Profile Sections */}
             <Route path="/orders" element={<RequireAuth><MyOrders /></RequireAuth>} />
-            <Route path="/reservations" element={<RequireAuth><MyReservations /></RequireAuth>} />
             <Route path="/messages" element={<RequireAuth><MessageCenter /></RequireAuth>} />
             <Route path="/payments" element={<RequireAuth><Payments /></RequireAuth>} />
             <Route path="/edit-profile" element={<RequireAuth><EditProfile /></RequireAuth>} />
