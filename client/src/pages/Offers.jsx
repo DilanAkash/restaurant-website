@@ -46,8 +46,10 @@ const Offers = () => {
                     {copied === offer.promoCode ? <FaCheckCircle className="text-green-500" /> : 'Copy Code'}
                   </button>
                 </div>
-                <p className="text-gray-500">Discount: {offer.discountPercentage}% off</p>
-                <p className="text-gray-500">Valid until: {new Date(offer.expirationDate).toLocaleDateString()}</p>
+                <p className="text-gray-500">Discount: {offer.discountPercentage || 0}% off</p>
+                <p className="text-gray-500">
+                  Valid until: {offer.expirationDate ? new Date(offer.expirationDate).toLocaleDateString() : 'N/A'}
+                </p>
               </div>
             ))
           )}

@@ -1,5 +1,5 @@
 import express from 'express';
-import Offer from '../models/Offer.js';
+import Offer from '../models/Offer.js'; // Assuming you're using default export in Offer.js
 
 const router = express.Router();
 
@@ -15,13 +15,13 @@ router.get('/', async (req, res) => {
 
 // Add a new offer
 router.post('/', async (req, res) => {
-  const { title, description, discount, validFrom, validUntil } = req.body;
+  const { offerName, description, promoCode, discountPercentage, expirationDate } = req.body;
   const newOffer = new Offer({
-    title,
+    offerName,
     description,
-    discount,
-    validFrom,
-    validUntil,
+    promoCode,
+    discountPercentage,
+    expirationDate,
   });
 
   try {
@@ -56,23 +56,23 @@ router.delete('/:offerId', async (req, res) => {
 
 // Validate and apply promo code
 router.post('/apply-promo', async (req, res) => {
-    const { promoCode } = req.body;
-  
-    try {
-      const offer = await Offer.findOne({ promoCode });
-      if (!offer) {
-        return res.status(404).json({ message: 'Promo code not found' });
-      }
-  
-      const isExpired = new Date() > new Date(offer.expirationDate);
-      if (isExpired) {
-        return res.status(400).json({ message: 'Promo code has expired' });
-      }
-  
-      res.json({ discount: offer.discountPercentage });
-    } catch (error) {
-      res.status(500).json({ message: 'Error applying promo code', error });
+  const { promoCode } = req.body;
+
+  try {
+    const offer = await Offer.findOne({ promoCode });
+    if (!offer) {
+      return res.status(404).json({ message: 'Promo code not found' });
     }
-  });
+
+    const isExpired = new Date() > new Date(offer.expirationDate);
+    if (isExpired) {
+      return res.status(400).json({ message: 'Promo code has expired' });
+    }
+
+    res.json({ discount: offer.discountPercentage });
+  } catch (error) {
+    res.status(500).json({ message: 'Error applying promo code', error });
+  }
+});
 
 export default router;
