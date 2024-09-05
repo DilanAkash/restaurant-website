@@ -15,8 +15,8 @@ const Footer = () => {
             className="h-20 transition-transform transform hover:scale-105"
           />
           <div className="text-center md:text-left">
-            <p>Mahindha RD - Colombo</p>
-            <p>123 Avenue 2nd Lane</p>
+            <p>Baladaksha Mawatha - Colombo</p>
+            <p>123 Mahinda 2nd Lane</p>
             <p>CO-16, Sri Lanka</p>
             <p>071 887 9954</p>
             <p>abc.com</p>

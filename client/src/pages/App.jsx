@@ -9,7 +9,7 @@ import Footer from '../components/Footer';
 import Menu from './Menu';
 import Services from './Services';
 import Gallery from './Gallery';
-import Contact from './Contact';
+import Contact from '../components/Contact';
 import Offers from './Offers';
 import Reservation from './Reservation';
 import Login from './Login';

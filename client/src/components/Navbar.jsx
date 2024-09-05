@@ -60,7 +60,7 @@ const handleLogout = () => {
           >
             Home
           </Link>
-          {['Menu', 'Services', 'Gallery', 'Contact', 'Offers', 'Reservation'].map((item) => (
+          {['Menu', 'Services', 'Gallery', 'Contact', 'Offers'].map((item) => (
             <Link
               to={`/${item.toLowerCase()}`}
               key={item}
@@ -173,7 +173,7 @@ const handleLogout = () => {
             >
               Home
             </Link>
-            {['Menu', 'Services', 'Gallery', 'Contact', 'Offers', 'Reservation'].map((item) => (
+            {['Menu', 'Services', 'Gallery', 'Contact', 'Offers'].map((item) => (
               <Link
                 to={`/${item.toLowerCase()}`}
                 key={item}

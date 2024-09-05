@@ -7,6 +7,7 @@ import menuRoutes from './routes/menuRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import reservationRoutes from './routes/reservationRoutes.js'; 
 import messageRoutes from './routes/messageRoutes.js';
+import emailRoutes from './routes/emailRoutes.js';
 
 // Create an instance of Express
 const app = express();
@@ -27,6 +28,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/menu', menuRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/email', emailRoutes);
 
 // Connect to MongoDB using Mongoose
 mongoose.connect('mongodb://localhost:27017/restaurantDB')
