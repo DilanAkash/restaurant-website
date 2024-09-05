@@ -29,21 +29,29 @@ const MyReservations = () => {
   }, [user]);
 
   if (!user) {
-    return <p>Please log in to view your reservations.</p>;
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">
+        <p>Please log in to view your reservations.</p>
+      </div>
+    );
   }
 
   return (
-    <div>
-      <h1>My Reservations</h1>
+    <div className="container mx-auto px-4 py-8 min-h-screen bg-gray-900 text-white">
+      <h1 className="text-2xl font-bold text-center">My Reservations</h1>
       {isLoading ? (
-        <p>Loading...</p>
+        <div className="text-center mt-4">
+          <p>Loading...</p>
+        </div>
       ) : reservations.length === 0 ? (
-        <p>No reservations found.</p>
+        <div className="text-center mt-4">
+          <p>No reservations found.</p>
+        </div>
       ) : (
-        <ul>
+        <ul className="mt-4 space-y-2">
           {reservations.map(reservation => (
-            <li key={reservation._id}>
-              Reservation for {reservation.numberOfGuests} on {new Date(reservation.date).toLocaleDateString()} at {reservation.time}
+            <li key={reservation._id} className="bg-gray-800 p-4 rounded-lg">
+              Reservation for {reservation.numberOfGuests} guests on {new Date(reservation.date).toLocaleDateString()} at {reservation.time}
             </li>
           ))}
         </ul>
