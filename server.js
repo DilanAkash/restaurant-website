@@ -5,7 +5,7 @@ import userRoutes from './routes/userRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import menuRoutes from './routes/menuRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
-import reservationRoutes from './routes/reservationRoutes.js';
+import reservationRoutes from './routes/reservationRoutes.js'; 
 import messageRoutes from './routes/messageRoutes.js';
 
 // Create an instance of Express
@@ -21,7 +21,7 @@ app.use(cors());
 app.use(express.json());
 
 // Use routes with the /api prefix
-app.use('/api/reservations', reservationRoutes);
+app.use('/api/reservations', reservationRoutes); 
 app.use('/api/messages', messageRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);

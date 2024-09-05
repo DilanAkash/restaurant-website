@@ -28,33 +28,58 @@ const MyReservations = () => {
     fetchReservations();
   }, [user]);
 
+  const handleCancelReservation = async (reservationId) => {
+    const confirmCancel = window.confirm('Are you sure you want to cancel this reservation?');
+    if (!confirmCancel) return;
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/reservations/${reservationId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        alert('Reservation cancelled successfully!');
+        setReservations(prevReservations => prevReservations.filter(r => r._id !== reservationId));
+      } else {
+        alert('Failed to cancel the reservation. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error cancelling reservation:', error);
+      alert('An error occurred. Please try again.');
+    }
+  };
+
   if (!user) {
-    return (
-      <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">
-        <p>Please log in to view your reservations.</p>
-      </div>
-    );
+    return <p>Please log in to view your reservations.</p>;
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 min-h-screen bg-gray-900 text-white">
-      <h1 className="text-2xl font-bold text-center">My Reservations</h1>
+    <div className="container mx-auto py-16 px-4 mt-10">
+      <h1 className="text-4xl font-bold text-center mb-8">My Reservations</h1>
       {isLoading ? (
-        <div className="text-center mt-4">
-          <p>Loading...</p>
-        </div>
+        <p className="text-center text-2xl text-gray-400">Loading your reservations...</p>
       ) : reservations.length === 0 ? (
-        <div className="text-center mt-4">
-          <p>No reservations found.</p>
-        </div>
+        <p className="text-center text-2xl text-gray-400">You have no reservations.</p>
       ) : (
-        <ul className="mt-4 space-y-2">
-          {reservations.map(reservation => (
-            <li key={reservation._id} className="bg-gray-800 p-4 rounded-lg">
-              Reservation for {reservation.numberOfGuests} guests on {new Date(reservation.date).toLocaleDateString()} at {reservation.time}
-            </li>
-          ))}
-        </ul>
+        reservations.map((reservation) => (
+          <div
+            key={reservation._id}
+            className="bg-gray-800 text-white p-6 rounded-lg shadow-md mb-6 hover:shadow-lg transition-shadow duration-300 ease-in-out"
+          >
+            <p className="text-lg mb-2">Number of Guests: {reservation.numberOfGuests}</p>
+            <p className="text-lg mb-2">Date: {new Date(reservation.date).toLocaleDateString()}</p>
+            <p className="text-lg mb-2">Time: {reservation.time}</p>
+            <p className="text-lg mb-2">Location: {reservation.location}</p> {/* Add location */}
+            <p className="text-lg mb-2">Status: {reservation.status}</p>
+            <button
+              onClick={() => handleCancelReservation(reservation._id)}
+              className="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
+              aria-label={`Cancel reservation ${reservation._id}`}
+            >
+              Cancel Reservation
+            </button>
+          </div>
+        ))
       )}
     </div>
   );

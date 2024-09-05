@@ -5,14 +5,14 @@ const router = express.Router();
 
 // Fetch all reservations for a given user
 router.get('/user/:userId', async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const reservations = await Reservation.find({ userId }).sort({ date: -1 });
-    res.json(reservations);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching reservations', error });
-  }
-});
+    try {
+      const { userId } = req.params;
+      const reservations = await Reservation.find({ userId }).sort({ date: -1 });
+      res.json(reservations);
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching reservations', error });
+    }
+  });
 
 // Create a new reservation
 router.post('/', async (req, res) => {
