@@ -9,7 +9,7 @@ import reservationRoutes from './routes/reservationRoutes.js';
 import messageRoutes from './routes/messageRoutes.js';
 import emailRoutes from './routes/emailRoutes.js';
 import offerRoutes from './routes/offerRoutes.js';
-
+import serviceRoutes from './routes/serviceRoutes.js';
 
 // Create an instance of Express
 const app = express();
@@ -32,6 +32,8 @@ app.use('/api/menu', menuRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/email', emailRoutes);
 app.use('/api/offers', offerRoutes);
+app.use('/api/services', serviceRoutes);
+app.use('/uploads', express.static(path.join(__dirname, 'client/src/assets/uploads')));
 
 
 // Connect to MongoDB using Mongoose
