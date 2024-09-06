@@ -5,7 +5,8 @@ const menuItemSchema = new mongoose.Schema({
   category: { 
     type: String, 
     required: true, 
-    enum: ['Appetizer', 'Main Course', 'Dessert', 'Beverage', 'Side'] // Example categories
+    enum: ['All', 'Dinner', 'Rice', 'Fish', 'Drinks', 'Kottu', 'Soup','Prawns', 'Vegetables', 'Desserts', 
+      'Crab', 'Mutton', 'Chicken', 'Appetizer', 'Main Course', 'Dessert', 'Beverage', 'Side', 'Dinner'] //addded the catogaris here
   },
   description: String,
   price: { 
@@ -19,7 +20,7 @@ const menuItemSchema = new mongoose.Schema({
   image: String,
   isNewItem: { type: Boolean, default: false }, 
   isPopular: { type: Boolean, default: false },
-}, { timestamps: true }); // Add timestamps to the schema
+}, { timestamps: true }); // Add timestamps to the schemazz
 
 const MenuItem = mongoose.model('MenuItem', menuItemSchema);
 

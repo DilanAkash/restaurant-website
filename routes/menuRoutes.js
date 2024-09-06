@@ -41,4 +41,20 @@ router.get('/all', async (req, res) => {
   }
 });
 
+// Route to delete a menu item by ID
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedItem = await MenuItem.findByIdAndDelete(id);
+
+    if (!deletedItem) {
+      return res.status(404).json({ message: 'Menu item not found' });
+    }
+
+    res.json({ message: 'Menu item deleted successfully', deletedItem });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting menu item', error: error.message });
+  }
+});
+
 export default router;
