@@ -10,6 +10,12 @@ import messageRoutes from './routes/messageRoutes.js';
 import emailRoutes from './routes/emailRoutes.js';
 import offerRoutes from './routes/offerRoutes.js';
 import serviceRoutes from './routes/serviceRoutes.js';
+import path from 'path';
+import { fileURLToPath } from 'url'; // <-- Added this to fix __dirname issue
+
+// These two lines are required to set up the __dirname constant in ES modules
+const __filename = fileURLToPath(import.meta.url); 
+const __dirname = path.dirname(__filename);
 
 // Create an instance of Express
 const app = express();
@@ -33,8 +39,9 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/email', emailRoutes);
 app.use('/api/offers', offerRoutes);
 app.use('/api/services', serviceRoutes);
-app.use('/uploads', express.static(path.join(__dirname, 'client/src/assets/uploads')));
 
+// Serve static files for image uploads
+app.use('/uploads', express.static(path.join(__dirname, 'client/src/assets/uploads')));
 
 // Connect to MongoDB using Mongoose
 mongoose.connect('mongodb://localhost:27017/restaurantDB')

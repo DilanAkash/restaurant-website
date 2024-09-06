@@ -17,33 +17,36 @@ router.get('/', async (req, res) => {
 
 // Set up multer for image uploads
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'client/src/assets/uploads'); // Path where you want to save the images
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // Save with unique name
-  },
-});
-const upload = multer({ storage });
-
-// Add a new service with image upload
-router.post('/', upload.single('image'), async (req, res) => {
-  const { title, description } = req.body;
-  const imagePath = req.file ? `/uploads/${req.file.filename}` : null; // Save image path
-
-  const newService = new Service({
-    title,
-    description,
-    image: imagePath, // Save the image path in the database
+    destination: (req, file, cb) => {
+      cb(null, 'client/src/assets/uploads'); // Path where you want to save the images
+    },
+    filename: (req, file, cb) => {
+      cb(null, Date.now() + path.extname(file.originalname)); // Save with unique name
+    },
   });
-
-  try {
-    const savedService = await newService.save();
-    res.status(201).json(savedService);
-  } catch (error) {
-    res.status(400).json({ message: 'Error adding service', error });
-  }
+  const upload = multer({ storage });
+  
+// Add a new service with image upload
+  router.post('/', upload.single('image'), async (req, res) => {
+    const { title, description } = req.body;
+    
+ // Ensure image path is prefixed with the static route '/uploads'
+ const imagePath = req.file ? `/uploads/${req.file.filename}` : null; // Save image path
+  
+ const newService = new Service({
+  title,
+  description,
+  image: imagePath, // Save the image path in the database
 });
+  
+ try {
+const savedService = await newService.save();
+      res.status(201).json(savedService);
+    } catch (error) {
+      res.status(400).json({ message: 'Error adding service', error });
+    }
+  });
+  
 
 // Update a service
 router.put('/:serviceId', async (req, res) => {
