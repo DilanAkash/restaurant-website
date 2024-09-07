@@ -175,8 +175,7 @@ const Cart = ({ cartItems, setCartItems }) => {
                 onClick={handlePlaceOrder}
                 className="bg-yellow-500 text-black px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors w-full md:w-auto"
                 disabled={isPlacingOrder}
-                aria-label="Place order"
-              >
+                aria-label="Place order">
                 {isPlacingOrder ? 'Placing Order...' : 'Place Order'}
               </button>
             </div>

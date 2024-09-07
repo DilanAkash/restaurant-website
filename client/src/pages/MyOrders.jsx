@@ -94,7 +94,7 @@ const MyOrders = () => {
             </p>
             <p className="text-lg mb-4 flex items-center">
               <FaCalendarAlt className="mr-2 text-orange-500" />
-              Date: <span className="text-yellow-500 ml-2">{new Date(order.orderDate).toLocaleString()}</span>
+              Date: <span className="text-yellow-500 ml-2">{new Date(order.date).toLocaleString()}</span> {/* Updated date field */}
             </p>
             <p className="text-lg mb-4 flex items-center">
               {order.status === 'Completed' ? (
