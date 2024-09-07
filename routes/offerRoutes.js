@@ -69,6 +69,9 @@ router.post('/apply-promo', async (req, res) => {
       return res.status(400).json({ message: 'Promo code has expired' });
     }
 
+    // Apply discount and remove offer from the database
+    await Offer.findByIdAndDelete(offer._id);  // Remove the promo code once used
+
     res.json({ discount: offer.discountPercentage });
   } catch (error) {
     res.status(500).json({ message: 'Error applying promo code', error });

@@ -9,7 +9,10 @@ const Cart = ({ cartItems, setCartItems }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const [cartVisible] = useState(true);
-  const [address, setAddress] = useState(''); // New state for delivery address
+  const [address, setAddress] = useState(''); // For Cash on Delivery
+  const [promoCode, setPromoCode] = useState(''); // Promo Code state
+  const [discount, setDiscount] = useState(0); // Discount value state
+  const [isApplyingPromo, setIsApplyingPromo] = useState(false); // Loading state for promo
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -32,11 +35,12 @@ const Cart = ({ cartItems, setCartItems }) => {
       if (paymentMethod === 'Cash On Delivery') {
         total += 650; // Add delivery charges
       }
+      total -= (total * discount) / 100; // Apply discount
       setTotalPrice(total);
     };
 
     calculateTotal();
-  }, [cartItems, paymentMethod]);
+  }, [cartItems, paymentMethod, discount]);
 
   const handleQuantityChange = (id, delta) => {
     const newCartItems = cartItems.map(item => {
@@ -107,6 +111,40 @@ const Cart = ({ cartItems, setCartItems }) => {
     }
   };
 
+  const handleApplyPromoCode = async () => {
+    if (promoCode.trim() === '') {
+      alert('Please enter a valid promo code.');
+      return;
+    }
+
+    setIsApplyingPromo(true);
+
+    try {
+      const response = await fetch('http://localhost:5000/api/offers/apply-promo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ promoCode }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setDiscount(data.discount);
+        alert(`Promo code applied! You get a ${data.discount}% discount.`);
+      } else {
+        const errorData = await response.json();
+        alert(`Failed to apply promo code: ${errorData.message}`);
+        setDiscount(0); // Reset discount if invalid
+      }
+    } catch (error) {
+      console.error('Error applying promo code:', error);
+      alert('An error occurred while applying the promo code. Please try again.');
+    } finally {
+      setIsApplyingPromo(false);
+    }
+  };
+
   return (
     <div className={`container mx-auto py-16 px-4 mt-20 ${!cartVisible && 'hidden'}`}>
       <h1 className="text-3xl font-bold mb-8 text-center">Shopping Cart</h1>
@@ -136,6 +174,7 @@ const Cart = ({ cartItems, setCartItems }) => {
                 </button>
               </div>
             ))}
+
             <div className="mt-8 flex flex-col md:flex-row justify-between items-center">
               <div className="mb-4 md:mb-0 w-full md:w-auto text-center md:text-left">
                 <label className="text-white font-semibold">Payment Method: </label>
@@ -147,6 +186,27 @@ const Cart = ({ cartItems, setCartItems }) => {
               <div className="text-center md:text-right">
                 <h2 className="text-2xl font-bold text-yellow-500">Total Price: Rs. {totalPrice}</h2>
                 {paymentMethod === 'Cash On Delivery' && <p className="text-red-500">*Rs. 650 added for Cash on Delivery</p>}
+              </div>
+            </div>
+
+            {/* Promo Code Section */}
+            <div className="mt-8">
+              <label className="text-white font-semibold">Promo Code: </label>
+              <div className="flex mt-2">
+                <input
+                  type="text"
+                  value={promoCode}
+                  onChange={(e) => setPromoCode(e.target.value)}
+                  className="flex-1 p-2 bg-gray-600 text-white rounded-l-lg"
+                  placeholder="Enter promo code"
+                />
+                <button
+                  onClick={handleApplyPromoCode}
+                  className="bg-yellow-500 text-black px-6 py-2 rounded-r-lg hover:bg-yellow-600 transition-colors"
+                  disabled={isApplyingPromo}
+                  aria-label="Apply promo code">
+                  {isApplyingPromo ? 'Applying...' : 'Apply'}
+                </button>
               </div>
             </div>
 
