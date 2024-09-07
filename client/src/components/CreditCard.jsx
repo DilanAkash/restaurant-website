@@ -26,67 +26,64 @@ const CreditCard = () => {
   const formatName = (value) => value.replace(/[^a-zA-Z\s]/g, '');
 
   return (
-    <div className="credit-card-container">
-      <Cards
-        number={number}
-        name={name}
-        expiry={expiry}
-        cvc={cvc}
-        focused={focus}
-        brand={cardType}
-      />
+  <div className="credit-card-container">
+    <Cards
+      number={number}
+      name={name}
+      expiry={expiry}
+      cvc={cvc}
+      focused={focus}
+      brand={cardType}
+    />
 
-      <form className="credit-card-form">
-        <div className="form-row">
-          <div className="form-group col-md-6">
-            <label htmlFor="cardType">Card Type</label>
-            <select
-              className="form-control modern-input"
-              name="cardType"
-              value={cardType}
-              onChange={(e) => setCardType(e.target.value)}
-            >
-              <option value="">Select Card Type</option>
-              <option value="visa">Visa</option>
-              <option value="mastercard">MasterCard</option>
-              <option value="amex">American Express</option>
-              <option value="discover">Discover</option>
-            </select>
-          </div>
-        </div>
+    <form className="credit-card-form">
+      {/* Card Type Selection */}
+      <div className="form-group">
+        <label htmlFor="cardType">Card Type</label>
+        <select
+          className="form-control"
+          name="cardType"
+          value={cardType}
+          onChange={(e) => setCardType(e.target.value)}
+        >
+          <option value="">Select Card Type</option>
+          <option value="visa">Visa</option>
+          <option value="mastercard">MasterCard</option>
+          <option value="amex">American Express</option>
+          <option value="discover">Discover</option>
+        </select>
+      </div>
 
-        <div className="form-row">
-          <div className="form-group col-md-12">
-            <label htmlFor="number">Card Number</label>
-            <input
-              type="text"
-              className="form-control modern-input"
-              name="number"
-              value={number}
-              onChange={(e) => setNumber(formatCardNumber(e.target.value))}
-              onFocus={(e) => setFocus(e.target.name)}
-              maxLength="19"
-              placeholder="1234 5678 9101 1121"
-            />
-          </div>
-        </div>
+      {/* Card Number Input */}
+      <div className="form-group">
+        <label htmlFor="number">Card Number</label>
+        <input
+          type="text"
+          className="form-control"
+          name="number"
+          value={number}
+          onChange={(e) => setNumber(formatCardNumber(e.target.value))}
+          onFocus={(e) => setFocus(e.target.name)}
+          maxLength="19"
+          placeholder="1234 5678 9101 1121"
+        />
+      </div>
 
-        <div className="form-row">
-          <div className="form-group col-md-12">
-            <label htmlFor="name">Cardholder Name</label>
-            <input
-              type="text"
-              className="form-control modern-input"
-              name="name"
-              value={name}
-              onChange={(e) => setName(formatName(e.target.value))}
-              onFocus={(e) => setFocus(e.target.name)}
-              placeholder="Your Name"
-            />
-          </div>
-        </div>
+      {/* Cardholder Name Input */}
+      <div className="form-group">
+        <label htmlFor="name">Cardholder Name</label>
+        <input
+          type="text"
+          className="form-control"
+          name="name"
+          value={name}
+          onChange={(e) => setName(formatName(e.target.value))}
+          onFocus={(e) => setFocus(e.target.name)}
+          placeholder="Your Name"
+        />
+      </div>
 
-      {/* Expiry Date and CVV on the same row */}
+      {/* Expiry Date and CVV in the same row */}
       <div className="form-row">
         <div className="form-group">
           <label htmlFor="expiry">Expiration Date (MM/YY)</label>
@@ -116,9 +113,9 @@ const CreditCard = () => {
           />
         </div>
       </div>
+    </form>
+  </div>
 
-      </form>
-    </div>
   );
 };
 

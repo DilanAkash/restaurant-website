@@ -119,3 +119,149 @@ nav a.active::after {
 body {
   padding-top: 4rem; /* Adjust this value based on your navbar height */
 }
+
+/* Welcome Section Styles */
+.welcome-section {
+  padding: 2rem;
+  background-color: #1c1c2c;
+}
+
+.welcome-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .welcome-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Video Section */
+.welcome-video-container {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  border-radius: 15px;
+  overflow: hidden;
+  min-height: 300px;
+}
+
+.welcome-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.welcome-video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-text-container {
+  text-align: center;
+  padding: 2rem;
+  color: #ffffff;
+}
+
+.welcome-heading {
+  font-size: 3rem;
+  font-weight: 800;
+}
+
+.welcome-subheading {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}
+
+/* Right Section (Images and Buttons) */
+.welcome-right-section {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 1rem;
+}
+
+.welcome-image-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.welcome-image-container:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Slight shadow for more depth */
+}
+
+.welcome-image {
+  width: 100%;
+  height: 12rem;
+  object-fit: cover;
+  transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
+}
+
+.welcome-image-container:hover .welcome-image {
+  transform: scale(1.1);  /* Zoom effect on image */
+}
+
+.welcome-image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.welcome-image-container:hover .welcome-image-overlay {
+  background-color: rgba(0, 0, 0, 0.1); /* Less opaque on hover */
+}
+
+.welcome-button-container {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.welcome-button {
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.welcome-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Flexbox layout for Expiration Date and CVV fields */
+.form-row {
+    display: flex;
+    justify-content: space-between; /* Align both fields next to each other */
+    gap: 15px; /* Add spacing between them */
+  }
+  
+  .form-row .form-group {
+    flex: 1;
+  }
+  
+  .form-row .form-group input {
+    width: 100%; /* Make sure both inputs take the full width of their containers */
+  }

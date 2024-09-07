@@ -1,17 +1,17 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; // Assuming React Router is used
 import menuImage from '../assets/menu-image.jpg';
 import offersImage from '../assets/offer-image.jpg';
 import videoFile from '../assets/abc-restaurant-video.mp4';
 
 const WelcomeSection = () => {
   return (
-    <section className="p-8 bg-gray-900">
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+    <section className="welcome-section">
+      <div className="welcome-container">
         
         {/* Video Background Left Section */}
         <div
-          className="relative bg-cover bg-center rounded-lg overflow-hidden"
-          style={{ minHeight: '300px', backgroundAttachment: 'fixed' }}
+          className="welcome-video-container"
           aria-label="Welcome video showcasing ABC Restaurant's ambiance"
         >
           <video
@@ -20,14 +20,14 @@ const WelcomeSection = () => {
             loop
             muted
             playsInline
-            className="absolute inset-0 w-full h-full object-cover"
+            className="welcome-video"
           />
-          <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
-            <div className="relative p-8 w-full">
-              <h2 className="text-5xl font-extrabold text-white mb-4 text-center">
+          <div className="welcome-video-overlay">
+            <div className="welcome-text-container">
+              <h2 className="welcome-heading">
                 Welcome to<br /> ABC Restaurant
               </h2>
-              <p className="text-white text-center">
+              <p className="welcome-subheading">
                 Experience our mouthwatering dishes, bursting with flavor and aroma.
               </p>
             </div>
@@ -35,40 +35,44 @@ const WelcomeSection = () => {
         </div>
 
         {/* Right Section */}
-        <div className="grid grid-rows-2 gap-4">
+        <div className="welcome-right-section">
           {/* Offers Section */}
-          <div className="relative overflow-hidden rounded-lg shadow-lg group">
+          <div className="welcome-image-container group">
             <img
               src={offersImage}
               alt="Offers"
-              className="object-cover h-48 w-full transition-transform duration-300 group-hover:scale-105"
+              className="welcome-image group-hover:brightness-110"
             />
-            <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg group-hover:bg-opacity-60 transition-all duration-300"></div>
-            <div className="absolute bottom-4 right-4">
-              <button
-                className="bg-blue-600 text-white font-bold px-6 py-3 rounded-lg shadow-lg hover:bg-blue-800 hover:scale-105 hover:shadow-xl transition-all duration-300"
-                aria-label="View current offers at ABC Restaurant"
-              >
-                View Offers
-              </button>
+            <div className="welcome-image-overlay group-hover:bg-opacity-40"></div>
+            <div className="welcome-button-container">
+              <Link to="/offers">
+                <button
+                  className="welcome-button bg-blue-600 hover:bg-blue-800"
+                  aria-label="View current offers at ABC Restaurant"
+                >
+                  View Offers
+                </button>
+              </Link>
             </div>
           </div>
 
           {/* Menu Section */}
-          <div className="relative overflow-hidden rounded-lg shadow-lg group">
+          <div className="welcome-image-container group">
             <img
               src={menuImage}
               alt="Menu"
-              className="object-cover h-48 w-full transition-transform duration-300 group-hover:scale-105"
+              className="welcome-image group-hover:brightness-110"
             />
-            <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg group-hover:bg-opacity-60 transition-all duration-300"></div>
-            <div className="absolute bottom-4 right-4">
-              <button
-                className="bg-green-600 text-white font-bold px-6 py-3 rounded-lg shadow-lg hover:bg-green-800 hover:scale-105 hover:shadow-xl transition-all duration-300"
-                aria-label="View ABC Restaurant's menu"
-              >
-                View Menu
-              </button>
+            <div className="welcome-image-overlay group-hover:bg-opacity-40"></div>
+            <div className="welcome-button-container">
+              <Link to="/menu">
+                <button
+                  className="welcome-button bg-green-600 hover:bg-green-800"
+                  aria-label="View ABC Restaurant's menu"
+                >
+                  View Menu
+                </button>
+              </Link>
             </div>
           </div>
         </div>

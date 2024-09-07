@@ -1,3 +1,4 @@
+/* Only apply styles within .credit-card-container */
 .credit-card-container {
   max-width: 450px;
   margin: auto;
@@ -8,23 +9,23 @@
   color: #fff;
 }
 
-.credit-card-form {
+.credit-card-container .credit-card-form {
   margin-top: 20px;
 }
 
-.form-group {
+.credit-card-container .form-group {
   margin-bottom: 1.2rem;
 }
 
-label {
+.credit-card-container label {
   display: block;
   font-weight: bold;
   color: #ddd;
   margin-bottom: 0.4rem;
 }
 
-input,
-select {
+.credit-card-container input,
+.credit-card-container select {
   width: 100%;
   padding: 0.8rem;
   border-radius: 10px;
@@ -33,11 +34,11 @@ select {
   color: #fff;
 }
 
-input::placeholder {
+.credit-card-container input::placeholder {
   color: #888;
 }
 
-input:focus {
+.credit-card-container input:focus {
   outline: none;
   box-shadow: 0 0 4px #00b4d8;
 }
@@ -46,7 +47,7 @@ input:focus {
   margin-bottom: 20px;
 }
 
-button {
+.credit-card-container button {
   background-color: #f4c430;
   color: #1c1c2c;
   padding: 0.8rem 1.6rem;
@@ -56,22 +57,21 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.credit-card-container button:hover {
   background-color: #e0b020;
 }
 
 /* Flexbox layout for Expiration Date and CVV fields */
-.form-row {
-    display: flex;
-    justify-content: space-between; /* Align both fields next to each other */
-    gap: 15px; /* Add spacing between them */
-  }
-  
-  .form-row .form-group {
-    flex: 1;
-  }
-  
-  .form-row .form-group input {
-    width: 100%; /* Make sure both inputs take the full width of their containers */
-  }
-  
+.credit-card-container .form-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px; /* Add spacing between them */
+}
+
+.credit-card-container .form-row .form-group {
+  flex: 1;
+}
+
+.credit-card-container .form-row .form-group input {
+  width: 100%;
+}
