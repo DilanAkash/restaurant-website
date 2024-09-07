@@ -11,6 +11,7 @@ import emailRoutes from './routes/emailRoutes.js';
 import offerRoutes from './routes/offerRoutes.js';
 import serviceRoutes from './routes/serviceRoutes.js';
 import galleryRoutes from './routes/galleryRoutes.js';
+import paymentRoutes from './routes/paymentRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url'; // <-- Added this to fix __dirname issue
 
@@ -41,6 +42,7 @@ app.use('/api/email', emailRoutes);
 app.use('/api/offers', offerRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/gallery', galleryRoutes);
+app.use('/api/payments', paymentRoutes);
 
 // Serve static files for image uploads
 app.use('/uploads', express.static(path.join(__dirname, 'client/src/assets/uploads')));

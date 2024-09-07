@@ -1,9 +1,10 @@
 import express from 'express';
 import Order from '../models/Order.js';
+import Payment from '../models/Payment.js';
 
 const router = express.Router();
 
-// Route to place an order
+// Route to place an order and save payment info
 router.post('/place-order', async (req, res) => {
   try {
     const { userId, items, total, paymentMethod } = req.body;
@@ -19,9 +20,21 @@ router.post('/place-order', async (req, res) => {
       items,
       total,
       paymentMethod,
+      date: new Date(),
     });
 
     await newOrder.save();
+
+    // Save payment info
+    const payment = new Payment({
+      user: userId,
+      orderId: newOrder._id,
+      amount: total,
+      paymentMethod,
+      date: new Date(),
+      status: paymentMethod === 'Card Payment' ? 'Paid' : 'Pending', // Set status based on payment method
+    });
+    await payment.save();
 
     res.status(201).json({ message: 'Order placed successfully', orderId: newOrder._id });
   } catch (error) {
@@ -33,7 +46,7 @@ router.post('/place-order', async (req, res) => {
 // Route to fetch orders by user ID
 router.get('/user/:userId', async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.params.userId }).sort({ orderDate: -1 });
+    const orders = await Order.find({ user: req.params.userId }).sort({ date: -1 }); // Use 'date' field
     if (!orders || orders.length === 0) {
       return res.status(404).json({ message: 'No orders found for this user' });
     }

@@ -1,42 +1,71 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../AuthContext';
+import { FaCreditCard, FaMoneyBillWave } from 'react-icons/fa';
 
 const Payments = () => {
+  const { user } = useContext(AuthContext);
   const [payments, setPayments] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Placeholder: Fetch payments from the backend API and update the state
-    // fetch('http://localhost:5000/api/payments', { method: 'GET' })
-    //   .then(response => response.json())
-    //   .then(data => setPayments(data))
-    //   .catch(error => console.error('Error fetching payments:', error));
+    const fetchPayments = async () => {
+      if (user) {
+        try {
+          const response = await fetch(`http://localhost:5000/api/payments/user/${user._id}`);
+          if (response.ok) {
+            const data = await response.json();
+            setPayments(data);
+          } else {
+            console.error('Failed to fetch payments');
+          }
+        } catch (error) {
+          console.error('Error fetching payments:', error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
 
-    // For now, we'll use mock data
-    setPayments([
-      { id: 1, description: 'Pizza', amount: '$15', status: 'Paid' },
-      { id: 2, description: 'Burger', amount: '$10', status: 'Pending' },
-    ]);
-  }, []);
+    fetchPayments();
+  }, [user]);
+
+  if (!user) {
+    return <p className="text-center text-2xl">Please log in to view your payments.</p>;
+  }
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-900 text-white">
-      <div className="w-full max-w-2xl bg-gray-800 p-6 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold mb-4">Payments</h2>
-        <ul>
-          {payments.map(payment => (
-            <li key={payment.id} className="mb-4">
-              <div className="mb-2">
-                <strong>Description:</strong> {payment.description}
-              </div>
-              <div className="mb-2">
-                <strong>Amount:</strong> {payment.amount}
-              </div>
-              <div className={`text-${payment.status === 'Paid' ? 'green' : 'yellow'}-500`}>
-                {payment.status}
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
+    <div className="container mx-auto py-16 px-4 mt-10">
+      <h1 className="text-4xl font-bold text-center mb-8">My Payments</h1>
+      {loading ? (
+        <p className="text-center text-2xl text-gray-400">Loading your payments...</p>
+      ) : payments.length === 0 ? (
+        <p className="text-center text-2xl text-gray-400">You have no payments yet.</p>
+      ) : (
+        payments.map((payment) => (
+          <div
+            key={payment._id}
+            className="bg-gray-800 text-white p-6 rounded-lg shadow-md mb-6 hover:shadow-lg transition-shadow duration-300 ease-in-out"
+          >
+            <h2 className="text-xl font-semibold mb-4">
+              Payment ID: <span className="text-yellow-500">{payment._id}</span>
+            </h2>
+            <p className="text-lg mb-2 flex items-center">
+              {payment.paymentMethod === 'Card Payment' ? (
+                <FaCreditCard className="mr-2 text-blue-500" />
+              ) : (
+                <FaMoneyBillWave className="mr-2 text-green-500" />
+              )}
+              Amount: <span className="font-bold text-yellow-500 ml-2">Rs. {payment.amount}</span>
+            </p>
+            <p className="text-lg mb-4">
+              Status: <span className="text-yellow-500">{payment.status}</span>
+            </p>
+            <p className="text-lg mb-4">
+              Date: <span className="text-yellow-500">{new Date(payment.date).toLocaleString()}</span>
+            </p>
+          </div>
+        ))
+      )}
     </div>
   );
 };
