@@ -265,3 +265,165 @@ body {
   .form-row .form-group input {
     width: 100%; /* Make sure both inputs take the full width of their containers */
   }
+
+  /* Dark Mode Modern Cart Styling with Gold Accents */
+.cart-container .container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.cart-container .bg-gray-800 {
+  background-color: #121212; /* Darker modern background */
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6); /* Subtle shadow for depth */
+}
+
+.cart-container h1 {
+  color: #f5f5f5;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.cart-container .cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1f1f1f; /* Slightly lighter dark mode for items */
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Darker shadow */
+}
+
+.cart-container img {
+  border-radius: 10px;
+  width: 80px;
+  height: 80px;
+}
+
+.cart-container h2 {
+  color: #e5e5e5;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.cart-container p {
+  color: #b5b5b5; /* Softer text color for prices */
+}
+
+.cart-container button {
+  padding: 10px 16px;
+  background-color: #FDD726; /* Gold with darker tone */
+  color: #000000; /* Dark text for contrast */
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cart-container button:hover {
+  background-color: #d4af37; /* Bright gold on hover */
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.5); /* Hover effect */
+}
+
+.cart-container textarea,
+.cart-container select,
+.cart-container input {
+  width: 100%;
+  padding: 12px;
+  background-color: #1e1e1e; /* Dark input background */
+  color: #f5f5f5;
+  border: none;
+  border-radius: 8px;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.cart-container textarea:focus,
+.cart-container select:focus,
+.cart-container input:focus {
+  outline: none;
+  box-shadow: 0 0 6px #d4af37; /* Gold focus effect */
+}
+
+.cart-container .flex-1 {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.cart-container .total-price {
+  font-size: 2rem; /* Increased size for better prominence */
+  color: #d4af37; /* Gold for total price */
+  text-align: right;
+  margin-top: 10px;
+}
+
+.cart-container .services-tax {
+  font-size: 1.25rem;
+  color: #b5b5b5; /* Softer text for service and tax */
+  text-align: right;
+}
+
+.cart-container .promo-code {
+  display: flex;
+  gap: 10px;
+}
+
+.cart-container .promo-code input {
+  flex: 1;
+}
+
+.cart-container .promo-code button {
+  background-color: #FDD726; /* Gold for promo button */
+  color: #000000; /* Dark text for contrast */
+}
+
+.cart-container .promo-code button:hover {
+  background-color: #d4af37; /* Brighter gold on hover */
+}
+
+.cart-container .services-tax {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  color: #9ca3af;
+}
+
+.cart-container .total-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: 20px;
+  gap: 5px; /* Reduced gap to make it look compact */
+}
+
+.cart-container .service-tax-total {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-bottom: 15px;
+}
+
+.cart-container .service-tax-total p {
+  font-size: 1rem; /* Consistent size for service fee and tax */
+  color: #9ca3af;
+}
+
+@media (min-width: 768px) {
+  .cart-container .flex-row {
+    flex-direction: row;
+  }
+
+  .cart-container .space-x-4 {
+    gap: 15px;
+  }
+
+  .cart-container .w-full {
+    width: auto;
+  }
+}
+

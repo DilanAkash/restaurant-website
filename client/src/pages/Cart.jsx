@@ -13,6 +13,12 @@ const Cart = ({ cartItems, setCartItems }) => {
   const [promoCode, setPromoCode] = useState(''); // Promo Code state
   const [discount, setDiscount] = useState(0); // Discount value state
   const [isApplyingPromo, setIsApplyingPromo] = useState(false); // Loading state for promo
+  const [serviceFee, setServiceFee] = useState(0); // Service Fee
+  const [tax, setTax] = useState(0); // Tax
+
+  const DELIVERY_CHARGE = 650;
+  const TAX_RATE = 0.10; // 10% tax
+  const SERVICE_FEE_RATE = 0.05; // 5% service fee
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -32,10 +38,24 @@ const Cart = ({ cartItems, setCartItems }) => {
   useEffect(() => {
     const calculateTotal = () => {
       let total = cartItems.reduce((acc, item) => acc + item.quantity * item.price, 0);
+
+      // Apply discount
+      total -= (total * discount) / 100;
+
+      // Add service fee and tax
+      const serviceFeeAmount = total * SERVICE_FEE_RATE;
+      const taxAmount = total * TAX_RATE;
+
+      setServiceFee(serviceFeeAmount);
+      setTax(taxAmount);
+
+      // Add delivery charge if Cash on Delivery
       if (paymentMethod === 'Cash On Delivery') {
-        total += 650; // Add delivery charges
+        total += DELIVERY_CHARGE;
       }
-      total -= (total * discount) / 100; // Apply discount
+
+      total += serviceFeeAmount + taxAmount;
+
       setTotalPrice(total);
     };
 
@@ -46,7 +66,7 @@ const Cart = ({ cartItems, setCartItems }) => {
     const newCartItems = cartItems.map(item => {
       if (item.id === id) {
         const updatedQuantity = item.quantity + delta;
-        return { ...item, quantity: updatedQuantity >= 0 ? updatedQuantity : 0 };
+        return { ...item, quantity: updatedQuantity >= 1 ? updatedQuantity : 1 };
       }
       return item;
     });
@@ -82,7 +102,7 @@ const Cart = ({ cartItems, setCartItems }) => {
       items: cartItems,
       total: totalPrice,
       paymentMethod: paymentMethod,
-      address: paymentMethod === 'Cash On Delivery' ? address : null, // Only include address if COD
+      address: paymentMethod === 'Cash On Delivery' ? address : null,
       date: new Date().toISOString(),
     };
 
@@ -146,10 +166,10 @@ const Cart = ({ cartItems, setCartItems }) => {
   };
 
   return (
-    <div className={`container mx-auto py-16 px-4 mt-20 ${!cartVisible && 'hidden'}`}>
+    <div className={`cart-container container mx-auto py-16 px-4 mt-20 ${!cartVisible && 'hidden'}`}>
       <h1 className="text-3xl font-bold mb-8 text-center">Shopping Cart</h1>
 
-      <div className="bg-gray-800 p-4 md:p-6 rounded-lg shadow-lg">
+      <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
         {cartItems.length === 0 ? (
           <p className="text-white text-center text-2xl">Your cart is empty.</p>
         ) : (
@@ -164,35 +184,21 @@ const Cart = ({ cartItems, setCartItems }) => {
                   <p>Rs. {item.price}</p>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <button onClick={() => handleQuantityChange(item.id, -1)} className="px-2 bg-gray-600 text-white rounded-l-lg" aria-label="Decrease quantity">-</button>
+                  <button onClick={() => handleQuantityChange(item.id, -1)} className="px-2 bg-gray-600 text-black rounded-l-lg" aria-label="Decrease quantity">-</button>
                   <span className="px-4">{item.quantity}</span>
-                  <button onClick={() => handleQuantityChange(item.id, 1)} className="px-2 bg-gray-600 text-white rounded-r-lg" aria-label="Increase quantity">+</button>
+                  <button onClick={() => handleQuantityChange(item.id, 1)} className="px-2 bg-gray-600 text-black rounded-r-lg" aria-label="Increase quantity">+</button>
                 </div>
                 <p className="text-white font-semibold text-center md:text-right">Total: Rs. {item.price * item.quantity}</p>
-                <button onClick={() => handleRemoveItem(item.id)} className="mt-2 md:mt-0 ml-0 md:ml-4 bg-red-500 text-white px-4 py-2 rounded-lg" aria-label={`Remove ${item.name} from cart`}>
+                <button onClick={() => handleRemoveItem(item.id)} className="mt-2 md:mt-0 ml-0 md:ml-4 bg-red-500 text-black px-4 py-2 rounded-lg" aria-label={`Remove ${item.name} from cart`}>
                   Remove
                 </button>
               </div>
             ))}
 
-            <div className="mt-8 flex flex-col md:flex-row justify-between items-center">
-              <div className="mb-4 md:mb-0 w-full md:w-auto text-center md:text-left">
-                <label className="text-white font-semibold">Payment Method: </label>
-                <select value={paymentMethod} onChange={handlePaymentMethodChange} className="ml-0 md:ml-4 p-2 bg-gray-600 text-white rounded-lg" aria-label="Select payment method">
-                  <option value="Card Payment">Card Payment</option>
-                  <option value="Cash On Delivery">Cash on Delivery</option>
-                </select>
-              </div>
-              <div className="text-center md:text-right">
-                <h2 className="text-2xl font-bold text-yellow-500">Total Price: Rs. {totalPrice}</h2>
-                {paymentMethod === 'Cash On Delivery' && <p className="text-red-500">*Rs. 650 added for Cash on Delivery</p>}
-              </div>
-            </div>
-
             {/* Promo Code Section */}
             <div className="mt-8">
               <label className="text-white font-semibold">Promo Code: </label>
-              <div className="flex mt-2">
+              <div className="promo-code flex mt-2">
                 <input
                   type="text"
                   value={promoCode}
@@ -210,23 +216,47 @@ const Cart = ({ cartItems, setCartItems }) => {
               </div>
             </div>
 
+            {/* Payment Method and Address */}
+            <div className="mt-8 flex flex-col md:flex-row justify-between items-center">
+              <div className="mb-4 md:mb-0 w-full md:w-auto text-left md:text-left">
+                <label className="text-white font-semibold">Payment Method: </label>
+                <select value={paymentMethod} onChange={handlePaymentMethodChange} className="ml-0 md:ml-4 p-2 bg-gray-600 text-white rounded-lg" aria-label="Select payment method">
+                  <option value="Card Payment">Card Payment</option>
+                  <option value="Cash On Delivery">Cash on Delivery</option>
+                </select>
+              </div>
+            </div>
+            
+            {/* Render Address Input if Cash on Delivery is selected */}
+            {paymentMethod === 'Cash On Delivery' && (
+              <div className="mt-8">
+                <label className="text-white font-semibold mb-2 block">Delivery Address: </label>
+                <textarea
+                  className="w-full p-4 bg-gray-600 text-white rounded-lg"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  placeholder="Enter your delivery address"
+                  rows="5" // Added to make the box taller
+                />
+              </div>
+            )}                                  
+
+            {/* Display additional charges */}
+            <div className="mt-8 text-white text-right md:text-right">
+              <div className="service-tax-total">
+                <p>Service Fee: Rs. {serviceFee.toFixed(2)}</p>
+                <p>Tax (10%): Rs. {tax.toFixed(2)}</p>
+                {paymentMethod === 'Cash On Delivery' && <p className="text-red-500">*Rs. 650 added for Cash on Delivery</p>}
+              </div>
+              <div className="total-price">
+                Total Price: Rs. {totalPrice.toFixed(2)}
+              </div>
+            </div>
+
             {/* Render CreditCard Component if Card Payment is selected */}
             {paymentMethod === 'Card Payment' && (
               <div className="mt-8">
                 <CreditCard /> {/* Display the credit card form */}
-              </div>
-            )}
-
-            {/* Render Address Input if Cash on Delivery is selected */}
-            {paymentMethod === 'Cash On Delivery' && (
-              <div className="mt-8">
-                <label className="text-white font-semibold">Delivery Address: </label>
-                <textarea
-                  className="w-full p-3 bg-gray-600 text-white rounded-lg mt-2"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  placeholder="Enter your delivery address"
-                />
               </div>
             )}
 
