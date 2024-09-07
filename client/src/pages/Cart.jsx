@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { AuthContext } from '../AuthContext';
-import CreditCard from "../components/CreditCard";
+import CreditCard from '../components/CreditCard';
 
 const Cart = ({ cartItems, setCartItems }) => {
   const { user } = useContext(AuthContext);
@@ -9,6 +9,7 @@ const Cart = ({ cartItems, setCartItems }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const [cartVisible] = useState(true);
+  const [address, setAddress] = useState(''); // New state for delivery address
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -65,6 +66,11 @@ const Cart = ({ cartItems, setCartItems }) => {
       return;
     }
 
+    if (paymentMethod === 'Cash On Delivery' && address.trim() === '') {
+      alert('Please enter a delivery address.');
+      return;
+    }
+
     setIsPlacingOrder(true);
 
     const orderDetails = {
@@ -72,6 +78,7 @@ const Cart = ({ cartItems, setCartItems }) => {
       items: cartItems,
       total: totalPrice,
       paymentMethod: paymentMethod,
+      address: paymentMethod === 'Cash On Delivery' ? address : null, // Only include address if COD
       date: new Date().toISOString(),
     };
 
@@ -147,6 +154,19 @@ const Cart = ({ cartItems, setCartItems }) => {
             {paymentMethod === 'Card Payment' && (
               <div className="mt-8">
                 <CreditCard /> {/* Display the credit card form */}
+              </div>
+            )}
+
+            {/* Render Address Input if Cash on Delivery is selected */}
+            {paymentMethod === 'Cash On Delivery' && (
+              <div className="mt-8">
+                <label className="text-white font-semibold">Delivery Address: </label>
+                <textarea
+                  className="w-full p-3 bg-gray-600 text-white rounded-lg mt-2"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  placeholder="Enter your delivery address"
+                />
               </div>
             )}
 
