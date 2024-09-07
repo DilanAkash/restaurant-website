@@ -1,0 +1,77 @@
+.credit-card-container {
+  max-width: 450px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #1c1c2c;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #fff;
+}
+
+.credit-card-form {
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  color: #ddd;
+  margin-bottom: 0.4rem;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 10px;
+  border: none;
+  background-color: #2a2a3a;
+  color: #fff;
+}
+
+input::placeholder {
+  color: #888;
+}
+
+input:focus {
+  outline: none;
+  box-shadow: 0 0 4px #00b4d8;
+}
+
+.credit-card-container .Cards {
+  margin-bottom: 20px;
+}
+
+button {
+  background-color: #f4c430;
+  color: #1c1c2c;
+  padding: 0.8rem 1.6rem;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #e0b020;
+}
+
+/* Flexbox layout for Expiration Date and CVV fields */
+.form-row {
+    display: flex;
+    justify-content: space-between; /* Align both fields next to each other */
+    gap: 15px; /* Add spacing between them */
+  }
+  
+  .form-row .form-group {
+    flex: 1;
+  }
+  
+  .form-row .form-group input {
+    width: 100%; /* Make sure both inputs take the full width of their containers */
+  }
+  

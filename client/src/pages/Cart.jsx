@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { AuthContext } from '../AuthContext';
+import CreditCard from "../components/CreditCard";
 
-const Cart = ({ cartItems, setCartItems }) => {  // Removed 'updateCartItemQuantity'
+const Cart = ({ cartItems, setCartItems }) => {
   const { user } = useContext(AuthContext);
   const [paymentMethod, setPaymentMethod] = useState('Card Payment');
   const [totalPrice, setTotalPrice] = useState(0);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
-  const [cartVisible, setCartVisible] = useState(true);
+  const [cartVisible] = useState(true);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -28,7 +29,7 @@ const Cart = ({ cartItems, setCartItems }) => {  // Removed 'updateCartItemQuant
     const calculateTotal = () => {
       let total = cartItems.reduce((acc, item) => acc + item.quantity * item.price, 0);
       if (paymentMethod === 'Cash On Delivery') {
-        total += 650;
+        total += 650; // Add delivery charges
       }
       setTotalPrice(total);
     };
@@ -101,15 +102,6 @@ const Cart = ({ cartItems, setCartItems }) => {  // Removed 'updateCartItemQuant
 
   return (
     <div className={`container mx-auto py-16 px-4 mt-20 ${!cartVisible && 'hidden'}`}>
-      <div className="block md:hidden absolute top-2 right-2">
-        <button
-          onClick={() => setCartVisible(false)}
-          className="bg-red-500 text-white p-2 rounded-full"
-          aria-label="Close cart"
-        >
-          X
-        </button>
-      </div>
       <h1 className="text-3xl font-bold mb-8 text-center">Shopping Cart</h1>
 
       <div className="bg-gray-800 p-4 md:p-6 rounded-lg shadow-lg">
@@ -150,11 +142,19 @@ const Cart = ({ cartItems, setCartItems }) => {  // Removed 'updateCartItemQuant
                 {paymentMethod === 'Cash On Delivery' && <p className="text-red-500">*Rs. 650 added for Cash on Delivery</p>}
               </div>
             </div>
+
+            {/* Render CreditCard Component if Card Payment is selected */}
+            {paymentMethod === 'Card Payment' && (
+              <div className="mt-8">
+                <CreditCard /> {/* Display the credit card form */}
+              </div>
+            )}
+
             <div className="mt-8 flex justify-center md:justify-end">
               <button
                 onClick={handlePlaceOrder}
                 className="bg-yellow-500 text-black px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors w-full md:w-auto"
-                disabled={isPlacingOrder} // Disable button while placing order
+                disabled={isPlacingOrder}
                 aria-label="Place order"
               >
                 {isPlacingOrder ? 'Placing Order...' : 'Place Order'}
@@ -167,7 +167,6 @@ const Cart = ({ cartItems, setCartItems }) => {  // Removed 'updateCartItemQuant
   );
 };
 
-// Updated PropTypes validation
 Cart.propTypes = {
   cartItems: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
