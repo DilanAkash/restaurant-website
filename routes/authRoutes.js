@@ -6,7 +6,7 @@ const router = express.Router();
 // User signup route
 router.post('/signup', async (req, res) => {
   try {
-    const { name, email, phone, password } = req.body;
+    const { name, email, phone, password, role } = req.body;  // Add role here
 
     // Check if the user already exists
     const existingUser = await User.findOne({ email });
@@ -15,7 +15,7 @@ router.post('/signup', async (req, res) => {
     }
 
     // Create a new user
-    const newUser = new User({ name, email, phone, password });
+    const newUser = new User({ name, email, phone, password, role });  // Add role here
     await newUser.save();
 
     res.status(201).json({ message: 'User created successfully', userId: newUser._id });
@@ -38,13 +38,19 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    // Respond with user details on successful login
-    res.status(200).json({ message: 'Login successful', userId: user._id });
+    // Respond with user details and role on successful login
+    res.status(200).json({
+      message: 'Login successful',
+      userId: user._id,
+      role: user.role,  // Return the role of the user
+      name: user.name,  // Optionally return user's name for display
+    });
   } catch (error) {
     console.error(error);  // Log the error to troubleshoot
     res.status(500).json({ message: 'Server error', error });
   }
 });
+
 
 // Fetch user data by ID
 router.get('/user/:id', async (req, res) => {

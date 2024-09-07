@@ -23,6 +23,8 @@ import Payments from './Payments';
 import EditProfile from './EditProfile';
 import StaffOrders from './StaffOrders';
 import AuthProvider, { AuthContext } from '../AuthContext';
+import AdminDashboard from './AdminDashboard';
+import StaffDashboard from './StaffDashboard';
 import '../index.css';
 
 function App() {
@@ -76,6 +78,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/reservations" element={<MyReservations />} />
+            <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route path="/staff-dashboard" element={<StaffDashboard />} /> 
 
             {/* Protected Routes */}
             <Route path="/profile" element={

@@ -28,28 +28,30 @@ const Login = () => {
       if (response.ok) {
         const data = await response.json();
         setUser(data.userId);
+
+      // Check user's role and navigate accordingly
+      if (data.role === 'admin') {
+        setSuccessMessage('Login successful! Redirecting to admin dashboard...');
+        navigate('/admin-dashboard');
+      } else if (data.role === 'staff') {
+        setSuccessMessage('Login successful! Redirecting to staff dashboard...');
+        navigate('/staff-dashboard');
+      } else {
         setSuccessMessage('Login successful! Redirecting...');
+        navigate('/');
+      }        
   
         // Save the user ID to localStorage if "Keep me logged in" is checked
         if (keepLoggedIn) {
           localStorage.setItem('userId', data.userId);
+          localStorage.setItem('role', data.role);
         }
   
         // First page refresh
         setTimeout(() => {
           window.location.reload();
         }, 500); // Short delay for the first refresh
-  
-        // Second page refresh
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000); // Short delay for the second refresh
-  
-        // Redirect to home page after the refreshes
-        setTimeout(() => {
-          navigate('/');
-        }, 1500); // Short delay before final redirect
-  
+
       } else {
         const data = await response.json();
         setError(data.message || 'Login failed. Please try again.');
