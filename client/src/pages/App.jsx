@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import PropTypes from 'prop-types'; 
+import PropTypes from 'prop-types';
 import Navbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
 import WelcomeSection from '../components/WelcomeSection';
@@ -22,9 +22,9 @@ import MessageCenter from './MessageCenter';
 import Payments from './Payments';
 import EditProfile from './EditProfile';
 import StaffOrders from './StaffOrders';
-import AuthProvider, { AuthContext } from '../AuthContext';
 import AdminDashboard from './AdminDashboard';
 import StaffDashboard from './StaffDashboard';
+import AuthProvider, { AuthContext } from '../AuthContext';
 import '../index.css';
 
 function App() {
@@ -78,36 +78,19 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/reservations" element={<MyReservations />} />
-            <Route path="/admin-dashboard" element={<AdminDashboard />} />
-            <Route path="/staff-dashboard" element={<StaffDashboard />} /> 
 
             {/* Protected Routes */}
-            <Route path="/profile" element={
-                <RequireAuth>
-                  <Profile />
-                </RequireAuth>
-              }
-            />
-            <Route path="/cart" element={
-                <RequireAuth>
-                  <Cart 
-                    cartItems={cartItems} 
-                    removeFromCart={removeFromCart} 
-                    updateCartItemQuantity={updateCartItemQuantity} 
-                    setCartItems={setCartItems}
-                  />
-                </RequireAuth>
-              }
-            />
-
-            {/* New Routes for Profile Sections */}
+            <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
+            <Route path="/cart" element={<RequireAuth><Cart cartItems={cartItems} removeFromCart={removeFromCart} updateCartItemQuantity={updateCartItemQuantity} setCartItems={setCartItems} /></RequireAuth>} />
             <Route path="/orders" element={<RequireAuth><MyOrders /></RequireAuth>} />
             <Route path="/messages" element={<RequireAuth><MessageCenter /></RequireAuth>} />
             <Route path="/payments" element={<RequireAuth><Payments /></RequireAuth>} />
             <Route path="/edit-profile" element={<RequireAuth><EditProfile /></RequireAuth>} />
-
-            {/* New Route for Staff Orders */}
             <Route path="/staff-orders" element={<RequireAuth><StaffOrders /></RequireAuth>} />
+            
+            {/* Admin and Staff Role-Based Protected Routes */}
+            <Route path="/admin-dashboard" element={<ProtectedRoute requiredRole="admin"><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/staff-dashboard" element={<ProtectedRoute requiredRole="staff"><StaffDashboard /></ProtectedRoute>} />
           </Routes>
           <Footer />
         </div>
@@ -116,13 +99,33 @@ function App() {
   );
 }
 
-// Protected Route Component
+// Role-based Protected Route Component
+function ProtectedRoute({ children, requiredRole }) {
+  const { user } = useContext(AuthContext);
+  
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
+  if (user.role !== requiredRole) {
+    return <Navigate to="/" />;
+  }
+
+  return children;
+}
+
+// Basic protected route for logged-in users
 function RequireAuth({ children }) {
   const { user } = useContext(AuthContext);
   return user ? children : <Navigate to="/login" />;
 }
 
-// Prop type validation for RequireAuth component
+// Prop type validation for ProtectedRoute and RequireAuth components
+ProtectedRoute.propTypes = {
+  children: PropTypes.node.isRequired,
+  requiredRole: PropTypes.string.isRequired,
+};
+
 RequireAuth.propTypes = {
   children: PropTypes.node.isRequired,
 };

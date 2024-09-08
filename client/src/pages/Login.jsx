@@ -15,7 +15,7 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-  
+    
     try {
       const response = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
@@ -27,31 +27,31 @@ const Login = () => {
   
       if (response.ok) {
         const data = await response.json();
-        setUser(data.userId);
-
-      // Check user's role and navigate accordingly
-      if (data.role === 'admin') {
-        setSuccessMessage('Login successful! Redirecting to admin dashboard...');
-        navigate('/admin-dashboard');
-      } else if (data.role === 'staff') {
-        setSuccessMessage('Login successful! Redirecting to staff dashboard...');
-        navigate('/staff-dashboard');
-      } else {
-        setSuccessMessage('Login successful! Redirecting...');
-        navigate('/');
-      }        
+        
+        // Save both userId and role to AuthContext
+        setUser({
+          userId: data.userId,
+          role: data.role,
+          name: data.name // If needed
+        });
   
-        // Save the user ID to localStorage if "Keep me logged in" is checked
+        // Save to localStorage if "Keep me logged in" is checked
         if (keepLoggedIn) {
           localStorage.setItem('userId', data.userId);
           localStorage.setItem('role', data.role);
         }
   
-        // First page refresh
-        setTimeout(() => {
-          window.location.reload();
-        }, 500); // Short delay for the first refresh
-
+        // Redirect based on the role
+        if (data.role === 'admin') {
+          setSuccessMessage('Login successful! Redirecting to admin dashboard...');
+          navigate('/admin-dashboard');
+        } else if (data.role === 'staff') {
+          setSuccessMessage('Login successful! Redirecting to staff dashboard...');
+          navigate('/staff-dashboard');
+        } else {
+          setSuccessMessage('Login successful! Redirecting to homepage...');
+          navigate('/');
+        }
       } else {
         const data = await response.json();
         setError(data.message || 'Login failed. Please try again.');
@@ -61,6 +61,7 @@ const Login = () => {
       setError('Something went wrong. Please try again.');
     }
   };
+  
   
   
 

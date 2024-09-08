@@ -5,15 +5,15 @@ export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const storedUserId = localStorage.getItem('userId');
     if (storedUserId) {
       fetchUserData(storedUserId);
     } else {
-      setLoading(false); // No user ID found, stop loading
+      setLoading(false); 
     }
   }, []);
 
@@ -22,7 +22,7 @@ const AuthProvider = ({ children }) => {
       const response = await fetch(`http://localhost:5000/api/auth/user/${userId}`);
       if (response.ok) {
         const userData = await response.json();
-        setUser(userData);  // Set the full user data
+        setUser(userData);  // Make sure the role is part of userData
       } else {
         console.error('Failed to fetch user data');
         setError('Failed to fetch user data');
@@ -31,7 +31,7 @@ const AuthProvider = ({ children }) => {
       console.error('Error fetching user data:', error);
       setError('An error occurred while fetching user data');
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
