@@ -31,6 +31,7 @@ import ServiceManagement from './ServiceManagement';
 import GalleryManagement from './GalleryManagement';
 import OffersManagement from './OffersManagement';
 import ReservationsManagement from './ReservationsManagement';
+import StaffOrdersManagement from './StaffOrdersManagement';
 import Reports from './Reports';
 import '../index.css';
 
@@ -140,6 +141,7 @@ function AuthWrapper({ cartItems, setCartItems, removeFromCart, updateCartItemQu
         <Route path="/admin/offers" element={<ProtectedRoute requiredRole="admin"><OffersManagement /></ProtectedRoute>} />
         <Route path="/admin/reservations" element={<ProtectedRoute requiredRole="admin"><ReservationsManagement /></ProtectedRoute>} />
         <Route path="/admin/reports" element={<ProtectedRoute requiredRole="admin"><Reports /></ProtectedRoute>} />
+        <Route path="/staff/orders" element={<ProtectedRoute requiredRole="staff"><StaffOrdersManagement /></ProtectedRoute>} />
       </Routes>
 
       {/* Footer only for Customer Pages */}
