@@ -5,6 +5,8 @@ import DashboardLayout from '../layouts/DashboardLayout'; // Importing the layou
 
 const Reports = () => {
   const [reservations, setReservations] = useState([]);
+  const [payments, setPayments] = useState([]);
+  const [queries, setQueries] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -16,12 +18,30 @@ const Reports = () => {
         setReservations(res.data);
       } catch (error) {
         console.error('Error fetching reservations', error);
-      } finally {
-        setLoading(false);
       }
     };
 
-    // Fetch users data (you can fetch any other data here)
+    // Fetch payments data
+    const fetchPayments = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/api/payments'); // API endpoint for payments
+        setPayments(res.data);
+      } catch (error) {
+        console.error('Error fetching payments', error);
+      }
+    };
+
+    // Fetch queries data
+    const fetchQueries = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/api/messages'); // API endpoint for queries
+        setQueries(res.data);
+      } catch (error) {
+        console.error('Error fetching queries', error);
+      }
+    };
+
+    // Fetch users data
     const fetchUsers = async () => {
       try {
         const res = await axios.get('http://localhost:5000/api/users'); // API endpoint for users
@@ -31,11 +51,17 @@ const Reports = () => {
       }
     };
 
-    fetchReservations();
-    fetchUsers();
+    // Fetch all data in parallel
+    const fetchData = async () => {
+      setLoading(true);
+      await Promise.all([fetchReservations(), fetchPayments(), fetchQueries(), fetchUsers()]);
+      setLoading(false);
+    };
+
+    fetchData();
   }, []);
 
-  // Function to export reservations to Excel
+  // Function to export data to Excel
   const exportToExcel = (data, filename) => {
     const worksheet = XLSX.utils.json_to_sheet(data);
     const workbook = XLSX.utils.book_new();
@@ -44,57 +70,168 @@ const Reports = () => {
   };
 
   if (loading) {
-    return <p>Loading data...</p>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-2xl font-semibold text-gray-400">Loading data...</p>
+      </div>
+    );
   }
 
   return (
     <DashboardLayout role="admin"> {/* Wrapping in DashboardLayout */}
       <div className="container mx-auto py-10">
-        <h1 className="text-3xl font-bold text-center mb-8">Reports</h1>
+        <h1 className="text-4xl font-extrabold text-center text-yellow-400 mb-10">Reports Dashboard</h1>
 
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
           {/* Reservations Export Button */}
           <button
             onClick={() => exportToExcel(reservations, 'Reservations_Report')}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transform transition-transform hover:scale-105"
           >
             Export Reservations to Excel
+          </button>
+
+          {/* Payments Export Button */}
+          <button
+            onClick={() => exportToExcel(payments, 'Payments_Report')}
+            className="bg-gradient-to-r from-purple-500 to-purple-700 text-white font-bold px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transform transition-transform hover:scale-105"
+          >
+            Export Payments to Excel
+          </button>
+
+          {/* Queries Export Button */}
+          <button
+            onClick={() => exportToExcel(queries, 'Queries_Report')}
+            className="bg-gradient-to-r from-red-500 to-red-700 text-white font-bold px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transform transition-transform hover:scale-105"
+          >
+            Export Queries to Excel
           </button>
 
           {/* Users Export Button */}
           <button
             onClick={() => exportToExcel(users, 'Users_Report')}
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+            className="bg-gradient-to-r from-green-500 to-green-700 text-white font-bold px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transform transition-transform hover:scale-105"
           >
             Export Users to Excel
           </button>
         </div>
 
-        {/* Optionally, you can display the data on the page as well */}
+        {/* Data Tables for each report */}
+
+        {/* Reservations Data Table */}
         <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">Reservations Data</h2>
-          <table className="min-w-full bg-gray-800 text-white rounded-lg shadow-lg">
-            <thead>
-              <tr>
-                <th className="px-4 py-2">Date</th>
-                <th className="px-4 py-2">Time</th>
-                <th className="px-4 py-2">Guests</th>
-                <th className="px-4 py-2">Location</th>
-                <th className="px-4 py-2">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {reservations.map((reservation) => (
-                <tr key={reservation._id} className="bg-gray-700">
-                  <td className="border px-4 py-2">{new Date(reservation.date).toLocaleDateString()}</td>
-                  <td className="border px-4 py-2">{reservation.time}</td>
-                  <td className="border px-4 py-2">{reservation.numberOfGuests}</td>
-                  <td className="border px-4 py-2">{reservation.location}</td>
-                  <td className="border px-4 py-2">{reservation.status}</td>
+          <h2 className="text-3xl font-bold text-yellow-400 mb-6">Reservations Data</h2>
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-gray-800 text-white rounded-lg shadow-lg table-auto">
+              <thead>
+                <tr className="bg-gray-700 text-yellow-500">
+                  <th className="px-4 py-3">Date</th>
+                  <th className="px-4 py-3">Time</th>
+                  <th className="px-4 py-3">Guests</th>
+                  <th className="px-4 py-3">Location</th>
+                  <th className="px-4 py-3">Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {reservations.map((reservation, index) => (
+                  <tr key={reservation._id} className={index % 2 === 0 ? 'bg-gray-700' : 'bg-gray-800'}>
+                    <td className="border px-4 py-3">
+                      {new Date(reservation.date).toLocaleDateString()}
+                    </td>
+                    <td className="border px-4 py-3">{reservation.time}</td>
+                    <td className="border px-4 py-3">{reservation.numberOfGuests}</td>
+                    <td className="border px-4 py-3">{reservation.location}</td>
+                    <td className={`border px-4 py-3 ${reservation.status === 'confirmed' ? 'text-green-400' : 'text-red-400'}`}>
+                      {reservation.status}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Payments Data Table */}
+        <div className="mt-8">
+          <h2 className="text-3xl font-bold text-purple-400 mb-6">Payments Data</h2>
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-gray-800 text-white rounded-lg shadow-lg table-auto">
+              <thead>
+                <tr className="bg-gray-700 text-purple-500">
+                  <th className="px-4 py-3">Amount</th>
+                  <th className="px-4 py-3">Date</th>
+                  <th className="px-4 py-3">Method</th>
+                  <th className="px-4 py-3">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {payments.map((payment, index) => (
+                  <tr key={payment._id} className={index % 2 === 0 ? 'bg-gray-700' : 'bg-gray-800'}>
+                    <td className="border px-4 py-3">${payment.amount}</td>
+                    <td className="border px-4 py-3">{new Date(payment.date).toLocaleDateString()}</td>
+                    <td className="border px-4 py-3">{payment.paymentMethod}</td>
+                    <td className={`border px-4 py-3 ${payment.status === 'Paid' ? 'text-green-400' : 'text-red-400'}`}>
+                      {payment.status}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Queries Data Table */}
+        <div className="mt-8">
+          <h2 className="text-3xl font-bold text-red-400 mb-6">Customer Queries</h2>
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-gray-800 text-white rounded-lg shadow-lg table-auto">
+              <thead>
+                <tr className="bg-gray-700 text-red-500">
+                  <th className="px-4 py-3">Query ID</th>
+                  <th className="px-4 py-3">Customer Name</th>
+                  <th className="px-4 py-3">Message</th>
+                  <th className="px-4 py-3">Date</th>
+                  <th className="px-4 py-3">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {queries.map((query, index) => (
+                  <tr key={query._id} className={index % 2 === 0 ? 'bg-gray-700' : 'bg-gray-800'}>
+                    <td className="border px-4 py-3">{query._id}</td>
+                    <td className="border px-4 py-3">{query.customerName}</td>
+                    <td className="border px-4 py-3">{query.message}</td>
+                    <td className="border px-4 py-3">{new Date(query.date).toLocaleDateString()}</td>
+                    <td className="border px-4 py-3">{query.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* User Activity Data Table */}
+        <div className="mt-8">
+          <h2 className="text-3xl font-bold text-green-400 mb-6">User Activity</h2>
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-gray-800 text-white rounded-lg shadow-lg table-auto">
+              <thead>
+                <tr className="bg-gray-700 text-green-500">
+                  <th className="px-4 py-3">User ID</th>
+                  <th className="px-4 py-3">Action</th>
+                  <th className="px-4 py-3">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((user, index) => (
+                  <tr key={user._id} className={index % 2 === 0 ? 'bg-gray-700' : 'bg-gray-800'}>
+                    <td className="border px-4 py-3">{user._id}</td>
+                    <td className="border px-4 py-3">{user.action}</td>
+                    <td className="border px-4 py-3">{new Date(user.date).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </DashboardLayout>
