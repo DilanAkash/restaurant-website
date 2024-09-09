@@ -33,6 +33,7 @@ import OffersManagement from './OffersManagement';
 import ReservationsManagement from './ReservationsManagement';
 import StaffOrdersManagement from './StaffOrdersManagement';
 import Reports from './Reports';
+import StaffPaymentsManagement from './StaffPaymentsManagement';
 import '../index.css';
 
 function App() {
@@ -142,6 +143,7 @@ function AuthWrapper({ cartItems, setCartItems, removeFromCart, updateCartItemQu
         <Route path="/admin/reservations" element={<ProtectedRoute requiredRole="admin"><ReservationsManagement /></ProtectedRoute>} />
         <Route path="/admin/reports" element={<ProtectedRoute requiredRole="admin"><Reports /></ProtectedRoute>} />
         <Route path="/staff/orders" element={<ProtectedRoute requiredRole="staff"><StaffOrdersManagement /></ProtectedRoute>} />
+        <Route path="/staff/payments" element={<ProtectedRoute requiredRole="staff"><StaffPaymentsManagement /></ProtectedRoute>} />
       </Routes>
 
       {/* Footer only for Customer Pages */}
