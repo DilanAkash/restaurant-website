@@ -1,5 +1,5 @@
 import express from 'express';
-import Message from '../models/Message.js'; // Ensure the path to the Message model is correct
+import Message from '../models/Message.js';
 
 const router = express.Router();
 
@@ -13,7 +13,17 @@ router.get('/user/:userId', async (req, res) => {
   }
 });
 
-// Post a new message
+// Fetch all messages for admin/staff
+router.get('/', async (req, res) => {
+  try {
+    const messages = await Message.find().sort({ createdAt: -1 });
+    res.json(messages);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching messages', error });
+  }
+});
+
+// Post a new message (Customer Query)
 router.post('/', async (req, res) => {
   const newMessage = new Message({
     userId: req.body.userId,
@@ -27,20 +37,18 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Update a message (response from admin/staff)
+// Update a message (Response from admin/staff)
 router.put('/:messageId', async (req, res) => {
-    try {
-      const { messageId } = req.params; // Get the messageId from the URL
-      const updatedMessage = await Message.findByIdAndUpdate(
-        messageId, // Ensure messageId is passed correctly as ObjectId
-        { response: req.body.response, status: 'responded' }, // Update response and status
-        { new: true } // Return the updated document
-      );
-      res.json(updatedMessage);
-    } catch (error) {
-      res.status(400).json({ message: 'Error updating message', error });
-    }
-  });
-  
+  try {
+    const updatedMessage = await Message.findByIdAndUpdate(
+      req.params.messageId,
+      { response: req.body.response, status: 'responded' },
+      { new: true }
+    );
+    res.json(updatedMessage);
+  } catch (error) {
+    res.status(400).json({ message: 'Error updating message', error });
+  }
+});
 
 export default router;

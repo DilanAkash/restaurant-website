@@ -4,10 +4,10 @@ import { AuthContext } from '../AuthContext';
 const MessageCenter = () => {
   const { user } = useContext(AuthContext);
   const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState(''); // New state for the message input
+  const [newMessage, setNewMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null); // To show success after sending a message
+  const [success, setSuccess] = useState(null);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -33,7 +33,7 @@ const MessageCenter = () => {
   }, [user]);
 
   const handleSubmitMessage = async (e) => {
-    e.preventDefault(); // Prevent page reload
+    e.preventDefault();
     setError(null);
     setSuccess(null);
 
@@ -53,8 +53,8 @@ const MessageCenter = () => {
 
       if (response.ok) {
         setSuccess('Message sent successfully');
-        setMessages((prevMessages) => [...prevMessages, data]); // Update the messages with the new message
-        setNewMessage(''); // Clear the text area
+        setMessages((prevMessages) => [...prevMessages, data]);
+        setNewMessage('');
       } else {
         throw new Error(data.message || 'Failed to send message');
       }
@@ -64,9 +64,7 @@ const MessageCenter = () => {
   };
 
   if (!user) {
-    return (
-      <p className="text-center text-white">Please log in to view or send messages.</p>
-    );
+    return <p>Please log in to view or send messages.</p>;
   }
 
   return (
@@ -74,7 +72,6 @@ const MessageCenter = () => {
       <div className="container mx-auto py-8 px-4">
         <h1 className="text-4xl font-extrabold text-center text-white mb-10">Message Center</h1>
 
-        {/* Display loading, error, or messages */}
         {isLoading ? (
           <p className="text-center text-white">Loading messages...</p>
         ) : error ? (
@@ -85,20 +82,15 @@ const MessageCenter = () => {
               <p className="text-center text-white">No messages found.</p>
             ) : (
               messages.map((message) => (
-                <div
-                  key={message._id}
-                  className="bg-gray-800 p-6 rounded-lg shadow-md text-white"
-                >
+                <div key={message._id} className="bg-gray-800 p-6 rounded-lg shadow-md text-white">
                   <p className="font-bold text-lg">Message:</p>
                   <p className="text-gray-300 mt-2">{message.content}</p>
-
                   {message.response && (
                     <div className="mt-4 bg-gray-900 p-4 rounded-lg">
                       <p className="font-bold text-lg text-green-400">Response:</p>
                       <p className="text-green-200 mt-2">{message.response}</p>
                     </div>
                   )}
-
                   <p className="text-sm text-gray-500 mt-2">Status: {message.status}</p>
                 </div>
               ))
@@ -106,7 +98,6 @@ const MessageCenter = () => {
           </div>
         )}
 
-        {/* Form for sending a new message */}
         <form onSubmit={handleSubmitMessage} className="mt-12 space-y-4">
           <textarea
             value={newMessage}
