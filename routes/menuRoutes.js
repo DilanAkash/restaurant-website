@@ -1,25 +1,39 @@
 import express from 'express';
+import multer from 'multer'; // Import multer for file uploads
 import MenuItem from '../models/MenuItem.js';
 
 const router = express.Router();
 
-// Route to add a menu item
-router.post('/add', async (req, res) => {
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'client/src/assets/uploads'); // Folder where images will be saved
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`); // Save files with a unique name
+  }
+});
+
+const upload = multer({ storage }); // Initialize multer with the storage configuration
+
+// Route to add a menu item with image upload
+router.post('/add', upload.single('image'), async (req, res) => {
   try {
-    const { name, category, description, price, image, isNewItem, isPopular } = req.body;
+    const { name, category, description, price, isNewItem, isPopular } = req.body;
+    const image = req.file ? `/uploads/${req.file.filename}` : null; // Save image path
 
     // Validate required fields
     if (!name || !category || !price) {
       return res.status(400).json({ message: 'Name, category, and price are required' });
     }
 
-    // Create a new menu item using the updated schema
+    // Create a new menu item with the uploaded image
     const newItem = new MenuItem({
       name,
       category,
-      description,  // Optional, if your schema allows it to be empty
+      description,  // Optional
       price,
-      image,  // Optional, if your schema allows it to be empty
+      image,  // Save image path
       isNewItem, // Adjusted to match the schema field name if necessary
       isPopular,
     });

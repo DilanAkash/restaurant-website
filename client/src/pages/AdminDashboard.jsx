@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Sidebar from '../components/Sidebar';
 
 const AdminDashboard = () => {
   const [totalUsers, setTotalUsers] = useState(0);
@@ -8,8 +9,8 @@ const AdminDashboard = () => {
   // Fetch total registered users
   const fetchTotalUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/users');
-      setTotalUsers(response.data.length);
+      const response = await axios.get('http://localhost:5000/api/users'); // Ensure the endpoint is correct
+      setTotalUsers(response.data.length); // assuming response.data is an array of users
     } catch (error) {
       console.error('Error fetching users:', error);
     }
@@ -18,8 +19,8 @@ const AdminDashboard = () => {
   // Fetch total reservations
   const fetchTotalReservations = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/reservations');
-      setTotalReservations(response.data.length);
+      const response = await axios.get('http://localhost:5000/api/reservations'); // Ensure the endpoint is correct
+      setTotalReservations(response.data.length); // assuming response.data is an array of reservations
     } catch (error) {
       console.error('Error fetching reservations:', error);
     }
@@ -31,8 +32,12 @@ const AdminDashboard = () => {
   }, []);
 
   return (
-    <div className="dashboard-container">
-      <div className="content-area container mx-auto py-10">
+    <div className="flex">
+      {/* Sidebar */}
+      <Sidebar role="admin" />
+
+      {/* Main Content */}
+      <div className="ml-64 flex-1 p-10">
         <h1 className="text-3xl font-bold text-center mb-8">Admin Dashboard</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-gray-800 text-white p-6 rounded-lg shadow-md">

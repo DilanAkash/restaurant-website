@@ -9,16 +9,19 @@ const MyReservations = () => {
   useEffect(() => {
     const fetchReservations = async () => {
       if (user) {
+        console.log(user._id); // Log user ID to ensure it's being passed
         try {
           const response = await fetch(`http://localhost:5000/api/reservations/user/${user._id}`);
           const data = await response.json();
+          console.log(response, data); // Log the response and data
+
           if (response.ok) {
             setReservations(data);
           } else {
-            throw new Error(data.message || "Unable to fetch reservations");
+            throw new Error(data.message || 'Unable to fetch reservations');
           }
         } catch (error) {
-          console.error("Fetch error:", error);
+          console.error('Fetch error:', error);
         } finally {
           setIsLoading(false);
         }

@@ -1,10 +1,227 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const MenuManagement = () => {
+  const [menuItems, setMenuItems] = useState([]);
+  const [newItem, setNewItem] = useState({
+    name: '',
+    category: 'Dinner',
+    description: '',
+    price: '',
+    image: null, // Image will now be a file
+    isNewItem: false,
+    isPopular: false,
+  });
+  const [imagePreview, setImagePreview] = useState(null); // For image preview
+  const [message, setMessage] = useState(null); // To show success/error messages
+  const [errorMessage, setErrorMessage] = useState(null); // Separate error message
+
+  // Fetch all menu items
+  useEffect(() => {
+    const fetchMenuItems = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/menu/all');
+        setMenuItems(response.data);
+      } catch (error) {
+        console.error('Error fetching menu items:', error);
+      }
+    };
+    fetchMenuItems();
+  }, []);
+
+  // Handle input change for the form
+  const handleInputChange = (e) => {
+    const { name, value, type, checked, files } = e.target;
+    if (name === 'image') {
+      const file = files[0];
+      setNewItem((prev) => ({
+        ...prev,
+        image: file, // Set the file to state
+      }));
+      setImagePreview(URL.createObjectURL(file)); // Preview the image
+    } else {
+      setNewItem((prev) => ({
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value,
+      }));
+    }
+  };
+
+  // Add a new menu item
+  const addMenuItem = async (e) => {
+    e.preventDefault();
+    setMessage(null); // Reset message
+    setErrorMessage(null); // Reset error message
+
+    const formData = new FormData();
+    formData.append('name', newItem.name);
+    formData.append('category', newItem.category);
+    formData.append('description', newItem.description);
+    formData.append('price', newItem.price);
+    formData.append('image', newItem.image); // Append the file to the formData
+    formData.append('isNewItem', newItem.isNewItem);
+    formData.append('isPopular', newItem.isPopular);
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/menu/add', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      setMenuItems((prevItems) => [...prevItems, response.data]);
+      setNewItem({
+        name: '',
+        category: 'Dinner',
+        description: '',
+        price: '',
+        image: null,
+        isNewItem: false,
+        isPopular: false,
+      });
+      setImagePreview(null); // Clear image preview
+      setMessage('Item added successfully!'); // Show success message
+    } catch (error) {
+      console.error('Error adding menu item:', error);
+      setErrorMessage('Error adding menu item. Please try again.'); // Show error message
+    }
+  };
+
+  // Delete a menu item with confirmation
+  const deleteMenuItem = async (id) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this item?');
+    if (!confirmDelete) return; // If user cancels, exit the function
+
+    try {
+      await axios.delete(`http://localhost:5000/api/menu/${id}`);
+      setMenuItems((prevItems) => prevItems.filter((item) => item._id !== id));
+      setMessage('Item deleted successfully!'); // Show success message
+    } catch (error) {
+      console.error('Error deleting menu item:', error);
+      setErrorMessage('Error deleting menu item. Please try again.'); // Show error message
+    }
+  };
+
   return (
-    <div className="ml-64 p-6">
-      <h1 className="text-3xl font-bold mb-6">Menu Management</h1>
-      <p>This is where you manage the menu items.</p>
+    <div className="container mx-auto py-10">
+      <h1 className="text-3xl font-bold text-center mb-8">Menu Management</h1>
+
+      {/* Add new menu item form */}
+      <form onSubmit={addMenuItem} className="mb-10 bg-gray-800 p-6 rounded-lg">
+        <h2 className="text-xl text-white font-semibold mb-4">Add New Menu Item</h2>
+
+        {/* Show success or error messages */}
+        {message && <div className="bg-green-500 text-white p-4 rounded mb-4">{message}</div>}
+        {errorMessage && <div className="bg-red-500 text-white p-4 rounded mb-4">{errorMessage}</div>}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-white">Name</label>
+            <input
+              type="text"
+              name="name"
+              value={newItem.name}
+              onChange={handleInputChange}
+              className="w-full p-2 rounded text-black" // Black text inside the field
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-white">Category</label>
+            <select
+              name="category"
+              value={newItem.category}
+              onChange={handleInputChange}
+              className="w-full p-2 rounded text-black" // Black text inside the field
+            >
+              <option value="Dinner">Dinner</option>
+              <option value="Rice">Rice</option>
+              <option value="Fish">Fish</option>
+              <option value="Drinks">Drinks</option>
+              {/* Add more categories */}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-white">Price</label>
+            <input
+              type="number"
+              name="price"
+              value={newItem.price}
+              onChange={handleInputChange}
+              className="w-full p-2 rounded text-black" // Black text inside the field
+              required
+            />
+          </div>
+
+          {/* File upload for image */}
+          <div>
+            <label className="block text-white">Upload Image</label>
+            <input
+              type="file"
+              name="image"
+              accept="image/*"
+              onChange={handleInputChange}
+              className="w-full p-2 rounded text-white bg-gray-900" // Adjust styling for file upload
+            />
+            {imagePreview && (
+              <img src={imagePreview} alt="Preview" className="mt-4 w-32 h-32 object-cover" />
+            )}
+          </div>
+
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              name="isNewItem"
+              checked={newItem.isNewItem}
+              onChange={handleInputChange}
+              className="mr-2"
+            />
+            <label className="text-white">New Item</label>
+          </div>
+
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              name="isPopular"
+              checked={newItem.isPopular}
+              onChange={handleInputChange}
+              className="mr-2"
+            />
+            <label className="text-white">Popular</label>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+        >
+          Add Item
+        </button>
+      </form>
+
+      {/* Menu items list */}
+      <div>
+        <h2 className="text-xl font-bold mb-6">Current Menu Items</h2>
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {menuItems.map((item) => (
+            <li key={item._id} className="bg-gray-800 text-white p-6 rounded-lg shadow-md">
+              <h3 className="text-xl font-semibold mb-2">{item.name}</h3>
+              <p>Category: {item.category}</p>
+              <p>Price: Rs. {item.price}</p>
+              {item.image && <img src={item.image} alt={item.name} className="mt-4 w-32 h-32 object-cover" />}
+              <div className="mt-4 flex justify-between">
+                <button
+                  onClick={() => deleteMenuItem(item._id)}
+                  className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+                >
+                  Delete
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

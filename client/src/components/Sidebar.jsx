@@ -14,7 +14,7 @@ const Sidebar = ({ role }) => {
   };
 
   return (
-    <div className="w-64 h-screen bg-gray-800 text-white fixed flex flex-col justify-between">
+    <div className="w-64 h-screen bg-gray-900 text-white fixed flex flex-col justify-between">
       <div>
         <div className="p-6">
           <h2 className="text-2xl font-semibold mb-6">
@@ -40,37 +40,37 @@ const Sidebar = ({ role }) => {
             {role === 'admin' && (
               <>
                 <li className="mb-4">
-                  <Link to="/admin/menu" className="flex items-center">
+                  <Link to="/admin/menu" className="flex items-center hover:bg-gray-700 p-2 rounded">
                     <FaClipboardList className="mr-2" />
                     Menu Management
                   </Link>
                 </li>
                 <li className="mb-4">
-                  <Link to="/admin/services" className="flex items-center">
+                  <Link to="/admin/services" className="flex items-center hover:bg-gray-700 p-2 rounded">
                     <FaConciergeBell className="mr-2" />
                     Service Management
                   </Link>
                 </li>
                 <li className="mb-4">
-                  <Link to="/admin/gallery" className="flex items-center">
+                  <Link to="/admin/gallery" className="flex items-center hover:bg-gray-700 p-2 rounded">
                     <FaImage className="mr-2" />
                     Gallery Management
                   </Link>
                 </li>
                 <li className="mb-4">
-                  <Link to="/admin/offers" className="flex items-center">
+                  <Link to="/admin/offers" className="flex items-center hover:bg-gray-700 p-2 rounded">
                     <FaTags className="mr-2" />
                     Offers Management
                   </Link>
                 </li>
                 <li className="mb-4">
-                  <Link to="/admin/reservations" className="flex items-center">
+                  <Link to="/admin/reservations" className="flex items-center hover:bg-gray-700 p-2 rounded">
                     <FaFileAlt className="mr-2" />
                     Reservations Management
                   </Link>
                 </li>
                 <li className="mb-4">
-                  <Link to="/admin/reports" className="flex items-center">
+                  <Link to="/admin/reports" className="flex items-center hover:bg-gray-700 p-2 rounded">
                     <FaChartBar className="mr-2" />
                     Report Generation
                   </Link>
@@ -81,25 +81,25 @@ const Sidebar = ({ role }) => {
             {role === 'staff' && (
               <>
                 <li className="mb-4">
-                  <Link to="/staff/orders" className="flex items-center">
+                  <Link to="/staff/orders" className="flex items-center hover:bg-gray-700 p-2 rounded">
                     <FaClipboardList className="mr-2" />
                     Orders Management
                   </Link>
                 </li>
                 <li className="mb-4">
-                  <Link to="/staff/payments" className="flex items-center">
+                  <Link to="/staff/payments" className="flex items-center hover:bg-gray-700 p-2 rounded">
                     <FaTags className="mr-2" />
                     Payment Processing
                   </Link>
                 </li>
                 <li className="mb-4">
-                  <Link to="/staff/queries" className="flex items-center">
+                  <Link to="/staff/queries" className="flex items-center hover:bg-gray-700 p-2 rounded">
                     <FaFileAlt className="mr-2" />
                     Query Responses
                   </Link>
                 </li>
                 <li className="mb-4">
-                  <Link to="/staff/reservations" className="flex items-center">
+                  <Link to="/staff/reservations" className="flex items-center hover:bg-gray-700 p-2 rounded">
                     <FaConciergeBell className="mr-2" />
                     Reservations Dashboard
                   </Link>
