@@ -22,31 +22,34 @@ import MessageCenter from './MessageCenter';
 import Payments from './Payments';
 import EditProfile from './EditProfile';
 import StaffOrders from './StaffOrders';
+import Sidebar from '../components/Sidebar'; 
 import AuthProvider, { AuthContext } from '../AuthContext';
 import AdminDashboard from './AdminDashboard';
 import StaffDashboard from './StaffDashboard';
+import MenuManagement from './MenuManagement';
+import ServiceManagement from './ServiceManagement';
+import GalleryManagement from './GalleryManagement';
+import OffersManagement from './OffersManagement';
+import ReservationsManagement from './ReservationsManagement';
+import Reports from './Reports';
 import '../index.css';
 
 function App() {
-  // Define cartItems and setCartItems using useState
   const [cartItems, setCartItems] = useState(() => {
     const savedCartItems = localStorage.getItem('cartItems');
     return savedCartItems ? JSON.parse(savedCartItems) : [];
   });
 
-  // Save cartItems to localStorage on change
   useEffect(() => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   }, [cartItems]);
 
-  // Remove item from cart
   const removeFromCart = (index) => {
     const newCartItems = [...cartItems];
     newCartItems.splice(index, 1);
     setCartItems(newCartItems);
   };
 
-  // Update quantity of items in the cart
   const updateCartItemQuantity = (id, delta) => {
     setCartItems(prevItems =>
       prevItems.map(item =>
@@ -61,7 +64,7 @@ function App() {
         <div className="w-full min-h-screen bg-gray-900 text-white overflow-x-hidden">
           <AuthWrapper
             cartItems={cartItems}
-            setCartItems={setCartItems} // Ensure setCartItems is passed here
+            setCartItems={setCartItems} 
             removeFromCart={removeFromCart}
             updateCartItemQuantity={updateCartItemQuantity}
           />
@@ -73,8 +76,8 @@ function App() {
 
 // AuthWrapper handles the conditional rendering of Navbar and Footer based on route
 function AuthWrapper({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity }) {
-  const { loading } = useContext(AuthContext); // Removed 'user' since it's unused
-  const location = useLocation(); // Get the current route
+  const { user, loading } = useContext(AuthContext); // Fixed the issue by destructuring 'user' from AuthContext
+  const location = useLocation(); 
 
   // If loading is in progress, show a loading message
   if (loading) {
@@ -82,12 +85,14 @@ function AuthWrapper({ cartItems, setCartItems, removeFromCart, updateCartItemQu
   }
 
   // Determine if we are on the Admin or Staff dashboard
-  const isDashboard = location.pathname.includes('/admin/dashboard') || location.pathname.includes('/staff/dashboard');
+  const isDashboard = location.pathname.includes('/admin-dashboard') || location.pathname.includes('/staff-dashboard');
 
   return (
     <>
-      {/* Show Navbar and Footer for all users, but hide them on AdminDashboard and StaffDashboard */}
-      {!isDashboard && (
+      {/* Conditional Sidebar for Admin/Staff */}
+      {user && (user.role === 'admin' || user.role === 'staff') && isDashboard ? (
+        <Sidebar role={user.role} />  // Render the Sidebar
+      ) : (
         <>
           <Navbar
             cartItems={cartItems}
@@ -128,6 +133,12 @@ function AuthWrapper({ cartItems, setCartItems, removeFromCart, updateCartItemQu
         {/* Admin and Staff Role-Based Protected Routes */}
         <Route path="/admin-dashboard" element={<ProtectedRoute requiredRole="admin"><AdminDashboard /></ProtectedRoute>} />
         <Route path="/staff-dashboard" element={<ProtectedRoute requiredRole="staff"><StaffDashboard /></ProtectedRoute>} />
+        <Route path="/admin/menu" element={<ProtectedRoute requiredRole="admin"><MenuManagement /></ProtectedRoute>} />
+        <Route path="/admin/services" element={<ProtectedRoute requiredRole="admin"><ServiceManagement /></ProtectedRoute>} />
+        <Route path="/admin/gallery" element={<ProtectedRoute requiredRole="admin"><GalleryManagement /></ProtectedRoute>} />
+        <Route path="/admin/offers" element={<ProtectedRoute requiredRole="admin"><OffersManagement /></ProtectedRoute>} />
+        <Route path="/admin/reservations" element={<ProtectedRoute requiredRole="admin"><ReservationsManagement /></ProtectedRoute>} />
+        <Route path="/admin/reports" element={<ProtectedRoute requiredRole="admin"><Reports /></ProtectedRoute>} />
       </Routes>
 
       {/* Show Footer for regular customers, admin, and staff, except on their respective dashboards */}
@@ -161,7 +172,7 @@ function ProtectedRoute({ children, requiredRole }) {
 
 // Basic protected route for logged-in users
 function RequireAuth({ children }) {
-  const { user } = useContext(AuthContext); // This usage of user is required here
+  const { user } = useContext(AuthContext); 
   return user ? children : <Navigate to="/login" />;
 }
 

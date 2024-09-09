@@ -47,4 +47,14 @@ router.delete('/:reservationId', async (req, res) => {
   }
 });
 
+// Fetch all reservations (for admin or staff)
+router.get('/', async (req, res) => {
+  try {
+    const reservations = await Reservation.find().sort({ date: -1 }); // Fetch all reservations, sorted by date
+    res.json(reservations);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching all reservations', error });
+  }
+});
+
 export default router;

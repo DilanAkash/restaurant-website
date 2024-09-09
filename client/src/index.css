@@ -427,3 +427,52 @@ body {
   }
 }
 
+/* Sidebar CSS */
+.admin-dashboard .sidebar, .staff-dashboard .sidebar {
+  width: 16rem; /* Fixed width for sidebar */
+  position: fixed;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: #1f2937; /* Tailwind's gray-800 */
+  z-index: 50;
+}
+
+/* Main content area to account for sidebar */
+.admin-dashboard .main-content, .staff-dashboard .main-content {
+  margin-left: 16rem; /* Same width as the sidebar */
+  padding: 1rem; /* Add some padding */
+  width: calc(100% - 16rem); /* Adjust the width to fit remaining screen */
+  min-height: 100vh; /* Ensure it takes up the full height */
+  background-color: #111827; /* Tailwind's gray-900 for main content background */
+  color: white; /* Ensure text is visible */
+}
+
+/* Optional - If you want the dashboard summary cards to have padding */
+.dashboard-summary {
+  display: flex;
+  gap: 1rem;
+}
+
+.dashboard-summary .card {
+  background-color: #374151; /* Tailwind's gray-700 */
+  padding: 1rem;
+  border-radius: 0.5rem;
+  flex: 1;
+  text-align: center;
+}
+
+/* Dashboard-specific styles */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 16rem; /* Set the sidebar width */
+}
+
+.content-area {
+  flex-grow: 1; /* Allow the content area to grow and take available space */
+  padding-left: 16rem; /* Ensure the content starts after the sidebar */
+}

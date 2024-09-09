@@ -48,7 +48,8 @@ app.use('/api/payments', paymentRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'client/src/assets/uploads')));
 
 // Connect to MongoDB using Mongoose
-mongoose.connect('mongodb://localhost:27017/restaurantDB')
+mongoose.connect('mongodb://localhost:27017/restaurantDB', {
+})
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
