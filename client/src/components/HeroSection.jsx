@@ -48,7 +48,7 @@ const HeroSection = () => {
       .then((response) => response.json())
       .then(() => {
         alert('Reservation successful!');
-        navigate('/reservations'); // Redirect to "My Reservations" page
+        navigate('/reservations');
       })
       .catch((error) => {
         alert('Error making reservation. Please try again.');

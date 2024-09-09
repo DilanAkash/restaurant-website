@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaCheckCircle, FaMapMarkerAlt, FaEnvelope, FaPhoneAlt, FaHome } from 'react-icons/fa'; // Import icons
+import { FaCheckCircle, FaMapMarkerAlt, FaEnvelope, FaPhoneAlt, FaHome } from 'react-icons/fa';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -102,7 +102,7 @@ const Contact = () => {
         </form>
       </section>
 
-      {/* Google Map and Location Information (At the bottom) */}
+      {/* Google Map and Location Information*/}
       <section className="relative w-full h-[400px]">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31686.35096843275!2d79.85427828455756!3d6.92037266228462!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2592994f55f37%3A0x9875f0f30127e66a!2sBaladaksha%20Mawatha!5e0!3m2!1sen!2slk!4v1630232288723!5m2!1sen!2slk"

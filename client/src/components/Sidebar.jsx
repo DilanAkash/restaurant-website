@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FaClipboardList, FaConciergeBell, FaImage, FaTags, FaFileAlt, FaChartBar, FaSignOutAlt, FaUser } from 'react-icons/fa';
-import { AuthContext } from '../AuthContext'; // Import AuthContext to get user info
+import { AuthContext } from '../AuthContext'; 
 
 const Sidebar = ({ role }) => {
   const { user, logout } = useContext(AuthContext);
@@ -113,7 +113,7 @@ const Sidebar = ({ role }) => {
   );
 };
 
-// PropTypes validation for 'role' prop
+// PropTypes eroor fix from this. 
 Sidebar.propTypes = {
   role: PropTypes.string.isRequired,
 };

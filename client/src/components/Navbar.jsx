@@ -13,10 +13,10 @@ const Navbar = ({ cartItems, removeFromCart, updateCartItemQuantity, isItemAdded
   const navigate = useNavigate();
   const location = useLocation();
 
-// Open cart automatically when an item is added
+// Open cart 
 useEffect(() => {
   if (isItemAdded) {
-    setIsCartOpen(true);  // Automatically open cart if an item is added
+    setIsCartOpen(true);
   }
 }, [isItemAdded]);
 

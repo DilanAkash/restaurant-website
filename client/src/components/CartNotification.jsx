@@ -4,22 +4,22 @@ import { FaTimes } from 'react-icons/fa';
 
 const CartNotification = ({ item, visible, onClose }) => {
   const [show, setShow] = useState(visible);
-  const [animate, setAnimate] = useState(false); // For handling animations
+  const [animate, setAnimate] = useState(false); // 4 hnding aninimationz
 
   useEffect(() => {
     if (visible) {
       setShow(true);
-      setAnimate(true); // Trigger the entrance animation
+      setAnimate(true); // entrance animation
 
       const timer = setTimeout(() => {
-        setAnimate(false); // Trigger the exit animation
+        setAnimate(false); // 4 exit animation
         setTimeout(() => {
           setShow(false);
-          onClose(); // Callback to reset the visible state in parent component
-        }, 300); // Wait for the exit animation to complete
-      }, 1000); // Show notification for 4 seconds
+          onClose(); 
+        }, 300); // 2 Wait exit animation fo comp
+      }, 1000); // Show notifi tmer
 
-      return () => clearTimeout(timer); // Cleanup the timer on unmount or if visible changes
+      return () => clearTimeout(timer); // Cleanup 
     }
   }, [visible, onClose]);
 
@@ -37,11 +37,11 @@ const CartNotification = ({ item, visible, onClose }) => {
       <button
         className="text-white hover:text-gray-300 focus:outline-none"
         onClick={() => {
-          setAnimate(false); // Trigger the exit animation
+          setAnimate(false); // exit animation
           setTimeout(() => {
             setShow(false);
             onClose();
-          }, 300); // Wait for the exit animation to complete
+          }, 300); // Wait 4 the exit animation to complete
         }}
         aria-label="Close notification"
       >
