@@ -76,30 +76,31 @@ function App() {
 
 // AuthWrapper handles the conditional rendering of Navbar and Footer based on route
 function AuthWrapper({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity }) {
-  const { user, loading } = useContext(AuthContext); // Fixed the issue by destructuring 'user' from AuthContext
+  const { user, loading } = useContext(AuthContext); 
   const location = useLocation(); 
 
-  // If loading is in progress, show a loading message
+  // Identify if the current page is a dashboard page
+  const isDashboard = location.pathname.startsWith('/admin') || location.pathname.startsWith('/staff');
+
+  // While user data is being fetched, show a loading indicator
   if (loading) {
     return <p>Loading...</p>;
   }
 
-  // Determine if we are on the Admin or Staff dashboard
-  const isDashboard = location.pathname.includes('/admin-dashboard') || location.pathname.includes('/staff-dashboard');
-
   return (
     <>
-      {/* Conditional Sidebar for Admin/Staff */}
-      {user && (user.role === 'admin' || user.role === 'staff') && isDashboard ? (
-        <Sidebar role={user.role} />  // Render the Sidebar
-      ) : (
-        <>
-          <Navbar
-            cartItems={cartItems}
-            removeFromCart={removeFromCart}
-            updateCartItemQuantity={updateCartItemQuantity}
-          />
-        </>
+      {/* Sidebar for Admin/Staff Dashboard Pages */}
+      {user && (user.role === 'admin' || user.role === 'staff') && isDashboard && (
+        <Sidebar role={user.role} />  // Render Sidebar for dashboard routes
+      )}
+
+      {/* Navbar for Customer Pages */}
+      {!isDashboard && (
+        <Navbar
+          cartItems={cartItems}
+          removeFromCart={removeFromCart}
+          updateCartItemQuantity={updateCartItemQuantity}
+        />
       )}
 
       <Routes>
@@ -141,11 +142,12 @@ function AuthWrapper({ cartItems, setCartItems, removeFromCart, updateCartItemQu
         <Route path="/admin/reports" element={<ProtectedRoute requiredRole="admin"><Reports /></ProtectedRoute>} />
       </Routes>
 
-      {/* Show Footer for regular customers, admin, and staff, except on their respective dashboards */}
+      {/* Footer only for Customer Pages */}
       {!isDashboard && <Footer />}
     </>
   );
 }
+
 
 // Role-based Protected Route Component
 function ProtectedRoute({ children, requiredRole }) {
