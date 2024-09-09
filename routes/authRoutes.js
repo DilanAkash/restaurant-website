@@ -26,6 +26,7 @@ router.post('/signup', async (req, res) => {
 });
 
 // User login route
+// User login route
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -50,6 +51,7 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ message: 'Server error', error });
   }
 });
+
 
 
 // Fetch user data by ID

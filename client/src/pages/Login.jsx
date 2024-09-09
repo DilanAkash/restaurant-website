@@ -9,7 +9,6 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
   const [keepLoggedIn, setKeepLoggedIn] = useState(false); // State for "Keep me logged in"
   const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState(''); // State for the success message
   const navigate = useNavigate();
   const { setUser, user } = useContext(AuthContext);
 
@@ -30,9 +29,9 @@ const Login = () => {
         
         // Save both userId and role to AuthContext
         setUser({
-          userId: data.userId,
+          id: data.userId,
           role: data.role,
-          name: data.name // If needed
+          name: data.name
         });
   
         // Save to localStorage if "Keep me logged in" is checked
@@ -43,13 +42,10 @@ const Login = () => {
   
         // Redirect based on the role
         if (data.role === 'admin') {
-          setSuccessMessage('Login successful! Redirecting to admin dashboard...');
           navigate('/admin-dashboard');
         } else if (data.role === 'staff') {
-          setSuccessMessage('Login successful! Redirecting to staff dashboard...');
           navigate('/staff-dashboard');
         } else {
-          setSuccessMessage('Login successful! Redirecting to homepage...');
           navigate('/');
         }
       } else {
@@ -62,9 +58,6 @@ const Login = () => {
     }
   };
   
-  
-  
-
   // Retrieve user from localStorage on component mount
   useEffect(() => {
     const storedUserId = localStorage.getItem('userId');
@@ -88,7 +81,6 @@ const Login = () => {
       >
         <h2 className="text-3xl font-extrabold mb-8 text-center">Welcome Back!</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
-        {successMessage && <p className="text-green-500 mb-4">{successMessage}</p>}
         <input
           type="email"
           placeholder="Email"
