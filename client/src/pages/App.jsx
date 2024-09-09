@@ -32,6 +32,7 @@ import GalleryManagement from './GalleryManagement';
 import OffersManagement from './OffersManagement';
 import ReservationsManagement from './ReservationsManagement';
 import StaffOrdersManagement from './StaffOrdersManagement';
+import StaffQueryResponses from './StaffQueryResponses';
 import Reports from './Reports';
 import StaffPaymentsManagement from './StaffPaymentsManagement';
 import '../index.css';
@@ -144,6 +145,7 @@ function AuthWrapper({ cartItems, setCartItems, removeFromCart, updateCartItemQu
         <Route path="/admin/reports" element={<ProtectedRoute requiredRole="admin"><Reports /></ProtectedRoute>} />
         <Route path="/staff/orders" element={<ProtectedRoute requiredRole="staff"><StaffOrdersManagement /></ProtectedRoute>} />
         <Route path="/staff/payments" element={<ProtectedRoute requiredRole="staff"><StaffPaymentsManagement /></ProtectedRoute>} />
+        <Route path="/staff/queries" element={<ProtectedRoute requiredRole="staff"><StaffQueryResponses /></ProtectedRoute>} />
       </Routes>
 
       {/* Footer only for Customer Pages */}
