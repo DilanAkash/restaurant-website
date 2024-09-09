@@ -24,4 +24,27 @@ router.get('/user/:userId', async (req, res) => {
   }
 });
 
+// Route to update payment status
+router.put('/:paymentId', async (req, res) => {
+  const { paymentId } = req.params;
+  const { status } = req.body;
+
+  try {
+    const updatedPayment = await Payment.findByIdAndUpdate(
+      paymentId,
+      { status }, // Update the status field
+      { new: true }
+    );
+
+    if (!updatedPayment) {
+      return res.status(404).json({ message: 'Payment not found' });
+    }
+
+    res.status(200).json(updatedPayment); // Return the updated payment
+  } catch (error) {
+    console.error('Error updating payment status:', error);
+    res.status(500).json({ message: 'Failed to update payment status', error });
+  }
+});
+
 export default router;
