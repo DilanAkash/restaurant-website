@@ -34,6 +34,7 @@ import ReservationsManagement from './ReservationsManagement';
 import StaffOrdersManagement from './StaffOrdersManagement';
 import StaffQueryResponses from './StaffQueryResponses';
 import StaffReservationsManagement from './StaffReservationsManagement';
+import CreateUser from './CreateUser';
 import Reports from './Reports';
 import StaffPaymentsManagement from './StaffPaymentsManagement';
 import '../index.css';
@@ -148,6 +149,7 @@ function AuthWrapper({ cartItems, setCartItems, removeFromCart, updateCartItemQu
         <Route path="/staff/payments" element={<ProtectedRoute requiredRole="staff"><StaffPaymentsManagement /></ProtectedRoute>} />
         <Route path="/staff/queries" element={<ProtectedRoute requiredRole="staff"><StaffQueryResponses /></ProtectedRoute>} />
         <Route path="/staff/reservations" element={<ProtectedRoute requiredRole="staff"><StaffReservationsManagement /></ProtectedRoute>} />
+        <Route path="/admin/create-user" element={<ProtectedRoute requiredRole="admin"><CreateUser /></ProtectedRoute>} />
       </Routes>
 
       {/* Footer only for Customer Pages */}

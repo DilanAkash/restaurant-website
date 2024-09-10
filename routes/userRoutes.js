@@ -22,6 +22,29 @@ router.post('/register', async (req, res) => {
   }
 });
 
+// Update user details
+router.put('/:userId', async (req, res) => {
+  const { userId } = req.params;
+  const { name, email, phone, role, password } = req.body;
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { name, email, phone, role, password },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating user', error });
+  }
+});
+
+
 // Get all users
 router.get('/users', async (req, res) => {
   try {

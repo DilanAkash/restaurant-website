@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { FaClipboardList, FaConciergeBell, FaImage, FaTags, FaFileAlt, FaChartBar, FaSignOutAlt, FaUser } from 'react-icons/fa';
+import { 
+  FaClipboardList, FaConciergeBell, FaImage, FaTags, FaFileAlt, FaChartBar, FaSignOutAlt, FaUser, FaUserPlus
+} from 'react-icons/fa';
 import { AuthContext } from '../AuthContext'; 
 
 const Sidebar = ({ role }) => {
@@ -39,6 +41,12 @@ const Sidebar = ({ role }) => {
           <ul>
             {role === 'admin' && (
               <>
+               <li className="mb-4">
+                  <Link to="/admin-dashboard" className="flex items-center hover:bg-gray-700 p-2 rounded">
+                    <FaClipboardList className="mr-2" />
+                    My Dashboard
+                  </Link>
+               </li>
                 <li className="mb-4">
                   <Link to="/admin/menu" className="flex items-center hover:bg-gray-700 p-2 rounded">
                     <FaClipboardList className="mr-2" />
@@ -75,11 +83,23 @@ const Sidebar = ({ role }) => {
                     Report Generation
                   </Link>
                 </li>
+                <li className="mb-4">
+                  <Link to="/admin/create-user" className="flex items-center hover:bg-gray-700 p-2 rounded">
+                    <FaUserPlus className="mr-2" />
+                    Create Users
+                  </Link>
+                </li>
               </>
             )}
 
             {role === 'staff' && (
               <>
+                 <li className="mb-4">
+                  <Link to="/staff/dashboard" className="flex items-center hover:bg-gray-700 p-2 rounded">
+                    <FaClipboardList className="mr-2" />
+                    My Dashboard
+                  </Link>
+                </li>
                 <li className="mb-4">
                   <Link to="/staff/orders" className="flex items-center hover:bg-gray-700 p-2 rounded">
                     <FaClipboardList className="mr-2" />
@@ -113,7 +133,7 @@ const Sidebar = ({ role }) => {
   );
 };
 
-// PropTypes eroor fix from this. 
+// PropTypes error fix
 Sidebar.propTypes = {
   role: PropTypes.string.isRequired,
 };
