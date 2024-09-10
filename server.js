@@ -13,25 +13,25 @@ import serviceRoutes from './routes/serviceRoutes.js';
 import galleryRoutes from './routes/galleryRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
 import path from 'path';
-import { fileURLToPath } from 'url'; // <-- Added this to fix __dirname issue
+import { fileURLToPath } from 'url'; // fix __dirname erraor 
 
-// These two lines are required to set up the __dirname constant in ES modules
+// required to set up the __dirname
 const __filename = fileURLToPath(import.meta.url); 
 const __dirname = path.dirname(__filename);
 
-// Create an instance of Express
+// instance of Express
 const app = express();
 
-// Set the port number
+// Set port num
 const PORT = process.env.PORT || 5000;
 
-// Use CORS middleware to enable cross-origin requests
+// cross-origin requests
 app.use(cors());
 
-// Middleware to parse JSON bodies in requests
+// 2 parse JSON bodies in requests
 app.use(express.json());
 
-// Use routes with the /api prefix
+// routes with api prefix
 app.use('/api/reservations', reservationRoutes); 
 app.use('/api/messages', messageRoutes);
 app.use('/api/users', userRoutes);
@@ -44,21 +44,21 @@ app.use('/api/services', serviceRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/payments', paymentRoutes);
 
-// Serve static files for image uploads
+// static files for image uploads
 app.use('/uploads', express.static(path.join(__dirname, 'client/src/assets/uploads')));
 
-// Connect to MongoDB using Mongoose
+// mongodb connection using mongoose
 mongoose.connect('mongodb://localhost:27017/restaurantDB', {
 })
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
-// Basic route for the root URL
+// route for the root URL
 app.get('/', (req, res) => {
   res.send('Welcome to ABC Restaurant API');
 });
 
-// Start the server
+// server starrt
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
