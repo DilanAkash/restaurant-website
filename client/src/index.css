@@ -448,14 +448,13 @@ body {
   color: white; /* Ensure text is visible */
 }
 
-/* Optional - If you want the dashboard summary cards to have padding */
 .dashboard-summary {
   display: flex;
   gap: 1rem;
 }
 
 .dashboard-summary .card {
-  background-color: #374151; /* Tailwind's gray-700 */
+  background-color: #374151; 
   padding: 1rem;
   border-radius: 0.5rem;
   flex: 1;
@@ -469,10 +468,10 @@ body {
 }
 
 .sidebar {
-  width: 16rem; /* Set the sidebar width */
+  width: 16rem; 
 }
 
 .content-area {
-  flex-grow: 1; /* Allow the content area to grow and take available space */
-  padding-left: 16rem; /* Ensure the content starts after the sidebar */
+  flex-grow: 1; 
+  padding-left: 16rem; 
 }

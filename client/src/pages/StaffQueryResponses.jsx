@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import DashboardLayout from '../layouts/DashboardLayout'; // Assuming this is the layout used
+import DashboardLayout from '../layouts/DashboardLayout';
 
 const StaffQueryResponses = () => {
   const [queries, setQueries] = useState([]);

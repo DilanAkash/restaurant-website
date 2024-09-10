@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import the eye icons
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; 
 
 const Signup = () => {
   const [name, setName] = useState('');

@@ -1,12 +1,12 @@
 import express from 'express';
-import User from '../models/User.js';  // Import the User model
+import User from '../models/User.js'; 
 
 const router = express.Router();
 
 // User signup route
 router.post('/signup', async (req, res) => {
   try {
-    const { name, email, phone, password, role } = req.body;  // Add role here
+    const { name, email, phone, password, role } = req.body;  // Add role 
 
     // Check if the user already exists
     const existingUser = await User.findOne({ email });
@@ -15,7 +15,7 @@ router.post('/signup', async (req, res) => {
     }
 
     // Create a new user
-    const newUser = new User({ name, email, phone, password, role });  // Add role here
+    const newUser = new User({ name, email, phone, password, role });  // Add role
     await newUser.save();
 
     res.status(201).json({ message: 'User created successfully', userId: newUser._id });
@@ -25,7 +25,6 @@ router.post('/signup', async (req, res) => {
   }
 });
 
-// User login route
 // User login route
 router.post('/login', async (req, res) => {
   try {
@@ -47,7 +46,7 @@ router.post('/login', async (req, res) => {
       name: user.name,  // Optionally return user's name for display
     });
   } catch (error) {
-    console.error(error);  // Log the error to troubleshoot
+    console.error(error);  // Log the error to troubleshoot the error i got
     res.status(500).json({ message: 'Server error', error });
   }
 });

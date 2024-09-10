@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import DashboardLayout from '../layouts/DashboardLayout'; // Assuming we have a layout
+import DashboardLayout from '../layouts/DashboardLayout'; 
 
 const OffersManagement = () => {
   const [offers, setOffers] = useState([]);
@@ -11,8 +11,8 @@ const OffersManagement = () => {
     discountPercentage: '',
     expirationDate: '',
   });
-  const [message, setMessage] = useState(null); // For success or error messages
-  const [errorMessage, setErrorMessage] = useState(null); // For error messages
+  const [message, setMessage] = useState(null); 
+  const [errorMessage, setErrorMessage] = useState(null); 
 
   // Fetch all offers
   useEffect(() => {

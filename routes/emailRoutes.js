@@ -6,9 +6,9 @@ const router = express.Router();
 router.post('/send-email', async (req, res) => {
   const { name, email, message } = req.body;
 
-  // Set up the Nodemailer transport configuration
+  // Nodemailer transport configurationz
   const transporter = nodemailer.createTransport({
-    service: 'gmail', // You can use other email services (Yahoo, Outlook, etc.)
+    service: 'gmail',
     auth: {
       user: 'dilanakash27@gmail.com',
       pass: 'feqs aqfj rzxx wwdz',

@@ -1,5 +1,5 @@
 import express from 'express';
-import multer from 'multer'; // Import multer for file uploads
+import multer from 'multer'; // for file uploads
 import MenuItem from '../models/MenuItem.js';
 
 const router = express.Router();
@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({ storage }); // Initialize multer with the storage configuration
+const upload = multer({ storage }); // multer with the storage configuration
 
 // Route to add a menu item with image upload
 router.post('/add', upload.single('image'), async (req, res) => {
@@ -31,10 +31,10 @@ router.post('/add', upload.single('image'), async (req, res) => {
     const newItem = new MenuItem({
       name,
       category,
-      description,  // Optional
+      description, 
       price,
-      image,  // Save image path
-      isNewItem, // Adjusted to match the schema field name if necessary
+      image,  
+      isNewItem,
       isPopular,
     });
 

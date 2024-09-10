@@ -23,6 +23,5 @@ const offerSchema = new mongoose.Schema({
   }
 });
 
-// Export the model as default
 const Offer = mongoose.model('Offer', offerSchema);
 export default Offer;

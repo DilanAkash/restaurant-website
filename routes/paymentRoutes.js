@@ -32,7 +32,7 @@ router.put('/:paymentId', async (req, res) => {
   try {
     const updatedPayment = await Payment.findByIdAndUpdate(
       paymentId,
-      { status }, // Update the status field
+      { status }, // update status 
       { new: true }
     );
 
@@ -40,7 +40,7 @@ router.put('/:paymentId', async (req, res) => {
       return res.status(404).json({ message: 'Payment not found' });
     }
 
-    res.status(200).json(updatedPayment); // Return the updated payment
+    res.status(200).json(updatedPayment); // return te updated paymentt
   } catch (error) {
     console.error('Error updating payment status:', error);
     res.status(500).json({ message: 'Failed to update payment status', error });

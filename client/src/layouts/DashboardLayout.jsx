@@ -1,5 +1,5 @@
 import React from 'react';
-import Sidebar from '../components/Sidebar'; // Assuming Sidebar is in the components folder
+import Sidebar from '../components/Sidebar';
 import PropTypes from 'prop-types';
 
 const DashboardLayout = ({ role, children }) => {

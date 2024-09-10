@@ -1,5 +1,5 @@
 import express from 'express';
-import User from '../models/User.js';  // Import the User model
+import User from '../models/User.js'; 
 
 const router = express.Router();
 
@@ -8,7 +8,7 @@ router.post('/register', async (req, res) => {
   try {
     const { name, email, phone, password } = req.body;
 
-    // Basic validation for required fields
+    // validation for required fields
     if (!name || !email || !phone || !password) {
       return res.status(400).send('All fields are required');
     }

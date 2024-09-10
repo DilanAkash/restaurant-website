@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import DashboardLayout from '../layouts/DashboardLayout'; // Importing the layout
+import DashboardLayout from '../layouts/DashboardLayout';
 
 const StaffPaymentsManagement = () => {
   const [payments, setPayments] = useState([]);
@@ -24,7 +24,7 @@ const StaffPaymentsManagement = () => {
     fetchPayments();
   }, []);
 
-  // Update payment status (e.g., from "Pending" to "Paid")
+  // Update payment status
   const updatePaymentStatus = async (paymentId, newStatus) => {
     try {
       await axios.put(`http://localhost:5000/api/payments/${paymentId}`, { status: newStatus });

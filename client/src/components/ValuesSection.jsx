@@ -8,7 +8,7 @@ import backgroundImage from '../assets/tablewithp.jpg';
 function ValuesSection() {
   return (
     <section
-      className="py-16 bg-black text-white relative overflow-hidden z-10"  // Ensure z-index is lower than the navbar
+      className="py-16 bg-black text-white relative overflow-hidden z-10"
       style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
     >
       {/* Dark Overlay */}

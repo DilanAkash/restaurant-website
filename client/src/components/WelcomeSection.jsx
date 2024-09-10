@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Assuming React Router is used
+import { Link } from 'react-router-dom';
 import menuImage from '../assets/menu-image.jpg';
 import offersImage from '../assets/offer-image.jpg';
 import videoFile from '../assets/abc-restaurant-video.mp4';

@@ -9,8 +9,8 @@ const AdminDashboard = () => {
   // Fetch total registered users
   const fetchTotalUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/users'); // Ensure the endpoint is correct
-      setTotalUsers(response.data.length); // assuming response.data is an array of users
+      const response = await axios.get('http://localhost:5000/api/users'); 
+      setTotalUsers(response.data.length);
     } catch (error) {
       console.error('Error fetching users:', error);
     }
@@ -19,8 +19,8 @@ const AdminDashboard = () => {
   // Fetch total reservations
   const fetchTotalReservations = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/reservations'); // Ensure the endpoint is correct
-      setTotalReservations(response.data.length); // assuming response.data is an array of reservations
+      const response = await axios.get('http://localhost:5000/api/reservations');
+      setTotalReservations(response.data.length);
     } catch (error) {
       console.error('Error fetching reservations:', error);
     }

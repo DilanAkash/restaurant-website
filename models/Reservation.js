@@ -7,8 +7,8 @@ const reservationSchema = new Schema({
   date: { type: Date, required: true },
   time: { type: String, required: true },
   numberOfGuests: { type: Number, required: true },
-  location: { type: String, required: true },  // Add location field here
-  status: { type: String, default: 'pending' }, // e.g., pending, confirmed, cancelled
+  location: { type: String, required: true }, 
+  status: { type: String, default: 'pending' }, 
 });
 
 export default model('Reservation', reservationSchema);

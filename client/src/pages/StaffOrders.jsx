@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { AuthContext } from '../AuthContext'; // Assuming you have a context for auth
+import { AuthContext } from '../AuthContext'; 
 import { FaCheckCircle, FaTimesCircle, FaSpinner } from 'react-icons/fa';
 import { Navigate } from 'react-router-dom';
 

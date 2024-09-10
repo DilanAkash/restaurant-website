@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
-import DashboardLayout from '../layouts/DashboardLayout'; // Importing the layout
+import DashboardLayout from '../layouts/DashboardLayout'; 
 
 const Reports = () => {
   const [reservations, setReservations] = useState([]);
@@ -14,7 +14,7 @@ const Reports = () => {
     // Fetch reservations data
     const fetchReservations = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/reservations'); // API endpoint for reservations
+        const res = await axios.get('http://localhost:5000/api/reservations');
         setReservations(res.data);
       } catch (error) {
         console.error('Error fetching reservations', error);
@@ -24,7 +24,7 @@ const Reports = () => {
     // Fetch payments data
     const fetchPayments = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/payments'); // API endpoint for payments
+        const res = await axios.get('http://localhost:5000/api/payments');
         setPayments(res.data);
       } catch (error) {
         console.error('Error fetching payments', error);
@@ -34,7 +34,7 @@ const Reports = () => {
     // Fetch queries data
     const fetchQueries = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/messages'); // API endpoint for queries
+        const res = await axios.get('http://localhost:5000/api/messages'); 
         setQueries(res.data);
       } catch (error) {
         console.error('Error fetching queries', error);
@@ -44,7 +44,7 @@ const Reports = () => {
     // Fetch users data
     const fetchUsers = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/users'); // API endpoint for users
+        const res = await axios.get('http://localhost:5000/api/users'); 
         setUsers(res.data);
       } catch (error) {
         console.error('Error fetching users', error);

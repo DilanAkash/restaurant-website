@@ -8,10 +8,10 @@ const router = express.Router();
 // Set up multer for image uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'client/src/assets/uploads/gallery'); // Path where you want to save the images
+    cb(null, 'client/src/assets/uploads/gallery'); 
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // Save with unique name
+    cb(null, Date.now() + path.extname(file.originalname)); // save with unique name then the name i gve
   },
 });
 const upload = multer({ storage });

@@ -18,10 +18,10 @@ router.get('/', async (req, res) => {
 // Set up multer for image uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, 'client/src/assets/uploads'); // Path where you want to save the images
+      cb(null, 'client/src/assets/uploads'); // Path save images
     },
     filename: (req, file, cb) => {
-      cb(null, Date.now() + path.extname(file.originalname)); // Save with unique name
+      cb(null, Date.now() + path.extname(file.originalname)); // Save with unique name n real name
     },
   });
   const upload = multer({ storage });
@@ -30,13 +30,13 @@ const storage = multer.diskStorage({
   router.post('/', upload.single('image'), async (req, res) => {
     const { title, description } = req.body;
     
- // Ensure image path is prefixed with the static route '/uploads'
+ // image path 2 uploads
  const imagePath = req.file ? `/uploads/${req.file.filename}` : null; // Save image path
   
  const newService = new Service({
   title,
   description,
-  image: imagePath, // Save the image path in the database
+  image: imagePath, // Save image 2 database
 });
   
  try {

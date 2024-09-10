@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);  // State to hold user data
-  const [loading, setLoading] = useState(true);  // State to manage loading
-  const [error, setError] = useState(null);  // State to handle errors
+  const [user, setUser] = useState(null);  // hold user data
+  const [loading, setLoading] = useState(true);  // manage loading
+  const [error, setError] = useState(null);  // handle errors
 
-  // Effect to check if a user is logged in by checking localStorage for userId and role
+  // check if a user is logged in by checking localStorage for userId and role
   useEffect(() => {
     const storedUserId = localStorage.getItem('userId');
     const storedUserRole = localStorage.getItem('role');
@@ -64,7 +64,6 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-// PropTypes validation for AuthProvider
 AuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };

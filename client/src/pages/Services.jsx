@@ -4,7 +4,7 @@ const Services = () => {
   const [services, setServices] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/services')  // Ensure this matches your backend route
+    fetch('http://localhost:5000/api/services')
       .then((response) => response.json())
       .then((data) => setServices(data))
       .catch((error) => console.error('Error fetching services:', error));
@@ -27,7 +27,7 @@ const Services = () => {
                 {/* Service Image */}
                 {service.image ? (
                   <img
-                    src={`http://localhost:5000${service.image}`}  // Prefix with backend URL
+                    src={`http://localhost:5000${service.image}`} 
                     alt={service.title}
                     className="w-full h-48 object-cover rounded-lg mb-4"
                   />

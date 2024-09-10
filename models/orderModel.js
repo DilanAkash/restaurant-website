@@ -42,7 +42,7 @@ const orderSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-}, { timestamps: true }); // Adding timestamps
+}, { timestamps: true }); 
 
 // Pre-save middleware to automatically calculate the total
 orderSchema.pre('save', function (next) {

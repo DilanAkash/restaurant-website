@@ -197,7 +197,7 @@ const MenuManagement = () => {
               <li key={item._id} className="bg-gray-800 text-white p-6 rounded-lg shadow-md">
                 <h3 className="text-xl font-semibold mb-2">{item.name}</h3>
                 <p>Category: {item.category}</p>
-                <p>Price: ${item.price}</p>
+                <p>Price: Rs. {item.price}</p>
                 {item.image && <img src={item.image} alt={item.name} className="mt-4 w-32 h-32 object-cover" />}
                 <div className="mt-4 flex justify-between">
                   <button

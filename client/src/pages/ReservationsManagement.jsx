@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import DashboardLayout from '../layouts/DashboardLayout'; // Assuming you have this layout for Admin
+import DashboardLayout from '../layouts/DashboardLayout'; 
 
 const ReservationsManagement = () => {
   const [reservations, setReservations] = useState([]);
-  const [message, setMessage] = useState(null); // For success/error messages
-  const [errorMessage, setErrorMessage] = useState(null); // For error messages
+  const [message, setMessage] = useState(null); 
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     // Fetch all reservations
@@ -14,8 +14,8 @@ const ReservationsManagement = () => {
         const response = await axios.get('http://localhost:5000/api/reservations');
         setReservations(response.data);
       } catch (error) {
-        console.error('Error fetching reservations:', error); // Log the error
-        setErrorMessage('Error fetching reservations'); // Set an error message if needed
+        console.error('Error fetching reservations:', error); 
+        setErrorMessage('Error fetching reservations'); 
       }
       
     };
@@ -32,7 +32,7 @@ const ReservationsManagement = () => {
       );
       setMessage('Reservation status updated successfully');
     } catch {
-      setErrorMessage('Error updating reservation status'); // Removed unused 'error'
+      setErrorMessage('Error updating reservation status'); 
     }
   };
 
@@ -45,7 +45,7 @@ const ReservationsManagement = () => {
       setReservations((prev) => prev.filter((reservation) => reservation._id !== reservationId));
       setMessage('Reservation deleted successfully');
     } catch {
-      setErrorMessage('Error deleting reservation'); // Removed unused 'error'
+      setErrorMessage('Error deleting reservation');
     }
   };
 

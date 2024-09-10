@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import DashboardLayout from '../layouts/DashboardLayout'; // Importing the layout
+import DashboardLayout from '../layouts/DashboardLayout'; 
 
 const StaffReservationsManagement = () => {
   const [reservations, setReservations] = useState([]);
@@ -11,7 +11,7 @@ const StaffReservationsManagement = () => {
     // Fetch all reservations
     const fetchReservations = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/reservations'); // Fetch all reservations
+        const response = await axios.get('http://localhost:5000/api/reservations');
         setReservations(response.data);
         setLoading(false);
       } catch (error) {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import PropTypes from 'prop-types'; // Import PropTypes for validation
+import PropTypes from 'prop-types';
 import Navbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
 import WelcomeSection from '../components/WelcomeSection';
@@ -78,12 +78,12 @@ function App() {
   );
 }
 
-// AuthWrapper handles the conditional rendering of Navbar and Footer based on route
+// conditional rendering of Navbar and Footer based on route yeahhh boiii
 function AuthWrapper({ cartItems, setCartItems, removeFromCart, updateCartItemQuantity }) {
   const { user, loading } = useContext(AuthContext); 
   const location = useLocation(); 
 
-  // Identify if the current page is a dashboard page
+  // Identify if the current page is a dashboard page??
   const isDashboard = location.pathname.startsWith('/admin') || location.pathname.startsWith('/staff');
 
   // While user data is being fetched, show a loading indicator

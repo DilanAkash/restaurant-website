@@ -1,5 +1,5 @@
 import express from 'express';
-import Reservation from '../models/Reservation.js'; // Ensure path and import name are correct
+import Reservation from '../models/Reservation.js'; 
 
 const router = express.Router();
 

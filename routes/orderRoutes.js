@@ -32,7 +32,7 @@ router.post('/place-order', async (req, res) => {
       amount: total,
       paymentMethod,
       date: new Date(),
-      status: paymentMethod === 'Card Payment' ? 'Paid' : 'Pending', // Set status based on payment method
+      status: paymentMethod === 'Card Payment' ? 'Paid' : 'Pending', // set status
     });
     await payment.save();
 
@@ -46,7 +46,7 @@ router.post('/place-order', async (req, res) => {
 // Route to fetch orders by user ID
 router.get('/user/:userId', async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.params.userId }).sort({ date: -1 }); // Use 'date' field
+    const orders = await Order.find({ user: req.params.userId }).sort({ date: -1 }); 
     if (!orders || orders.length === 0) {
       return res.status(404).json({ message: 'No orders found for this user' });
     }
@@ -78,7 +78,7 @@ router.delete('/cancel-order/:id', async (req, res) => {
 // Route to get all orders (for staff/admin)
 router.get('/all-orders', async (req, res) => {
   try {
-    const orders = await Order.find().populate('user', 'name email'); // Populate to get user details
+    const orders = await Order.find().populate('user', 'name email'); // get user details
     res.status(200).json(orders);
   } catch (error) {
     console.error('Error fetching all orders:', error);

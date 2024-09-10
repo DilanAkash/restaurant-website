@@ -72,7 +72,7 @@ const MyReservations = () => {
             <p className="text-lg mb-2">Number of Guests: {reservation.numberOfGuests}</p>
             <p className="text-lg mb-2">Date: {new Date(reservation.date).toLocaleDateString()}</p>
             <p className="text-lg mb-2">Time: {reservation.time}</p>
-            <p className="text-lg mb-2">Location: {reservation.location}</p> {/* Add location */}
+            <p className="text-lg mb-2">Location: {reservation.location}</p>
             <p className="text-lg mb-2">Status: {reservation.status}</p>
             <button
               onClick={() => handleCancelReservation(reservation._id)}
