@@ -95,7 +95,7 @@ const Sidebar = ({ role }) => {
             {role === 'staff' && (
               <>
                  <li className="mb-4">
-                  <Link to="/staff/dashboard" className="flex items-center hover:bg-gray-700 p-2 rounded">
+                  <Link to="/staff-dashboard" className="flex items-center hover:bg-gray-700 p-2 rounded">
                     <FaClipboardList className="mr-2" />
                     My Dashboard
                   </Link>
