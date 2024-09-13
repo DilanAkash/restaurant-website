@@ -13,25 +13,25 @@ import serviceRoutes from './routes/serviceRoutes.js';
 import galleryRoutes from './routes/galleryRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
 import path from 'path';
-import { fileURLToPath } from 'url'; // fix __dirname erraor 
+import { fileURLToPath } from 'url'; 
 
-// required to set up the __dirname
+// Setting up __dirname
 const __filename = fileURLToPath(import.meta.url); 
 const __dirname = path.dirname(__filename);
 
-// instance of Express
+// Instance of Express
 const app = express();
 
-// Set port num
+// Set port number
 const PORT = process.env.PORT || 5000;
 
-// cross-origin requests
+// Enable CORS
 app.use(cors());
 
-// 2 parse JSON bodies in requests
+// Middleware to parse JSON bodies
 app.use(express.json());
 
-// routes with api prefix
+// API routes
 app.use('/api/reservations', reservationRoutes); 
 app.use('/api/messages', messageRoutes);
 app.use('/api/users', userRoutes);
@@ -44,21 +44,20 @@ app.use('/api/services', serviceRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/payments', paymentRoutes);
 
-// static files for image uploads
+// Serve static files for image uploads
 app.use('/uploads', express.static(path.join(__dirname, 'client/src/assets/uploads')));
 
-// mongodb connection using mongoose
-mongoose.connect('mongodb://localhost:27017/restaurantDB', {
-})
-  .then(() => console.log('MongoDB connected'))
+// MongoDB Atlas connection
+mongoose.connect('mongodb+srv://dilanakash27:aq2m1NMaU2TKXjrg@abc.qqyqt.mongodb.net/restaurantDB?retryWrites=true&w=majority')
+  .then(() => console.log('MongoDB Atlas connected'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
-// route for the root URL
+// Root route
 app.get('/', (req, res) => {
   res.send('Welcome to ABC Restaurant API');
 });
 
-// server starrt
+// Start server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
