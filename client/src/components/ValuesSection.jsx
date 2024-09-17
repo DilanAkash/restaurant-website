@@ -9,11 +9,17 @@ function ValuesSection() {
   return (
     <section
       className="py-16 bg-black text-white relative overflow-hidden z-10"
-      style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+      style={{ 
+        backgroundImage: `url(${backgroundImage})`, 
+        backgroundSize: 'cover', 
+        backgroundPosition: 'center', 
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed' // This makes the background image stay fixed while scrolling
+      }}
     >
       {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black bg-opacity-70 z-0"></div>  {/* Make sure overlay stays behind content */}
-      
+      <div className="absolute inset-0 bg-black bg-opacity-50 z-5"></div>  {/* Adjusted z-index for the overlay */}
+
       <div className="container mx-auto relative z-10">
         <h2 className="text-4xl font-bold text-center mb-12">Our Values</h2>
 
