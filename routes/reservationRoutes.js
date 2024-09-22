@@ -17,6 +17,14 @@ router.get('/user/:userId', async (req, res) => {
 // Create a new reservation
 router.post('/', async (req, res) => {
   try {
+    const { userId, date, time, location } = req.body;
+
+    // Check if the reservation already exists for the same user, date, time, and location
+    const existingReservation = await Reservation.findOne({ userId, date, time, location });
+    if (existingReservation) {
+      return res.status(400).json({ message: 'You already have a reservation at this time and location.' });
+    }
+
     const newReservation = new Reservation(req.body);
     const savedReservation = await newReservation.save();
     res.status(201).json(savedReservation);
