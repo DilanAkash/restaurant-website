@@ -5,4 +5,5 @@ ABC - Appetite Meets Brilliance and Creativity
 
 npm install cors
 npm install react-router-dom prop-types react-datepicker bootstrap react-credit-cards --legacy-peer-deps
-npm install axios
+npm install axios --legacy-peer-deps
+
